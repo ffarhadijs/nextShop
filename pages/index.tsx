@@ -9,15 +9,16 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import data from "../utils/data";
 import Link from "next/link";
+import Product from "../models/Product";
+import connectDB from "../utils/connectDB";
+import { products } from "../types/products.type";
 
-export default function Home() {
+export default function Home({ products }: { products: products }) {
   return (
     <Box>
-      <Typography>Products</Typography>
       <Grid container spacing={3}>
-        {data.products.map((product, index) => (
+        {products.map((product, index) => (
           <Grid item xs={6} sm={4} md={3} key={product.slug + index}>
             <Card>
               <Link href={`product/${product.slug}`}>
@@ -46,4 +47,21 @@ export default function Home() {
       </Grid>
     </Box>
   );
+}
+
+export async function getServerSideProps() {
+  try {
+    await connectDB();
+    const products = await Product.find({});
+    return {
+      props: {
+        products: JSON.parse(JSON.stringify(products)),
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      notFound: true,
+    };
+  }
 }

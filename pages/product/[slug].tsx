@@ -7,15 +7,13 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useRouter } from "next/router";
 import React from "react";
-import data from "../../utils/data";
 import Image from "next/image";
+import Product from "../../models/Product";
+import connectDB from "../../utils/connectDB";
+import { product } from "../../types/product.type";
 
-const ProductDateils = () => {
-  const { query } = useRouter();
-  const product = data.products.find((item) => item.slug === query.slug);
-
+const ProductDateils = ({ product }: { product: product }) => {
   return (
     <Box>
       <Grid container spacing={5}>
@@ -93,3 +91,13 @@ const ProductDateils = () => {
 };
 
 export default ProductDateils;
+
+export async function getServerSideProps(context: any) {
+  const { slug } = context.params;
+  await connectDB();
+  const product = await Product.findOne({ slug });
+
+  return {
+    props: { product: JSON.parse(JSON.stringify(product)) },
+  };
+}
