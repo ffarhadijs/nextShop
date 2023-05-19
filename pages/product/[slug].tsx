@@ -1,21 +1,48 @@
 import {
-  Box,
   Button,
   Grid,
   Paper,
   Rating,
   Stack,
   Typography,
+  Snackbar,
+  Alert,
 } from "@mui/material";
-import React from "react";
+import React, { useContext, useState } from "react";
 import Image from "next/image";
 import Product from "../../models/Product";
 import connectDB from "../../utils/connectDB";
-import { product } from "../../types/product.type";
+import { ProductType } from "../../types/product.type";
+import Layout from "../../components/layout/Layout";
+import { Store } from "../../utils/Store";
+import { useRouter } from "next/router";
 
-const ProductDateils = ({ product }: { product: product }) => {
+const ProductDateils = ({ product }: { product: ProductType }) => {
+  const { push } = useRouter();
+  const { dispatch, state } = useContext(Store);
+  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
+
+  console.log(state?.cart.cartItems);
+
+  const addToCartHandler = () => {
+    try {
+      const existProduct = state.cart.cartItems.find(
+        (item: ProductType) => item._id === product._id
+      );
+      const quantity = existProduct ? existProduct.quantity + 1 : 1;
+      quantity > product.countInStock
+        ? setOpenSnackbar(true)
+        : dispatch({
+            type: "CART_ADD_ITEM",
+            payload: { ...product, quantity },
+          });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <Box>
+    <Layout>
       <Grid container spacing={5}>
         <Grid item xs={12} md={6}>
           <Image
@@ -80,13 +107,28 @@ const ProductDateils = ({ product }: { product: product }) => {
               </Grid>
             </Grid>
 
-            <Button fullWidth variant="contained" color="primary">
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={addToCartHandler}
+            >
               Add To Cart
             </Button>
           </Paper>
         </Grid>
       </Grid>
-    </Box>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <Alert severity="error" onClose={() => setOpenSnackbar(false)}>
+          Out Of Stock!
+        </Alert>
+      </Snackbar>
+    </Layout>
   );
 };
 

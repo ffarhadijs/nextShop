@@ -1,5 +1,5 @@
 import {
-  Box,
+  Alert,
   Button,
   Card,
   CardActionArea,
@@ -7,16 +7,42 @@ import {
   CardContent,
   CardMedia,
   Grid,
+  Snackbar,
   Typography,
 } from "@mui/material";
 import Link from "next/link";
 import Product from "../models/Product";
 import connectDB from "../utils/connectDB";
-import { products } from "../types/products.type";
+import { ProductsType } from "../types/products.type";
+import { useContext, useState } from "react";
+import { Store } from "../utils/Store";
+import { ProductType } from "../types/product.type";
+import Layout from "../components/layout/Layout";
+import { useRouter } from "next/router";
 
-export default function Home({ products }: { products: products }) {
+export default function Home({ products }: { products: ProductsType }) {
+  const { push } = useRouter();
+  const { dispatch, state } = useContext(Store);
+  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
+  const addToCartHandler = (product: ProductType) => {
+    try {
+      const existProduct = state.cart.cartItems.find(
+        (item: ProductType) => item._id === product._id
+      );
+      const quantity = existProduct ? existProduct.quantity + 1 : 1;
+      quantity > product.countInStock
+        ? setOpenSnackbar(true)
+        : dispatch({
+            type: "CART_ADD_ITEM",
+            payload: { ...product, quantity },
+          });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <Box>
+    <Layout>
       <Grid container spacing={3}>
         {products.map((product, index) => (
           <Grid item xs={6} sm={4} md={3} key={product.slug + index}>
@@ -36,16 +62,29 @@ export default function Home({ products }: { products: products }) {
               </Link>
               <CardActions>
                 <Typography>{product.price} $</Typography>
-                <Button size="small" color="primary">
-                  {" "}
-                  Add To Cart{" "}
+                <Button
+                  onClick={() => addToCartHandler(product)}
+                  size="small"
+                  color="primary"
+                >
+                  Add To Cart
                 </Button>
               </CardActions>
             </Card>
           </Grid>
         ))}
       </Grid>
-    </Box>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <Alert severity="error" onClose={() => setOpenSnackbar(false)}>
+          Out Of Stock!
+        </Alert>
+      </Snackbar>
+    </Layout>
   );
 }
 
