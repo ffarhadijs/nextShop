@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Badge,
   Box,
   Container,
   CssBaseline,
@@ -10,14 +11,15 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 import { ColorModeContext, useMode } from "../../utils/theme";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { Store } from "../../utils/Store";
 
 function Layout({ children }: { children: React.ReactNode }) {
   const [theme, colorMode] = useMode();
-
+  const { state } = useContext(Store);
   return (
     <Box>
       <ColorModeContext.Provider value={colorMode}>
@@ -49,7 +51,12 @@ function Layout({ children }: { children: React.ReactNode }) {
                     )}
                   </IconButton>
                   <Link href="/cart">
-                    <Typography>Cart</Typography>
+                    <Badge
+                      badgeContent={state?.cart.cartItems.length}
+                      color="secondary"
+                    >
+                      <Typography>Cart</Typography>
+                    </Badge>
                   </Link>
                   <Link href="/login">
                     <Typography>Login</Typography>
