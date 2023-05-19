@@ -12,13 +12,13 @@ import {
   Grid,
   Card,
   Paper,
+  SelectChangeEvent,
 } from "@mui/material";
 import React, { useContext } from "react";
 import Layout from "../components/layout/Layout";
 import { Store } from "../utils/Store";
 import { ProductType } from "../types/product.type";
 import Image from "next/image";
-import Product from "../models/Product";
 
 const cart = () => {
   const { state, dispatch } = useContext(Store);
@@ -34,6 +34,14 @@ const cart = () => {
     totalPrice += product.quantity * product.price;
   }
 
+  const changeHandler = (value: number, item: ProductType) => {
+    dispatch({ type: "CART_ADD_ITEM", payload: { ...item, quantity: value } });
+  };
+
+  const removeHandler = (item: ProductType) => {
+    dispatch({ type: "CART_REMOVE_ITEM", payload: item });
+  };
+  console.log(cartItems);
   return (
     <Layout>
       <Typography variant="h5" component="h1">
@@ -80,7 +88,12 @@ const cart = () => {
                       </TableCell>
                       <TableCell align="left" colSpan={2}>
                         {" "}
-                        <Select value={item.quantity}>
+                        <Select
+                          value={item.quantity}
+                          onChange={(e: SelectChangeEvent<number>) =>
+                            changeHandler(e?.target.value as number, item)
+                          }
+                        >
                           {[...Array(item.countInStock).keys()].map((x) => (
                             <MenuItem key={x + 1} value={x + 1}>
                               {x + 1}
@@ -92,7 +105,13 @@ const cart = () => {
                         {item.price}
                       </TableCell>
                       <TableCell align="left" colSpan={2}>
-                        <Button variant="contained">Remove</Button>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => removeHandler(item)}
+                        >
+                          Remove
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
