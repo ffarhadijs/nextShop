@@ -5,6 +5,8 @@ import Layout from "../components/layout/Layout";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { SignupFormType } from "../types/signup.type";
+import { verifyToken } from "../utils/verifyToken";
+import { useRouter } from "next/router";
 
 const schema = yup
   .object({
@@ -29,7 +31,8 @@ const schema = yup
   })
   .required();
 
-const Login = () => {
+const Signup = () => {
+  const { push } = useRouter();
   const {
     register,
     handleSubmit,
@@ -50,8 +53,7 @@ const Login = () => {
         method: "POST",
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" },
-      });
-      console.log(data);
+      }).then(() => push("/login"));
     } catch (error) {
       console.log(error);
     }
@@ -107,4 +109,18 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
+
+export async function getServerSideProps(context: any) {
+  const { token } = context.req.cookies;
+  const secretKey = process.env.SECRET_KEY;
+
+  const result = verifyToken(token, secretKey!);
+
+  if (result) {
+    return {
+      redirect: { destination: "/dashboard", permanent: false },
+    };
+  }
+  return { props: { result } };
+}
