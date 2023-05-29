@@ -9,17 +9,46 @@ import {
   ThemeProvider,
   Toolbar,
   Typography,
+  Button,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ColorModeContext, useMode } from "../../utils/theme";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { Store } from "../../utils/Store";
+import { useRouter } from "next/router";
 
 function Layout({ children }: { children: React.ReactNode }) {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const router = useRouter();
+  const [user, setUser] = useState<any>();
   const [theme, colorMode] = useMode();
   const { state } = useContext(Store);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const logoutHandler = () => {
+    fetch("/api/auth/logout");
+    setAnchorEl(null);
+  };
+  const dashboardHandler = () => {
+    router.push("/dashboard");
+    setAnchorEl(null);
+  };
+
+  const profileHandler = () => {
+    router.push("/profile");
+    setAnchorEl(null);
+  };
+  useEffect(() => {
+    fetch("/api/user").then(async (res) => setUser(await res.json()));
+  }, []);
+
   return (
     <Box>
       <ColorModeContext.Provider value={colorMode}>
@@ -59,7 +88,26 @@ function Layout({ children }: { children: React.ReactNode }) {
                     </Badge>
                   </Link>
                   <Link href="/login">
-                    <Typography>Login</Typography>
+                    {user?.status === "success" ? (
+                      <>
+                        <Button onClick={handleClick} sx={{ color: "white" }}>
+                          {user?.data.name}
+                        </Button>
+                        <Menu
+                          anchorEl={anchorEl}
+                          open={open}
+                          onClose={() => setAnchorEl(null)}
+                        >
+                          <MenuItem onClick={profileHandler}>Profile</MenuItem>
+                          <MenuItem onClick={dashboardHandler}>
+                            Dashboard
+                          </MenuItem>
+                          <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                        </Menu>
+                      </>
+                    ) : (
+                      <Typography> Login </Typography>
+                    )}
                   </Link>
                 </Stack>
               </Stack>
