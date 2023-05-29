@@ -27,7 +27,7 @@ async function handler(req: any, res: any) {
     confirmPassword: hashedConfirmedPassword,
     isAdmin: isAdmin,
   });
-  console.log(newUser);
+
   res
     .status(201)
     .json({ status: "Success", message: "User created successfully" });
