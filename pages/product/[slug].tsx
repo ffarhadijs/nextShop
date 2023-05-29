@@ -22,8 +22,8 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
   const { dispatch, state } = useContext(Store);
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
 
-  console.log(state?.cart.cartItems);
 
+  
   const addToCartHandler = () => {
     try {
       const existProduct = state.cart.cartItems.find(
