@@ -41,7 +41,7 @@ const cart = () => {
   const removeHandler = (item: ProductType) => {
     dispatch({ type: "CART_REMOVE_ITEM", payload: item });
   };
-  console.log(cartItems);
+
   return (
     <Layout>
       <Typography variant="h5" component="h1">
