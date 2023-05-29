@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   FormLabel,
   Stack,
@@ -12,6 +11,8 @@ import { LoginFormType } from "../types/login.type";
 import Layout from "../components/layout/Layout";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { verifyToken } from "../utils/verifyToken";
+import { useRouter } from "next/router";
 
 const schema = yup
   .object({
@@ -29,7 +30,8 @@ const schema = yup
   })
   .required();
 
-const Login = () => {
+const Login = (props: any) => {
+  const {push} = useRouter();
   const {
     register,
     handleSubmit,
@@ -38,7 +40,11 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
   const onSubmit = (data: LoginFormType) => {
-    console.log(data);
+    fetch("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { "Content-Type": "application/json" },
+    }).then(() => push("/dashboard"));
   };
   return (
     <Layout>
@@ -84,3 +90,15 @@ const Login = () => {
 };
 
 export default Login;
+
+export async function getServerSideProps(context: any) {
+  const { token } = context.req.cookies;
+  const secretKey = process.env.SECRET_KEY;
+
+  const result = verifyToken(token, secretKey!);
+
+  if (result) {
+    return { redirect: { destination: "/dashboard", permanent: false } };
+  }
+  return { props: { result } };
+}
