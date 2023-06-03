@@ -1,10 +1,4 @@
-import {
-  Button,
-  FormLabel,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, FormLabel, Stack, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { LoginFormType } from "../types/login.type";
@@ -13,6 +7,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { verifyToken } from "../utils/verifyToken";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { alertType, useAlert } from "../hooks/useAlert";
 
 const schema = yup
   .object({
@@ -31,7 +27,8 @@ const schema = yup
   .required();
 
 const Login = (props: any) => {
-  const {push} = useRouter();
+  const { push } = useRouter();
+  const [error, setError] = useState<string>("");
   const {
     register,
     handleSubmit,
@@ -39,13 +36,22 @@ const Login = (props: any) => {
   } = useForm<LoginFormType>({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data: LoginFormType) => {
-    fetch("/api/auth/login", {
+  const [showAlert, Alert] = useAlert();
+  const onSubmit = async (formData: LoginFormType) => {
+    const response = await fetch("/api/auth/login", {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify(formData),
       headers: { "Content-Type": "application/json" },
-    }).then(() => push("/dashboard"));
+    });
+    const data = await response.json();
+    if (response.ok) {
+      push("/dashboard");
+      showAlert("Logged in successfully", alertType.success);
+    } else {
+      showAlert(data.message, alertType.error);
+    }
   };
+
   return (
     <Layout>
       <Stack
@@ -85,6 +91,7 @@ const Login = (props: any) => {
           Don't you have an account? click <Link href="/signup"> here </Link>
         </Typography>
       </Stack>
+      <Alert />
     </Layout>
   );
 };
