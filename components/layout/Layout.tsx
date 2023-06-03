@@ -20,6 +20,7 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { Store } from "../../utils/Store";
 import { useRouter } from "next/router";
+import { alertType, useAlert } from "../../hooks/useAlert";
 
 function Layout({ children }: { children: React.ReactNode }) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -32,8 +33,16 @@ function Layout({ children }: { children: React.ReactNode }) {
     setAnchorEl(event.currentTarget);
   };
 
-  const logoutHandler = () => {
-    fetch("/api/auth/logout");
+  const [showAlert, Alert] = useAlert();
+
+  const logoutHandler = async () => {
+    const response = await fetch("/api/auth/logout");
+    const data = await response.json();
+    if (response.ok) {
+      showAlert(data.message, alertType.success);
+    } else {
+      showAlert(data.message, alertType.error);
+    }
     setAnchorEl(null);
   };
   const dashboardHandler = () => {
@@ -115,6 +124,7 @@ function Layout({ children }: { children: React.ReactNode }) {
           </AppBar>
           <Container sx={{ minHeight: "85vh", paddingY: "20px" }} maxWidth="xl">
             {children}
+            <Alert />
           </Container>
           <footer>
             <Typography align="center">
