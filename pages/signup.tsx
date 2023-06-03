@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { SignupFormType } from "../types/signup.type";
 import { verifyToken } from "../utils/verifyToken";
 import { useRouter } from "next/router";
+import { alertType, useAlert } from "../hooks/useAlert";
 
 const schema = yup
   .object({
@@ -16,23 +17,25 @@ const schema = yup
       .email("Email address is not valid."),
     name: yup
       .string()
-      .required("You should input email address.")
+      .required("You should input your name.")
       .min(3, "Your name should at least 3 characters"),
     password: yup
       .string()
-      .required("You should input email address.")
+      .required("You should input your password.")
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/,
         "Must Contain 6 Characters, One Uppercase, One Lowercase and One Number."
       ),
     confirmPassword: yup
       .string()
-      .oneOf([yup.ref("password"), undefined], "Passwords must match"),
+      .oneOf([yup.ref("password"), undefined], "Passwords must match")
+      .required("You should input your confirm password."),
   })
   .required();
 
 const Signup = () => {
   const { push } = useRouter();
+  const [showAlert, Alert] = useAlert();
   const {
     register,
     handleSubmit,
@@ -47,15 +50,18 @@ const Signup = () => {
       isAdmin: false,
     },
   });
-  const onSubmit = async (data: SignupFormType) => {
-    try {
-      await fetch("/api/auth/signup", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" },
-      }).then(() => push("/login"));
-    } catch (error) {
-      console.log(error);
+  const onSubmit = async (formData: SignupFormType) => {
+    const response = await fetch("/api/auth/signup", {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+    if (response.ok) {
+      push("/login");
+      showAlert(data.message, alertType.success);
+    } else {
+      showAlert(data.message, alertType.error);
     }
   };
   return (
@@ -102,9 +108,10 @@ const Signup = () => {
         </Button>
         <Typography>
           Do you have any account already? click{" "}
-          <Link href="/signup"> here </Link>
+          <Link href="/login"> here </Link>
         </Typography>
       </Stack>
+      <Alert />
     </Layout>
   );
 };
