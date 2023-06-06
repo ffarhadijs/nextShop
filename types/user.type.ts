@@ -4,4 +4,8 @@ export type UserType = {
   password: string;
   confirmPassword: string;
   isAdmin: boolean;
+  address: string;
+  postalCode: number;
+  city: string;
+  lastName: string;
 };
