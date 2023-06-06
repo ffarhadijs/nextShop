@@ -28,7 +28,6 @@ const schema = yup
 
 const Login = (props: any) => {
   const { push } = useRouter();
-  const [error, setError] = useState<string>("");
   const {
     register,
     handleSubmit,
@@ -45,7 +44,7 @@ const Login = (props: any) => {
     });
     const data = await response.json();
     if (response.ok) {
-      push("/dashboard");
+      push("/");
       showAlert("Logged in successfully", alertType.success);
     } else {
       showAlert(data.message, alertType.error);
