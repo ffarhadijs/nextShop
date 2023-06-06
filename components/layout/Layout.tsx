@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import { alertType, useAlert } from "../../hooks/useAlert";
 
 function Layout({ children }: { children: React.ReactNode }) {
+  const { push } = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const router = useRouter();
@@ -40,6 +41,7 @@ function Layout({ children }: { children: React.ReactNode }) {
     const data = await response.json();
     if (response.ok) {
       showAlert(data.message, alertType.success);
+      push("/login");
     } else {
       showAlert(data.message, alertType.error);
     }
@@ -51,7 +53,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   };
 
   const profileHandler = () => {
-    router.push("/profile");
+    router.push("/dashboard/profile");
     setAnchorEl(null);
   };
   useEffect(() => {
@@ -96,28 +98,29 @@ function Layout({ children }: { children: React.ReactNode }) {
                       <Typography>Cart</Typography>
                     </Badge>
                   </Link>
-                  <Link href="/login">
-                    {user?.status === "success" ? (
-                      <>
-                        <Button onClick={handleClick} sx={{ color: "white" }}>
-                          {user?.data.name}
-                        </Button>
-                        <Menu
-                          anchorEl={anchorEl}
-                          open={open}
-                          onClose={() => setAnchorEl(null)}
-                        >
-                          <MenuItem onClick={profileHandler}>Profile</MenuItem>
-                          <MenuItem onClick={dashboardHandler}>
-                            Dashboard
-                          </MenuItem>
-                          <MenuItem onClick={logoutHandler}>Logout</MenuItem>
-                        </Menu>
-                      </>
-                    ) : (
-                      <Typography> Login </Typography>
-                    )}
-                  </Link>
+
+                  {user?.status === "success" ? (
+                    <>
+                      <Button onClick={handleClick} sx={{ color: "white" }}>
+                        {user?.data?.name}
+                      </Button>
+                      <Menu
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={() => setAnchorEl(null)}
+                      >
+                        <MenuItem onClick={profileHandler}>Profile</MenuItem>
+                        <MenuItem onClick={dashboardHandler}>
+                          Dashboard
+                        </MenuItem>
+                        <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                      </Menu>
+                    </>
+                   ) : (
+                     <Link href="/login">
+                       <Typography> Login </Typography>
+                     </Link>
+                   )}
                 </Stack>
               </Stack>
             </Toolbar>
