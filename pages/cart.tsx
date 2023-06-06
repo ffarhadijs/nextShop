@@ -14,14 +14,17 @@ import {
   Paper,
   SelectChangeEvent,
 } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Layout from "../components/layout/Layout";
 import { Store } from "../utils/Store";
 import { ProductType } from "../types/product.type";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 const cart = () => {
+  const { push } = useRouter();
   const { state, dispatch } = useContext(Store);
+  const [user, setUser] = useState<any>();
   const cartItems = state?.cart?.cartItems || [];
 
   let totalQuantity = 0;
@@ -41,6 +44,23 @@ const cart = () => {
   const removeHandler = (item: ProductType) => {
     dispatch({ type: "CART_REMOVE_ITEM", payload: item });
   };
+
+  const fetchUser = async () => {
+    const response = await fetch("/api/user").then(async (res) =>
+      setUser(await res.json())
+    );
+  };
+
+  
+  const checkoutHandler = () => {
+    user?.status === "success" && push("/shipping");
+    user?.status === "failed" && push("/login");
+    
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <Layout>
@@ -129,6 +149,7 @@ const cart = () => {
                 color="primary"
                 sx={{ marginTop: 2 }}
                 fullWidth
+                onClick={() => checkoutHandler()}
               >
                 CHECK OUT
               </Button>
