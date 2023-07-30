@@ -42,7 +42,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
   };
 
   return (
-    <Layout>
+    <>
       <Grid container spacing={5}>
         <Grid item xs={12} md={6}>
           <Image
@@ -128,7 +128,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
           Out Of Stock!
         </Alert>
       </Snackbar>
-    </Layout>
+    </>
   );
 };
 

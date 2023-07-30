@@ -5,4 +5,5 @@ export type UpdateFormType = {
   city: string;
   postalCode: number;
   lastName: string;
+  country:string;
 };

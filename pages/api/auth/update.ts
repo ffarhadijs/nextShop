@@ -8,7 +8,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return;
   }
   const { token } = req.cookies;
-  const { name, lastName, city, address, postalCode } = req.body;
+  const { name, lastName, country, city, address, postalCode } = req.body;
   const secretKey = process.env.SECRET_KEY;
 
   connectDB();
@@ -36,6 +36,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   user.name = name;
   user.lastName = lastName;
   user.city = city;
+  user.country = country;
   user.address = address;
   user.postalCode = postalCode;
   await user.save();
