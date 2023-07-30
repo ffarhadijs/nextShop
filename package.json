@@ -32,6 +32,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
+    "swiper": "^10.0.4",
     "typescript": "5.0.4",
     "yup": "^1.1.1"
   },
