@@ -11,6 +11,7 @@ export const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   confirmPassword: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },
+  country: { type: String, required: false },
 });
 
 const User =
