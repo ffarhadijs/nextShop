@@ -14,18 +14,19 @@ import {
   Paper,
   SelectChangeEvent,
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Layout from "../components/layout/Layout";
 import { Store } from "../utils/Store";
 import { ProductType } from "../types/product.type";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { userData } from "../utils/userData";
 
-const cart = () => {
+const Cart = () => {
   const { push } = useRouter();
   const { state, dispatch } = useContext(Store);
-  const [user, setUser] = useState<any>();
   const cartItems = state?.cart?.cartItems || [];
+  const user = userData();
 
   let totalQuantity = 0;
   for (const product of cartItems) {
@@ -45,25 +46,12 @@ const cart = () => {
     dispatch({ type: "CART_REMOVE_ITEM", payload: item });
   };
 
-  const fetchUser = async () => {
-    const response = await fetch("/api/user").then(async (res) =>
-      setUser(await res.json())
-    );
-  };
-
-  
   const checkoutHandler = () => {
-    user?.status === "success" && push("/shipping");
-    user?.status === "failed" && push("/login");
-    
+    !!user ? push("/shipping") : push("/login");
   };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   return (
-    <Layout>
+    <>
       <Typography variant="h5" component="h1">
         Shopping Cart
       </Typography>
@@ -157,10 +145,10 @@ const cart = () => {
           </Grid>
         </Grid>
       ) : (
-        <Typography>there isn't any item</Typography>
+        <Typography>there isnt any item</Typography>
       )}
-    </Layout>
+    </>
   );
 };
 
-export default cart;
+export default Cart;

@@ -65,7 +65,7 @@ const Signup = () => {
     }
   };
   return (
-    <Layout>
+    <>
       <Stack
         maxWidth={600}
         marginX={"auto"}
@@ -112,7 +112,7 @@ const Signup = () => {
         </Typography>
       </Stack>
       <Alert />
-    </Layout>
+    </>
   );
 };
 

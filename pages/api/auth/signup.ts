@@ -1,8 +1,9 @@
 import connectDB from "../../../utils/connectDB";
 import User from "../../../models/User";
 import { hash } from "bcryptjs";
+import { NextApiRequest, NextApiResponse } from "next";
 
-async function handler(req: any, res: any) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return;
   }

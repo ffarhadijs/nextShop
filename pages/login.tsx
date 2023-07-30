@@ -52,7 +52,7 @@ const Login = (props: any) => {
   };
 
   return (
-    <Layout>
+    <>
       <Stack
         maxWidth={600}
         marginX={"auto"}
@@ -87,11 +87,11 @@ const Login = (props: any) => {
           Login
         </Button>
         <Typography>
-          Don't you have an account? click <Link href="/signup"> here </Link>
+          Dont you have an account? click <Link href="/signup"> here </Link>
         </Typography>
       </Stack>
       <Alert />
-    </Layout>
+    </>
   );
 };
 
