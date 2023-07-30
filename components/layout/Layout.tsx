@@ -21,13 +21,14 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { Store } from "../../utils/Store";
 import { useRouter } from "next/router";
 import { alertType, useAlert } from "../../hooks/useAlert";
+import { userData } from "../../utils/userData";
 
 function Layout({ children }: { children: React.ReactNode }) {
-  const { push } = useRouter();
+  const { push, route } = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const router = useRouter();
-  const [user, setUser] = useState<any>();
+  const user = userData();
   const [theme, colorMode] = useMode();
   const { state } = useContext(Store);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -48,17 +49,19 @@ function Layout({ children }: { children: React.ReactNode }) {
     setAnchorEl(null);
   };
   const dashboardHandler = () => {
-    router.push("/dashboard");
+    router.push("/admin-dashboard");
+    setAnchorEl(null);
+  };
+
+  const orderHandler = () => {
+    router.push("/orders-list");
     setAnchorEl(null);
   };
 
   const profileHandler = () => {
-    router.push("/dashboard/profile");
+    router.push("/profile");
     setAnchorEl(null);
   };
-  useEffect(() => {
-    fetch("/api/user").then(async (res) => setUser(await res.json()));
-  }, []);
 
   return (
     <Box>
@@ -99,10 +102,10 @@ function Layout({ children }: { children: React.ReactNode }) {
                     </Badge>
                   </Link>
 
-                  {user?.status === "success" ? (
+                  {!!user ? (
                     <>
                       <Button onClick={handleClick} sx={{ color: "white" }}>
-                        {user?.data?.name}
+                        {user?.name}
                       </Button>
                       <Menu
                         anchorEl={anchorEl}
@@ -110,25 +113,36 @@ function Layout({ children }: { children: React.ReactNode }) {
                         onClose={() => setAnchorEl(null)}
                       >
                         <MenuItem onClick={profileHandler}>Profile</MenuItem>
+                        <MenuItem onClick={orderHandler}>Orders List</MenuItem>
                         <MenuItem onClick={dashboardHandler}>
-                          Dashboard
+                          Admin Dashboard
                         </MenuItem>
                         <MenuItem onClick={logoutHandler}>Logout</MenuItem>
                       </Menu>
                     </>
-                   ) : (
-                     <Link href="/login">
-                       <Typography> Login </Typography>
-                     </Link>
-                   )}
+                  ) : (
+                    <Link href="/login">
+                      <Typography> Login </Typography>
+                    </Link>
+                  )}
                 </Stack>
               </Stack>
             </Toolbar>
           </AppBar>
-          <Container sx={{ minHeight: "85vh", paddingY: "20px" }} maxWidth="xl">
-            {children}
-            <Alert />
-          </Container>
+          {route === "/" ? (
+            <Box sx={{ minHeight: "85vh" }}>
+              {children}
+              <Alert />
+            </Box>
+          ) : (
+            <Container
+              sx={{ minHeight: "85vh", paddingY: "20px" }}
+              maxWidth="xl"
+            >
+              {children}
+              <Alert />
+            </Container>
+          )}
           <footer>
             <Typography align="center">
               All rights reserved - Next Shop.
