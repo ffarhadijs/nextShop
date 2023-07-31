@@ -1,15 +1,21 @@
-import { createTheme } from "@mui/material/styles";
+import { blue } from "@mui/material/colors";
+import { alpha, createTheme, getContrastRatio } from "@mui/material/styles";
 import { createContext, useMemo, useState } from "react";
+
+const violetBase = "#FF5733";
+const violetMain = alpha(violetBase, 0.7);
 
 export const themeSettings = (mode: "light" | "dark") => {
   return {
     palette: {
       mode: mode,
       primary: {
-        main: "#f0c000",
-      },
-      secondary: {
-        main: '#008080',
+        light: blue[300],
+        main: blue[500],
+        dark: blue[700],
+        darker: blue[900],
+        contrastText:
+          getContrastRatio(blue[500], "#fff") > 2.5 ? "#fff" : "#111",
       },
     },
   };
