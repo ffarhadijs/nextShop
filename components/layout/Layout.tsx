@@ -12,6 +12,8 @@ import {
   Button,
   Menu,
   MenuItem,
+  Grid,
+  TextField,
 } from "@mui/material";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
@@ -22,6 +24,10 @@ import { Store } from "../../utils/Store";
 import { useRouter } from "next/router";
 import { alertType, useAlert } from "../../hooks/useAlert";
 import { userData } from "../../utils/userData";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import PhoneInTalkOutlinedIcon from "@mui/icons-material/PhoneInTalkOutlined";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { push, route } = useRouter();
@@ -144,9 +150,133 @@ function Layout({ children }: { children: React.ReactNode }) {
             </Container>
           )}
           <footer>
-            <Typography align="center">
-              All rights reserved - Next Shop.
-            </Typography>
+            <Container maxWidth="xl" className="py-14">
+              <Grid container spacing={"20px"}>
+                <Grid item xs={3} className="flex flex-col space-y-3">
+                  <Typography className="font-[600] text-[20px] mb-4">
+                    About The Store
+                  </Typography>
+                  <Typography className="text-[14px] ">
+                    One of the most popular on the web is shopping.
+                  </Typography>
+                  <Typography className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit flex flex-row items-start">
+                    <LocationOnOutlinedIcon className="text-[18px] mr-2" />{" "}
+                    Wonder Street, USA, New York
+                  </Typography>
+                  <Typography className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 flex flex-row items-start">
+                    <PhoneInTalkOutlinedIcon className="text-[18px] mr-2" /> +01
+                    321 654 214
+                  </Typography>
+                  <Typography className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 flex flex-row items-start">
+                    <EmailOutlinedIcon className="text-[18px] mr-2" />{" "}
+                    hello@xton.com
+                  </Typography>
+                 
+                </Grid>
+                <Grid item xs={3} className="flex flex-col space-y-3">
+                  <Typography className="font-[600] text-[20px] mb-4">
+                    Quick Links
+                  </Typography>
+                  <Link
+                    href={"#"}
+                    className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit "
+                  >
+                    About Us
+                  </Link>
+                  <Link
+                    href={"#"}
+                    className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit"
+                  >
+                    Shop Now!
+                  </Link>
+                  <Link
+                    href={"#"}
+                    className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit"
+                  >
+                    Womans
+                  </Link>
+                  <Link
+                    href={"#"}
+                    className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit"
+                  >
+                    FAQ
+                  </Link>
+                  <Link
+                    href={"#"}
+                    className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit"
+                  >
+                    Contact Us
+                  </Link>
+                  <Link
+                    href={"#"}
+                    className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit"
+                  >
+                    Customer Services
+                  </Link>
+                </Grid>
+                <Grid item xs={3} className="flex flex-col space-y-3">
+                  <Typography className="font-[600] text-[20px] mb-4">
+                    Customer Support
+                  </Typography>
+                  <Link
+                    href={"#"}
+                    className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit"
+                  >
+                    My Account
+                  </Link>
+                  <Link
+                    href={"#"}
+                    className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit"
+                  >
+                    Checkout
+                  </Link>
+                  <Link
+                    href={"#"}
+                    className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit"
+                  >
+                    Cart
+                  </Link>
+                  <Link
+                    href={"#"}
+                    className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit"
+                  >
+                    FAQ
+                  </Link>
+                  <Link
+                    href={"#"}
+                    className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit"
+                  >
+                    Order Tracking
+                  </Link>
+                  <Link
+                    href={"#"}
+                    className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit"
+                  >
+                    Help & Support
+                  </Link>
+                </Grid>
+                <Grid item xs={3} className="flex flex-col space-y-3">
+                  <Typography className="font-[600] text-[20px] mb-4">
+                    Newsletter
+                  </Typography>
+                  <Typography className="text-[14px]">
+                    To get the latest news and latest updates from us.
+                  </Typography>
+                  <TextField
+                    label="Email Address"
+                    variant="outlined"
+                    size="small"
+                  />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className="bg-[#2196f3] "
+                  >
+                    Subscribe
+                  </Button>
+                </Grid>
+              </Grid>
+            </Container>
           </footer>
         </ThemeProvider>
       </ColorModeContext.Provider>
