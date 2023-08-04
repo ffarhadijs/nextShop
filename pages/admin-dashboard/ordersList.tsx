@@ -9,10 +9,97 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Avatar,
 } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import AdminDashboard from ".";
+import { DataGrid, GridValueGetterParams } from "@mui/x-data-grid";
+import { v4 } from "uuid";
+const columns = [
+  {
+    field: "image",
+    headerName: "Image",
+    align: "center",
+    headerAlign: "center",
+    renderCell: (params: any) => {
+      return (
+        <Image
+          width={100}
+          height={100}
+          alt={params.value.image}
+          src={params.value}
+          className="w-16 h-auto"
+        />
+      );
+    },
+    sortable: false,
+    width: 100,
+  },
+  {
+    field: "name",
+    align: "center",
+    headerAlign: "center",
+    headerName: "Name",
+    minWidth: 100,
+  },
+  {
+    field: "quantity",
+    headerName: "Quantity",
+    type: "number",
+    align: "center",
+    headerAlign: "center",
+    minWidth: 80,
+  },
+  {
+    field: "unitPrice",
+    align: "center",
+    headerAlign: "center",
+    headerName: "Unit Price",
+    type: "number",
+    minWidth: 80,
+    renderCell: (params: any) => {
+      return <Typography>$ {params.value}</Typography>;
+    },
+  },
+  {
+    field: "total",
+    align: "center",
+    headerAlign: "center",
+    headerName: "Total",
+    type: "number",
+    minWidth: 80,
+    renderCell: (params: any) => {
+      return <Typography>$ {params.value}</Typography>;
+    },
+  },
+  {
+    field: "customer",
+    align: "center",
+    headerAlign: "center",
+    headerName: "Customer",
+    minWidth: 150,
+  },
+  {
+    field: "address",
+    align: "center",
+    headerAlign: "center",
+    headerName: "Address",
+    sortable: false,
+    minWidth: 160,
+  },
+  {
+    field: "paidAt",
+    align: "center",
+    headerAlign: "center",
+    headerName: "PaidAt",
+    minWidth: 160,
+
+    renderCell: (params: any) => {
+      return <Typography>{new Date(params.value).toLocaleString()}</Typography>;
+    },
+  },
+];
 
 export default function OrdersList() {
   const [orders, setOrders] = useState([]);
@@ -21,93 +108,58 @@ export default function OrdersList() {
     const data = await response.json();
     setOrders(data.data);
   };
-  console.log(orders, "data");
 
   useEffect(() => {
     getOrdersList();
   }, []);
 
+  const rows = []
+    .concat(
+      ...orders?.map((order: any) =>
+        order.orderItems.map((item: any) => ({
+          ...item,
+          createdAt: order.createdAt,
+          shippingAddress: order.shippingAddress,
+        }))
+      )
+    )
+    .map((oItem: any) => {
+      return {
+        image: oItem.image,
+        quantity: oItem.quantity,
+        customer:
+          oItem.shippingAddress.name + " " + oItem.shippingAddress.lastName,
+        address:
+          oItem.shippingAddress.country +
+          " " +
+          oItem.shippingAddress.city +
+          " " +
+          oItem.shippingAddress.address,
+        paidAt: oItem.createdAt,
+        name: oItem.name,
+        total: oItem.price,
+        unitPrice: oItem.price / oItem.quantity,
+      };
+    });
+
   return (
     <AdminDashboard>
       <Paper style={{ maxWidth: "100%", marginInline: "auto" }}>
-        <TableContainer>
-          <Table
-            sx={{ minWidth: "max-conteent", maxWidth: "100%" }}
-            aria-label="simple table"
-          >
-            <TableHead>
-              <TableRow>
-                <TableCell align="left" colSpan={4}>
-                  Image
-                </TableCell>
-                <TableCell align="left" colSpan={4}>
-                  Name
-                </TableCell>
-                <TableCell align="left" colSpan={2}>
-                  Quantity
-                </TableCell>
-                <TableCell align="left" colSpan={2}>
-                  Price
-                </TableCell>
-                <TableCell align="left" colSpan={2}>
-                  Total Price
-                </TableCell>
-                <TableCell align="left" colSpan={2}>
-                  Paid At
-                </TableCell>
-                <TableCell align="left" colSpan={2}>
-                  Customer
-                </TableCell>
-                <TableCell align="left" colSpan={2}>
-                  Address
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {orders?.map((item: any) => {
-                return item.orderItems.map((oItem: any) => (
-                  <TableRow
-                    key={oItem._id}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell align="left" colSpan={4}>
-                      <Image
-                        src={oItem.image}
-                        alt={oItem.name}
-                        height={500}
-                        width={500}
-                        className="w-16 h-auto"
-                      />
-                    </TableCell>
-                    <TableCell align="left" colSpan={4}>
-                      {oItem.name}
-                    </TableCell>
-                    <TableCell align="left" colSpan={2}>
-                      {oItem.quantity}
-                    </TableCell>
-                    <TableCell align="left" colSpan={2}>
-                      {oItem.price}
-                    </TableCell>
-                    <TableCell align="left" colSpan={2}>
-                      {oItem.price * oItem.quantity}
-                    </TableCell>
-                    <TableCell align="left" colSpan={2}>
-                      {item.createdAt}
-                    </TableCell>
-                    <TableCell align="left" colSpan={2}>
-                      {item.shippingAddress.name}{" "}
-                      {item.shippingAddress.lastName}
-                    </TableCell>
-                    <TableCell align="left" colSpan={2}>
-                      {item.shippingAddress.country} {item.shippingAddress.city}{" "}
-                      {item.shippingAddress.address}
-                    </TableCell>
-                  </TableRow>
-                ));
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <DataGrid
+          className="px-3"
+          getRowId={(row) => v4()}
+          rows={rows}
+          rowSelection={false}
+          checkboxSelection={false}
+          columns={columns as any}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 5 },
+            },
+          }}
+          pageSizeOptions={[5, 10, 15, 20]}
+          rowHeight={80}
+        />
       </Paper>
     </AdminDashboard>
   );
