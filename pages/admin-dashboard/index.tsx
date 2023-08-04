@@ -1,10 +1,16 @@
 import { verifyToken } from "../../utils/verifyToken";
 import Layout from "../../components/layout/Layout";
-import { Box, Button, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Paper, Stack, Typography, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import Diversity1Icon from "@mui/icons-material/Diversity1";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
+import InterestsIcon from "@mui/icons-material/Interests";
+import { useRouter } from "next/router";
 
-const AdminDashboard = () => {
+const AdminDashboard = ({ children }: any) => {
+  const { route } = useRouter();
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
@@ -29,67 +35,99 @@ const AdminDashboard = () => {
     getUsersList();
     getProductsList();
   }, []);
-
+  console.log(route);
   return (
-    <Stack direction={"row"} justifyContent={"start"} alignItems={"start"} spacing={5}>
-      <Paper elevation={2}>
-        <Stack direction={"column"}>
-          <Button
-            variant="text"
-            LinkComponent={Link}
+    <Grid container spacing={5}>
+      <Grid item xs={2}>
+        <Paper elevation={2} className="py-4 px-2">
+          <Link
             href="/admin-dashboard/ordersList"
+            className={`block px-2 py-1 rounded-sm ${
+              route === "/admin-dashboard/ordersList"
+                ? "bg-[#2196f3]"
+                : "bg-transparent"
+            }`}
           >
             Orders List
-          </Button>
-          <Button
-            variant="text"
-            LinkComponent={Link}
+          </Link>
+          <Link
             href="/admin-dashboard/productsList"
+            className={`block my-4 px-2 py-1 rounded-sm ${
+              route === "/admin-dashboard/productsList"
+                ? "bg-[#2196f3]"
+                : "bg-transparent"
+            }`}
           >
             Products List
-          </Button>
-          <Button
-            variant="text"
-            LinkComponent={Link}
+          </Link>
+          <Link
             href="/admin-dashboard/usersList"
+            className={`block px-2 py-1 rounded-sm ${
+              route === "/admin-dashboard/usersList"
+                ? "bg-[#2196f3]"
+                : "bg-transparent"
+            }`}
           >
             Users List
-          </Button>
-        </Stack>
-      </Paper>
-      <Stack direction={"column"} justifyContent={"start"} alignItems={"start"}>
-        <Stack
-          direction={"row"}
-          justifyContent={"space-between"}
-          alignItems={"start"}
-        >
-          <Paper elevation={2}>
-            <Typography>Sales</Typography>
-            <Typography>
-              $
-              {orders.reduce(
-                (accumulator: any, currentValue: any) =>
-                  accumulator + currentValue.totalPrice,
-                0
-              )}
-            </Typography>
-          </Paper>
-          <Paper>
-            <Typography>Users</Typography>
-            <Typography>{users.length}</Typography>
-          </Paper>
-          <Paper>
-            <Typography>Orders</Typography>
-            <Typography>{orders.length}</Typography>
-          </Paper>
-          <Paper>
-            <Typography>Products</Typography>
-            <Typography>{products.length}</Typography>
-          </Paper>
-        </Stack>
+          </Link>
+        </Paper>
+      </Grid>
+      <Grid item xs={10}>
+        <Grid container spacing="20px">
+          <Grid item xs={3}>
+            <Paper elevation={2} className="text-center py-8">
+              <MonetizationOnIcon className="text-[50px] mb-3" />
+              <Typography className="text-[20px] font-bold mb-2">
+                Sales
+              </Typography>
+              <Typography className="text-[#2196f3] font-semibold text-[16px]">
+                $
+                {orders.reduce(
+                  (accumulator: any, currentValue: any) =>
+                    accumulator + currentValue.totalPrice,
+                  0
+                )}
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={3}>
+            <Paper className="text-center py-8">
+              <Diversity1Icon className="text-[50px] mb-3" />
+              <Typography className="text-[20px] font-bold mb-2">
+                Users
+              </Typography>
+              <Typography className="text-[#2196f3] font-semibold text-[16px]">
+                {users.length}
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={3}>
+            <Paper className="text-center py-8">
+              <LocalMallIcon className="text-[50px] mb-3" />
+              <Typography className="text-[20px] font-bold mb-2">
+                Orders
+              </Typography>
+              <Typography className="text-[#2196f3] font-semibold text-[16px]">
+                {orders.length}
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={3}>
+            <Paper className="text-center py-8">
+              <InterestsIcon className="text-[50px] mb-3" />
+              <Typography className="text-[20px] font-bold mb-2">
+                Products
+              </Typography>
+              <Typography className="text-[#2196f3] font-semibold text-[16px]">
+                {products.length}
+              </Typography>
+            </Paper>
+          </Grid>
+        </Grid>
         <Stack></Stack>
-      </Stack>
-    </Stack>
+        {route !== "/admin-dashboard" ? children : null}
+      </Grid>
+    </Grid>
   );
 };
 

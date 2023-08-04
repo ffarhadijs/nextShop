@@ -27,7 +27,7 @@ function Layout({ children }: { children: React.ReactNode }) {
           ) : (
             <Container
               sx={{ minHeight: "85vh", paddingY: "20px" }}
-              maxWidth="xl"
+              maxWidth="lg"
             >
               {children}
             </Container>

@@ -140,7 +140,7 @@ const Profile = () => {
               />
             </Stack>
           </Stack>
-          <Button type="submit" variant="outlined" sx={{ marginTop: "30px" }}>
+          <Button type="submit" variant="contained" className="bg-[#2196f3]" sx={{ marginTop: "30px" }}>
             submit
           </Button>
         </Stack>

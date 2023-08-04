@@ -28,26 +28,48 @@ export default function OrdersList() {
 
   return (
     <Box>
-      <Typography fontSize={"18px"} fontWeight={600} variant="h1">
-        Orders List
-      </Typography>
-      <Paper  style={{ maxWidth: "800px", marginInline:"auto" }}>
+      <Paper style={{ maxWidth: "100%", marginInline: "auto" }}>
         <TableContainer>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell colSpan={2}>Image</TableCell>
-                <TableCell align="left" colSpan={4}>
+                <TableCell colSpan={2} className="font-bold text-[16px]">
+                  Image
+                </TableCell>
+                <TableCell
+                  align="left"
+                  colSpan={4}
+                  className="font-bold text-[16px]"
+                >
                   Name
                 </TableCell>
-                <TableCell align="left" colSpan={2}>
+                <TableCell
+                  align="left"
+                  colSpan={2}
+                  className="font-bold text-[16px]"
+                >
                   Quantity
                 </TableCell>
-                <TableCell align="left" colSpan={2}>
-                  Price
+                <TableCell
+                  align="left"
+                  colSpan={2}
+                  className="font-bold text-[16px]"
+                >
+                  Unit Price
                 </TableCell>
-                <TableCell align="left" colSpan={2}>
-                  Total Price
+                <TableCell
+                  align="left"
+                  colSpan={2}
+                  className="font-bold text-[16px]"
+                >
+                  Total
+                </TableCell>
+                <TableCell
+                  align="left"
+                  colSpan={2}
+                  className="font-bold text-[16px]"
+                >
+                  Order Date
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -60,23 +82,27 @@ export default function OrdersList() {
                   >
                     <TableCell component="th" scope="row" colSpan={2}>
                       <Image
-                        width={50}
-                        height={50}
+                        width={100}
+                        height={100}
                         src={oItem.image}
                         alt={oItem.name}
+                        className="w-20 h-auto"
                       />
                     </TableCell>
-                    <TableCell align="left" colSpan={4}>
+                    <TableCell className="text-left text-[16px]" colSpan={4}>
                       {oItem.name}
                     </TableCell>
-                    <TableCell align="left" colSpan={2}>
+                    <TableCell className="text-left text-[16px]" colSpan={2}>
                       {oItem.quantity}
                     </TableCell>
-                    <TableCell align="left" colSpan={2}>
-                      {oItem.price}
+                    <TableCell className="text-left text-[16px]" colSpan={2}>
+                      $ {oItem.price}
                     </TableCell>
-                    <TableCell align="left" colSpan={2}>
-                      {oItem.price * oItem.quantity}
+                    <TableCell className="text-left text-[16px]" colSpan={2}>
+                      $ {oItem.price * oItem.quantity}
+                    </TableCell>
+                    <TableCell className="text-left text-[16px]" colSpan={2}>
+                      {new Date(item.createdAt).toLocaleString()}
                     </TableCell>
                   </TableRow>
                 ));

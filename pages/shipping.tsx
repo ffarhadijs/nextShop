@@ -16,12 +16,15 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
 import { userData } from "../utils/userData";
 import { Store } from "../utils/Store";
 import { ProductType } from "../types/product.type";
 import Image from "next/image";
 import { UserType } from "../types/user.type";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 const Shipping = () => {
   const user = userData();
@@ -57,7 +60,6 @@ const Shipping = () => {
   const removeHandler = (item: ProductType) => {
     dispatch({ type: "CART_REMOVE_ITEM", payload: item });
   };
-
 
   const shippingHandler = () => {
     fetch("/api/order", {
@@ -130,19 +132,38 @@ const Shipping = () => {
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell colSpan={2}>Image</TableCell>
-                    <TableCell align="left" colSpan={4}>
+                    <TableCell colSpan={2} className="font-bold text-[16px]">
+                      Product
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      colSpan={4}
+                      className="font-bold text-[16px]"
+                    >
                       Name
                     </TableCell>
-                    <TableCell align="left" colSpan={2}>
+                    <TableCell
+                      align="left"
+                      colSpan={2}
+                      className="font-bold text-[16px]"
+                    >
+                      Unit Price
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      colSpan={2}
+                      className="font-bold text-[16px]"
+                    >
                       Quantity
                     </TableCell>
-                    <TableCell align="left" colSpan={2}>
-                      Price
+                    <TableCell
+                      align="left"
+                      colSpan={2}
+                      className="font-bold text-[16px]"
+                    >
+                      Total
                     </TableCell>
-                    <TableCell align="left" colSpan={2}>
-                      Action
-                    </TableCell>
+                    <TableCell align="left" colSpan={1}></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -153,19 +174,24 @@ const Shipping = () => {
                     >
                       <TableCell component="th" scope="row" colSpan={2}>
                         <Image
-                          width={50}
-                          height={50}
+                          width={100}
+                          height={100}
                           src={item.image}
                           alt={item.name}
+                          className="w-20 h-auto"
                         />
                       </TableCell>
-                      <TableCell align="left" colSpan={4}>
+                      <TableCell colSpan={4} className="text-left text-[16px]">
                         {item.name}
+                      </TableCell>
+                      <TableCell colSpan={2} className="text-left text-[16px]">
+                        $ {item.price}
                       </TableCell>
                       <TableCell align="left" colSpan={2}>
                         {" "}
                         <Select
                           value={item.quantity}
+                          size="small"
                           onChange={(e: SelectChangeEvent<number>) =>
                             changeHandler(e?.target.value as number, item)
                           }
@@ -177,17 +203,15 @@ const Shipping = () => {
                           ))}
                         </Select>{" "}
                       </TableCell>
-                      <TableCell align="left" colSpan={2}>
-                        {item.price}
+                      <TableCell colSpan={2} className="text-left text-[16px]">
+                        $ {item.price * item.quantity}
                       </TableCell>
-                      <TableCell align="left" colSpan={2}>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          onClick={() => removeHandler(item)}
-                        >
-                          Remove
-                        </Button>
+                      <TableCell align="right" colSpan={1}>
+                        <Tooltip title="Delete">
+                          <IconButton onClick={() => removeHandler(item)}>
+                            <DeleteOutlineOutlinedIcon color="error" />
+                          </IconButton>
+                        </Tooltip>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -199,7 +223,7 @@ const Shipping = () => {
         <Grid item xs={12} md={3}>
           <Card component={Paper} sx={{ padding: 2 }}>
             <Stack flexDirection={"row"} justifyContent={"space-between"}>
-              <Typography>items: </Typography>
+              <Typography>Items: </Typography>
               <Typography>$ {itemsPrice}</Typography>
             </Stack>
             <Stack flexDirection={"row"} justifyContent={"space-between"}>
@@ -220,6 +244,7 @@ const Shipping = () => {
               sx={{ marginTop: 2 }}
               fullWidth
               onClick={() => shippingHandler()}
+              className="bg-[#2196f3]"
             >
               Place Order
             </Button>

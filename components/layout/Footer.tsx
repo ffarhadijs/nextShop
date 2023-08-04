@@ -24,12 +24,12 @@ const customerSupport = [
 
 export default function Footer({ theme }: { theme: any }) {
   return (
-    <footer>
+    <footer className={`py-14 ${
+      theme.palette.mode === "dark" ? "bg-[#212121]" : "bg-[#e0e0e0]"
+    }`}>
       <Container
-        maxWidth="xl"
-        className={`py-14 ${
-          theme.palette.mode === "dark" ? "bg-[#212121]" : "bg-[#e0e0e0]"
-        }`}
+        maxWidth="lg"
+        
       >
         <Grid container spacing={"20px"}>
           <Grid item xs={3} className="flex flex-col space-y-3">

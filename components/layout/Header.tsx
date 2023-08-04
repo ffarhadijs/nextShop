@@ -10,6 +10,7 @@ import {
   MenuItem,
   ListItemText,
   ListItemIcon,
+  Container,
 } from "@mui/material";
 import Link from "next/link";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
@@ -78,92 +79,94 @@ export default function Header({
           : "bg-[#e0e0e0] text-[#212121]"
       }`}
     >
-      <Toolbar>
-        <Stack
-          direction={"row"}
-          justifyContent={"space-between"}
-          sx={{ width: "100%" }}
-        >
-          <Link href="/">
-            <Typography fontWeight={700} fontSize={"20px"}>
-              Next Shop
-            </Typography>
-          </Link>
-
-          <Stack direction={"row"} spacing={2} alignItems={"center"}>
-            <IconButton
-              sx={{ ml: 1 }}
-              onClick={colorMode.toggleColorMode}
-              color="inherit"
-              className="hover:bg-inherit"
-            >
-              {theme.palette.mode === "dark" ? (
-                <Brightness7Icon />
-              ) : (
-                <Brightness4Icon />
-              )}
-            </IconButton>
-            <Link href="/cart">
-              <Badge
-                badgeContent={state?.cart.cartItems.length}
-                color="primary"
-              >
-                <LocalMallOutlinedIcon />
-              </Badge>
+      <Container maxWidth="lg">
+        <Toolbar className="!px-0">
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            sx={{ width: "100%" }}
+          >
+            <Link href="/">
+              <Typography fontWeight={700} fontSize={"20px"}>
+                Next Shop
+              </Typography>
             </Link>
 
-            {!!user ? (
-              <>
-                <Button
-                  onClick={handleClick}
-                  variant="text"
-                  className={` font-[700] ${
-                    theme.palette.mode === "dark"
-                      ? " text-[#eeeeee]"
-                      : " text-[#212121]"
-                  } hover:bg-inherit`}
+            <Stack direction={"row"} spacing={2} alignItems={"center"}>
+              <IconButton
+                sx={{ ml: 1 }}
+                onClick={colorMode.toggleColorMode}
+                color="inherit"
+                className="hover:bg-inherit"
+              >
+                {theme.palette.mode === "dark" ? (
+                  <Brightness7Icon />
+                ) : (
+                  <Brightness4Icon />
+                )}
+              </IconButton>
+              <Link href="/cart">
+                <Badge
+                  badgeContent={state?.cart.cartItems.length}
+                  color="primary"
                 >
-                  {user?.name}
-                </Button>
-                <Menu
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={() => setAnchorEl(null)}
-                >
-                  <MenuItem onClick={profileHandler}>
-                    <ListItemIcon>
-                      <AccountCircleIcon fontSize={"small"} />
-                    </ListItemIcon>
-                    <ListItemText>Profile</ListItemText>
-                  </MenuItem>
-                  <MenuItem onClick={orderHandler}>
-                    <ListItemIcon>
-                      <ListAltIcon fontSize={"small"} />
-                    </ListItemIcon>
-                    <ListItemText> Orders List</ListItemText>
-                  </MenuItem>
-                  <MenuItem onClick={dashboardHandler}>
-                    <ListItemIcon>
-                      <DashboardIcon fontSize={"small"} />
-                    </ListItemIcon>
-                    <ListItemText> Admin Dashboard </ListItemText>
-                  </MenuItem>
-                  <MenuItem onClick={logoutHandler}>
-                    <ListItemIcon>
-                      <LogoutIcon fontSize={"small"} />
-                    </ListItemIcon>
-                    <ListItemText> Logout </ListItemText>
-                  </MenuItem>
-                </Menu>
-              </>
-            ) : (
-              <Link href="/login">
-                <Typography> Login </Typography>
+                  <LocalMallOutlinedIcon />
+                </Badge>
               </Link>
-            )}
+
+              {!!user ? (
+                <>
+                  <Button
+                    onClick={handleClick}
+                    variant="text"
+                    className={` font-[700] ${
+                      theme.palette.mode === "dark"
+                        ? " text-[#eeeeee]"
+                        : " text-[#212121]"
+                    } hover:bg-inherit`}
+                  >
+                    {user?.name}
+                  </Button>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={() => setAnchorEl(null)}
+                  >
+                    <MenuItem onClick={profileHandler}>
+                      <ListItemIcon>
+                        <AccountCircleIcon fontSize={"small"} />
+                      </ListItemIcon>
+                      <ListItemText>Profile</ListItemText>
+                    </MenuItem>
+                    <MenuItem onClick={orderHandler}>
+                      <ListItemIcon>
+                        <ListAltIcon fontSize={"small"} />
+                      </ListItemIcon>
+                      <ListItemText> Orders List</ListItemText>
+                    </MenuItem>
+                    <MenuItem onClick={dashboardHandler}>
+                      <ListItemIcon>
+                        <DashboardIcon fontSize={"small"} />
+                      </ListItemIcon>
+                      <ListItemText> Admin Dashboard </ListItemText>
+                    </MenuItem>
+                    <MenuItem onClick={logoutHandler}>
+                      <ListItemIcon>
+                        <LogoutIcon fontSize={"small"} />
+                      </ListItemIcon>
+                      <ListItemText> Logout </ListItemText>
+                    </MenuItem>
+                  </Menu>
+                </>
+              ) : (
+                <Link href="/login">
+                  <Typography> Login </Typography>
+                </Link>
+              )}
+            </Stack>
           </Stack>
-        </Stack>
-      </Toolbar>
+        </Toolbar>
+      </Container>
     </AppBar>
   );
 }
