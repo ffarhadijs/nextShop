@@ -73,59 +73,64 @@ const AdminDashboard = ({ children }: any) => {
         </Paper>
       </Grid>
       <Grid item xs={10}>
-        <Grid container spacing="20px">
-          <Grid item xs={3}>
-            <Paper elevation={2} className="text-center py-8">
-              <MonetizationOnIcon className="text-[50px] mb-3" />
-              <Typography className="text-[20px] font-bold mb-2">
-                Sales
-              </Typography>
-              <Typography className="text-[#2196f3] font-semibold text-[16px]">
-                $
-                {orders.reduce(
-                  (accumulator: any, currentValue: any) =>
-                    accumulator + currentValue.totalPrice,
-                  0
-                )}
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={3}>
-            <Paper className="text-center py-8">
-              <Diversity1Icon className="text-[50px] mb-3" />
-              <Typography className="text-[20px] font-bold mb-2">
-                Users
-              </Typography>
-              <Typography className="text-[#2196f3] font-semibold text-[16px]">
-                {users.length}
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={3}>
-            <Paper className="text-center py-8">
-              <LocalMallIcon className="text-[50px] mb-3" />
-              <Typography className="text-[20px] font-bold mb-2">
-                Orders
-              </Typography>
-              <Typography className="text-[#2196f3] font-semibold text-[16px]">
-                {orders.length}
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={3}>
-            <Paper className="text-center py-8">
-              <InterestsIcon className="text-[50px] mb-3" />
-              <Typography className="text-[20px] font-bold mb-2">
-                Products
-              </Typography>
-              <Typography className="text-[#2196f3] font-semibold text-[16px]">
-                {products.length}
-              </Typography>
-            </Paper>
-          </Grid>
-        </Grid>
-        <Stack></Stack>
-        {route !== "/admin-dashboard" ? children : null}
+        {route !== "/admin-dashboard" ? (
+          children
+        ) : (
+          <>
+            <Grid container spacing="20px">
+              <Grid item xs={3}>
+                <Paper elevation={2} className="text-center py-8">
+                  <MonetizationOnIcon className="text-[50px] mb-3" />
+                  <Typography className="text-[20px] font-bold mb-2">
+                    Sales
+                  </Typography>
+                  <Typography className="text-[#2196f3] font-semibold text-[16px]">
+                    $
+                    {orders.reduce(
+                      (accumulator: any, currentValue: any) =>
+                        accumulator + currentValue.totalPrice,
+                      0
+                    )}
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={3}>
+                <Paper className="text-center py-8">
+                  <Diversity1Icon className="text-[50px] mb-3" />
+                  <Typography className="text-[20px] font-bold mb-2">
+                    Users
+                  </Typography>
+                  <Typography className="text-[#2196f3] font-semibold text-[16px]">
+                    {users.length}
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={3}>
+                <Paper className="text-center py-8">
+                  <LocalMallIcon className="text-[50px] mb-3" />
+                  <Typography className="text-[20px] font-bold mb-2">
+                    Orders
+                  </Typography>
+                  <Typography className="text-[#2196f3] font-semibold text-[16px]">
+                    {orders.length}
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={3}>
+                <Paper className="text-center py-8">
+                  <InterestsIcon className="text-[50px] mb-3" />
+                  <Typography className="text-[20px] font-bold mb-2">
+                    Products
+                  </Typography>
+                  <Typography className="text-[#2196f3] font-semibold text-[16px]">
+                    {products.length}
+                  </Typography>
+                </Paper>
+              </Grid>
+            </Grid>
+            <Stack></Stack>
+          </>
+        )}
       </Grid>
     </Grid>
   );
