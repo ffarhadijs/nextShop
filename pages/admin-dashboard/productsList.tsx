@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Paper, Typography, Box } from "@mui/material";
+import { Paper, Typography, Box, Stack } from "@mui/material";
 import Image from "next/image";
 import AdminDashboard from ".";
 import {
@@ -41,6 +41,7 @@ export default function ProductsList() {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [editProduct, setEditProduct] = useState<any>();
+  const [deleteProduct, setDeleteProduct] = useState<any>();
   const getOrdersList = async () => {
     const response = await fetch("/api/products");
     const data = await response.json();
@@ -56,8 +57,9 @@ export default function ProductsList() {
   );
 
   const deleteHandler = useCallback(
-    (id: any) => () => {
+    (params: any) => () => {
       setOpenDeleteModal(true);
+      setDeleteProduct(params.row);
     },
     []
   );
@@ -66,6 +68,14 @@ export default function ProductsList() {
     getOrdersList();
   }, []);
 
+  const confirmDeleteHandler = async () => {
+    const response = await fetch(
+      `/api/products/deleteProduct/${deleteProduct.id}`,
+      {
+        method: "DELETE",
+      }
+    );
+  };
   const rows = products?.map((product: any) => {
     return {
       id: product._id,
@@ -198,7 +208,7 @@ export default function ProductsList() {
         ) : (
           <Box
             sx={{
-              position: "absolute" as "absolute",
+              position: "absolute",
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
@@ -209,7 +219,33 @@ export default function ProductsList() {
               p: 4,
             }}
           >
-            asdsssssssss
+            <Typography fontSize={"16px"} fontWeight={"700"} mb={"10px"}>
+              Delete Product
+            </Typography>
+            <Typography>Are you sure to delete this product?</Typography>
+            <Stack
+              direction="row"
+              justifyContent={"end"}
+              mt={"20px"}
+              spacing={"10px"}
+            >
+              <Button
+                onClick={() => setOpenDeleteModal(false)}
+                className="bg-[#2196f3]"
+                color="primary"
+                variant="contained"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={confirmDeleteHandler}
+                className="bg-[#f44336]"
+                color="error"
+                variant="contained"
+              >
+                Delete
+              </Button>
+            </Stack>
           </Box>
         )}
       </Modal>
