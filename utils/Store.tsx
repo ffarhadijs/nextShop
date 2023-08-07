@@ -8,6 +8,9 @@ const initilState = {
   cart: {
     cartItems: [],
   },
+  wishList: {
+    withListItems: [],
+  },
 };
 
 const reducer = (state: StateType, action: ActionType) => {
@@ -29,6 +32,33 @@ const reducer = (state: StateType, action: ActionType) => {
         (item) => item._id !== action.payload._id
       );
       return { ...state, cart: { ...state.cart, cartItems } };
+    }
+    case "WISHLIST_ADD_ITEM": {
+      const newItem = action.payload;
+      const existItem = state.wishList.withListItems.find(
+        (item: ProductType) => item._id === newItem._id
+      );
+
+      if (existItem) {
+        const withListItems = state.wishList.withListItems.filter(
+          (item) => item._id !== newItem._id
+        );
+        return {
+          ...state,
+          wishList: {
+            ...state.wishList,
+            withListItems,
+          },
+        };
+      } else {
+        return {
+          ...state,
+          wishList: {
+            ...state.wishList,
+            withListItems: [...state.wishList.withListItems, newItem],
+          },
+        };
+      }
     }
     default:
       return state;

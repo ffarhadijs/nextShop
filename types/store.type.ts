@@ -8,12 +8,15 @@ export type StoreContextType = {
 };
 
 export type ActionType = {
-  type: "CART_ADD_ITEM" | "CART_REMOVE_ITEM";
+  type: "CART_ADD_ITEM" | "CART_REMOVE_ITEM" | "WISHLIST_ADD_ITEM";
   payload: ProductType;
 };
 
 export type StateType = {
   cart: {
     cartItems: ProductsType | [];
+  };
+  wishList: {
+    withListItems:ProductsType | [];
   };
 };
