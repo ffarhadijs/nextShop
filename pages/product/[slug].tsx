@@ -300,7 +300,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 >
                   <Typography
                     color={theme.palette.mode === "dark" ? "white" : "black"}
-                    className="inline-block"
+                    className="inline"
                   >
                     Fabric 1: 100% Polyester
                   </Typography>
@@ -312,7 +312,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 >
                   <Typography
                     color={theme.palette.mode === "dark" ? "white" : "black"}
-                    className="inline-block"
+                    className="inline"
                   >
                     Fabric 3: 100% Polyester, Lining: 100% Polyester{" "}
                   </Typography>
@@ -324,7 +324,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 >
                   <Typography
                     color={theme.palette.mode === "dark" ? "white" : "black"}
-                    className="inline-block"
+                    className="inline"
                   >
                     Fabric 2: 75% Polyester, 20% Viscose, 5% Elastane
                   </Typography>
@@ -336,7 +336,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 >
                   <Typography
                     color={theme.palette.mode === "dark" ? "white" : "black"}
-                    className="inline-block"
+                    className="inline"
                   >
                     Fabric 2: 75% Polyester, 20% Viscose, 5% Elastane
                   </Typography>
@@ -348,7 +348,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 >
                   <Typography
                     color={theme.palette.mode === "dark" ? "white" : "black"}
-                    className="inline-block"
+                    className="inline"
                   >
                     Fabric 3: 100% Polyester, Lining: 100% Polyester
                   </Typography>
@@ -360,7 +360,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 >
                   <Typography
                     color={theme.palette.mode === "dark" ? "white" : "black"}
-                    className="inline-block"
+                    className="inline"
                   >
                     Fabric 1: 100% Polyester
                   </Typography>
@@ -408,7 +408,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
               <Box className="list-item list-inside text-[#2196f3] py-1">
                 <Typography
                   color={theme.palette.mode === "dark" ? "white" : "black"}
-                  className="inline-block"
+                  className="inline"
                 >
                   Lorem Ipsum is simply dummy text of the printing and
                   typesetting industry. Lorem Ipsum has been the industry
@@ -418,16 +418,16 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
               <Box className="list-item list-inside text-[#2196f3] py-1">
                 <Typography
                   color={theme.palette.mode === "dark" ? "white" : "black"}
-                  className="inline-block"
+                  className="inline"
                 >
-                  Lorem Ipsum has been the industry standard dummy text ever
+                  Lorem Ipsum has been the industry standard ever
                   since the 1500s.
                 </Typography>
               </Box>
               <Box className="list-item list-inside text-[#2196f3] py-1">
                 <Typography
                   color={theme.palette.mode === "dark" ? "white" : "black"}
-                  className="inline-block"
+                  className="inline"
                 >
                   When an unknown printer took a galley of type and scrambled it
                   to make a type specimen book.
@@ -436,7 +436,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
               <Box className="list-item list-inside text-[#2196f3] py-1">
                 <Typography
                   color={theme.palette.mode === "dark" ? "white" : "black"}
-                  className="inline-block"
+                  className="inline"
                 >
                   Lorem Ipsum is simply dummy text of the printing and
                   typesetting industry.
@@ -445,7 +445,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
               <Box className="list-item list-inside text-[#2196f3] py-1">
                 <Typography
                   color={theme.palette.mode === "dark" ? "white" : "black"}
-                  className="inline-block"
+                  className="inline"
                 >
                   When an unknown printer took a galley of type and scrambled it
                   to make a type specimen book.
@@ -454,23 +454,24 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
             </Box>
           )}
         </div>
-      
-      <Typography textAlign={"center"} my={"35px"} fontSize={"24px"}>
-        Our Services
-      </Typography>
-      <SwiperSlider
-        {...{ slidesPerView: 4, spaceBetween: 30 }}
-        items={services.map((item, index) => (
-          <SwiperSlide key={item.text + index}>
-            <Box className="flex flex-col justify-center items-center ">
-              <Box className="bg-gray-200 mb-4 rounded-full w-24 h-24 hover:bg-[#2196f3] hover:text-white transition-colors duration-700 text-slate-700 flex flex-col justify-center items-center ">
-                {item.icon}
+
+        <Typography textAlign={"center"} my={"35px"} fontSize={"24px"}>
+          Our Services
+        </Typography>
+        <SwiperSlider
+          {...{ slidesPerView: 4, spaceBetween: 30 }}
+          items={services.map((item, index) => (
+            <SwiperSlide key={item.text + index}>
+              <Box className="flex flex-col justify-center items-center ">
+                <Box className="bg-gray-200 mb-4 rounded-full w-24 h-24 hover:bg-[#2196f3] hover:text-white transition-colors duration-700 text-slate-700 flex flex-col justify-center items-center ">
+                  {item.icon}
+                </Box>
+                <Typography fontSize={"18px"}>{item.text}</Typography>
               </Box>
-              <Typography fontSize={"18px"}>{item.text}</Typography>
-            </Box>
-          </SwiperSlide>
-        ))}
-      />
+            </SwiperSlide>
+          ))}
+        />
+      </Container>
       <Typography
         textAlign={"center"}
         mb={"35px"}
@@ -504,7 +505,6 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
           Out Of Stock!
         </Alert>
       </Snackbar> */}
-      </Container>
     </>
   );
 };
