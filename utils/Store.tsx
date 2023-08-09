@@ -1,15 +1,16 @@
 import { createContext, useReducer } from "react";
 import { ProductType } from "../types/product.type";
 import { ActionType, StateType, StoreContextType } from "../types/store.type";
+import { ProductsType } from "../types/products.type";
 
 export const Store = createContext({} as StoreContextType);
 
 const initilState = {
   cart: {
-    cartItems: [],
+    cartItems: [] as ProductsType | [],
   },
   wishList: {
-    withListItems: [],
+    withListItems: [] as ProductsType | [],
   },
 };
 
@@ -18,7 +19,7 @@ const reducer = (state: StateType, action: ActionType) => {
     case "CART_ADD_ITEM": {
       const newItem = action.payload;
       const existItem = state.cart.cartItems.find(
-        (item: ProductType) => item._id === newItem._id
+        (item: ProductType) => item._id === newItem?._id
       );
       const cartItems = existItem
         ? state.cart.cartItems.map((item: ProductType) =>
@@ -29,19 +30,22 @@ const reducer = (state: StateType, action: ActionType) => {
     }
     case "CART_REMOVE_ITEM": {
       const cartItems = state.cart.cartItems.filter(
-        (item) => item._id !== action.payload._id
+        (item) => item._id !== action.payload?._id
       );
       return { ...state, cart: { ...state.cart, cartItems } };
+    }
+    case "CART_RESET": {
+      return { ...state, cart: { ...state, cartItems: [] } };
     }
     case "WISHLIST_ADD_ITEM": {
       const newItem = action.payload;
       const existItem = state.wishList.withListItems.find(
-        (item: ProductType) => item._id === newItem._id
+        (item: ProductType) => item._id === newItem?._id
       );
 
       if (existItem) {
         const withListItems = state.wishList.withListItems.filter(
-          (item) => item._id !== newItem._id
+          (item) => item._id !== newItem?._id
         );
         return {
           ...state,
