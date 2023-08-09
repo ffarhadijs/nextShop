@@ -8,14 +8,21 @@ import {
   Select,
   FormHelperText,
   MenuItem,
+  CircularProgress,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { useAlert } from "../../hooks/useAlert";
-import { useEffect, useState } from "react";
+import { alertType } from "../../hooks/useAlert";
+import { Dispatch, SetStateAction, useState } from "react";
 import Image from "next/image";
 import InputAdornment from "@mui/material/InputAdornment";
-import { Controller } from "react-hook-form";
+import {
+  useAddProduct,
+  useGetProduct,
+  useUpdateProduct,
+} from "../../hooks/products/products.hooks";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useQueryClient } from "react-query";
 
 const schema = yup.object({
   image: yup.mixed().required("Please upload a image"),
@@ -37,52 +44,84 @@ const schema = yup.object({
     .string()
     .required("You should input product count in stock"),
 });
-const AddOrEditProduct = ({ product }: { product?: any }) => {
-  const [showAlert, Alert] = useAlert();
+const AddOrEditProduct = ({
+  product,
+  setOpen,
+  showAlert,
+}: {
+  product?: any;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  showAlert: any;
+}) => {
+  const editable = !!product;
   const [previewImage, setPreviewImage] = useState<any>(null);
   const [editProduct, setEditProduct] = useState<any>();
-
-  const getProduct = async () => {
-    const response = await fetch(`/api/products/getProduct/${product?.id}`);
-    const data = await response.json();
-    setEditProduct(data.data);
-  };
+  const queryClient = useQueryClient();
+  const { isFetching: productLoading, data: productData } = useGetProduct(
+    product?.id,
+    {
+      onSuccess: (data: any) => {
+        setEditProduct(data?.data?.data);
+      },
+    }
+  );
 
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: async () => {
-      const resp = await fetch(`/api/products/getProduct/${product?.id}`);
-      const data = await resp.json();
-      return data.data;
+      return productData?.data?.data;
     },
   });
+  const data = {
+    name: watch("name"),
+    description: watch("description"),
+    brand: watch("brand"),
+    price: watch("price"),
+    category: watch("category"),
+    countInStock: watch("countInStock"),
+    image: previewImage ? "/images/" + watch("image").name : editProduct?.image,
+    slug: watch("name")?.replace(/\s/g, "-"),
+    rating: editProduct?.rating || 0,
+    numReviews: editProduct?.numReviews || 0,
+  };
 
-  const onSubmit = async (formData: any) => {
-    const data = {
-      ...formData,
-      image: "/images/" + formData.image.name,
-      slug: formData.name.replace(/\s/g, "-"),
-      rating: 0,
-      numReviews: 0,
-    };
+  const { mutate, isLoading } = useAddProduct(data, {
+    onSuccess() {
+      showAlert("Product has been added successfully", alertType.success);
+      setOpen(false);
+      queryClient.invalidateQueries();
+    },
+    onError(error: any) {
+      showAlert(error?.response?.data?.message, alertType.error);
+    },
+  });
+  const { mutate: updateMutate, isLoading: isUpdateLoading } = useUpdateProduct(
+    data,
+    product?.id,
+    {
+      onSuccess: () => {
+        showAlert("Product has been updated successfully", alertType.success);
+        setOpen(false);
+        queryClient.invalidateQueries();
+      },
+      onError: (error: any) => {
+        showAlert(error?.response?.data?.message, alertType.error);
+      },
+    }
+  );
 
-    const response = await fetch("/api/products/addProduct", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" },
-    });
-    // const data = await response.json();
-
-    // if (response.ok) {
-    //   showAlert("Profile Info has been updated successfully", "success");
-    // } else {
-    //   showAlert(data.message, "error");
-    // }
+  const onSubmit = async () => {
+    if (editable) {
+      updateMutate();
+    } else {
+      mutate();
+    }
   };
 
   const handleFileChange = (e: any) => {
@@ -93,11 +132,6 @@ const AddOrEditProduct = ({ product }: { product?: any }) => {
       register("image");
     }
   };
-
-  useEffect(() => {
-    getProduct();
-  }, []);
-
 
   return (
     <>
@@ -141,7 +175,7 @@ const AddOrEditProduct = ({ product }: { product?: any }) => {
                 />
               </Box>
             )}
-            {editProduct?.image && (
+            {editProduct?.image && !previewImage && (
               <Box mb={2}>
                 <Image
                   src={editProduct?.image}
@@ -150,6 +184,11 @@ const AddOrEditProduct = ({ product }: { product?: any }) => {
                   height={200}
                   className="w-full h-auto"
                 />
+              </Box>
+            )}
+            {productLoading && (
+              <Box className="mx-auto w-8">
+                <CircularProgress />
               </Box>
             )}
             <Stack direction="column">
@@ -247,18 +286,17 @@ const AddOrEditProduct = ({ product }: { product?: any }) => {
             </Stack>
           </Stack>
 
-          <Button
+          <LoadingButton
             type="submit"
             variant="contained"
             className="bg-[#2196f3]"
             sx={{ marginTop: "30px" }}
+            loading={isLoading || isUpdateLoading}
           >
             submit
-          </Button>
+          </LoadingButton>
         </Stack>
       </Stack>
-
-      <Alert />
     </>
   );
 };

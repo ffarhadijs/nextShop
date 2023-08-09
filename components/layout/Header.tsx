@@ -18,13 +18,14 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { alertType, useAlert } from "../../hooks/useAlert";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import { userData } from "../../utils/userData";
 import { Store } from "../../utils/Store";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useGetUser } from "../../hooks/users/user.hooks";
 
 export default function Header({
   theme,
@@ -37,20 +38,22 @@ export default function Header({
   const { push } = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const user = userData();
   const { state } = useContext(Store);
+  const { isSuccess, data: user, refetch } = useGetUser();
 
   const logoutHandler = async () => {
     const response = await fetch("/api/auth/logout");
     const data = await response.json();
     if (response.ok) {
-      showAlert(data.message, alertType.success);
+      showAlert("User Signed out successfully", alertType.success);
       push("/login");
+      refetch();
     } else {
       showAlert(data.message, alertType.error);
     }
     setAnchorEl(null);
   };
+
   const dashboardHandler = () => {
     push("/admin-dashboard");
     setAnchorEl(null);
@@ -113,8 +116,16 @@ export default function Header({
                   <LocalMallOutlinedIcon />
                 </Badge>
               </Link>
+              <Link href={"/favorite"}>
+                <Badge
+                  badgeContent={state?.wishList.withListItems.length}
+                  color="primary"
+                >
+                  <FavoriteBorderIcon />
+                </Badge>
+              </Link>
 
-              {!!user ? (
+              {isSuccess ? (
                 <>
                   <Button
                     onClick={handleClick}
@@ -125,7 +136,7 @@ export default function Header({
                         : " text-[#212121]"
                     } hover:bg-inherit`}
                   >
-                    {user?.name}
+                    {user?.data?.data.name}
                   </Button>
                   <Menu
                     anchorEl={anchorEl}

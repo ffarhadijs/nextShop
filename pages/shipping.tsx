@@ -18,22 +18,28 @@ import {
   Typography,
   Tooltip,
   IconButton,
+  CircularProgress,
+  Box,
 } from "@mui/material";
-import { userData } from "../utils/userData";
 import { Store } from "../utils/Store";
 import { ProductType } from "../types/product.type";
 import Image from "next/image";
-import { UserType } from "../types/user.type";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import { useCreateOrder } from "../hooks/orders/orders.hooks";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { alertType, useAlert } from "../hooks/useAlert";
+import { useRouter } from "next/router";
+import { useGetUser } from "../hooks/users/user.hooks";
 
 const Shipping = () => {
-  const user = userData();
-
-  const name = user?.name || "";
-  const lastName = user?.lastName || "";
-  const address = user?.address || "";
-  const city = user?.city || "";
-  const country = user?.country || "";
+  const { data: user, isLoading: userLoading } = useGetUser();
+  const [showAlert, Alert] = useAlert();
+  const { push } = useRouter();
+  const name = user?.data.data.name || "";
+  const lastName = user?.data.data.lastName || "";
+  const address = user?.data.data.address || "";
+  const city = user?.data.data.city || "";
+  const country = user?.data.data.country || "";
 
   const { state, dispatch } = useContext(Store);
   const cartItems = state?.cart?.cartItems || [];
@@ -61,29 +67,37 @@ const Shipping = () => {
     dispatch({ type: "CART_REMOVE_ITEM", payload: item });
   };
 
-  const shippingHandler = () => {
-    fetch("/api/order", {
-      method: "POST",
-      body: JSON.stringify({
-        orderItems: cartItems.map((item: ProductType) => {
-          return {
-            name: item.name,
-            price: item.price,
-            image: item.image,
-            quantity: item.quantity,
-          };
-        }),
-        shippingAddress,
-        itemsPrice,
-        shippingPrice,
-        taxPrice,
-        totalPrice,
-      }),
-      headers: {
-        authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJiMDIxNDE5MkBnbWFpbC5jb20iLCJpYXQiOjE2ODYzMTc3MTcsImV4cCI6MTY4NjQwNDExN30.3K1PzXn_o8lsU3gkZIIPlref-rAzPuHQSfD-nI2Q1CU`,
+  const { mutate, isLoading } = useCreateOrder(
+    cartItems.map((item: ProductType) => {
+      return {
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        quantity: item.quantity,
+      };
+    }),
+    shippingAddress,
+    itemsPrice,
+    shippingPrice,
+    taxPrice,
+    totalPrice,
+    {
+      onSuccess: () => {
+        showAlert("Order has been done", alertType.success);
+        dispatch({ type: "CART_RESET", payload: [] as any });
+        setTimeout(() => {
+          push("/");
+        }, 2000);
       },
-    }).then((res) => console.log(res, "res"));
+      onError: (error: any) => {
+        showAlert(error?.response?.data?.message, alertType.error);
+      },
+    }
+  );
+  const shippingHandler = () => {
+    mutate();
   };
+
   return (
     <>
       <Grid container spacing={4}>
@@ -92,40 +106,47 @@ const Shipping = () => {
             <Typography variant="h5" component="h1" mb={2}>
               Shipping Address
             </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <Typography fontSize={16} component="span">
-                  Full Name:
-                </Typography>
-                <Typography fontSize={14} fontWeight={600} component="span">
-                  {user?.name} {user?.lastName}
-                </Typography>
+            {userLoading ? (
+              <Box className="w-8 mx-auto">
+                <CircularProgress />
+              </Box>
+            ) : (
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Typography fontSize={16} component="span">
+                    Full Name:
+                  </Typography>
+                  <Typography fontSize={14} fontWeight={600} component="span">
+                    {user?.data.data.name} {user?.data.data.lastName}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography fontSize={16} component="span">
+                    Email:
+                  </Typography>
+                  <Typography fontSize={14} fontWeight={600} component="span">
+                    {user?.data.data.email}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography fontSize={16} component="span">
+                    Full Address:
+                  </Typography>
+                  <Typography fontSize={14} fontWeight={600} component="span">
+                    {user?.data.data.country}, {user?.data.data.city},{" "}
+                    {user?.data.data.address}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography fontSize={16} component="span">
+                    Postal Code:
+                  </Typography>
+                  <Typography fontSize={14} fontWeight={600} component="span">
+                    {user?.data.data.postalCode}
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography fontSize={16} component="span">
-                  Email:
-                </Typography>
-                <Typography fontSize={14} fontWeight={600} component="span">
-                  {user?.email}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography fontSize={16} component="span">
-                  Full Address:
-                </Typography>
-                <Typography fontSize={14} fontWeight={600} component="span">
-                  {user?.country}, {user?.city}, {user?.address}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography fontSize={16} component="span">
-                  Postal Code:
-                </Typography>
-                <Typography fontSize={14} fontWeight={600} component="span">
-                  {user?.postalCode}
-                </Typography>
-              </Grid>
-            </Grid>
+            )}
           </Card>
           <Card component={Paper} sx={{ padding: 2, marginY: 4 }}>
             <TableContainer>
@@ -238,18 +259,20 @@ const Shipping = () => {
               <Typography>Total:</Typography>
               <Typography>$ {itemsPrice + taxPrice + shippingPrice}</Typography>
             </Stack>
-            <Button
+            <LoadingButton
               variant="contained"
               color="primary"
               sx={{ marginTop: 2 }}
               fullWidth
               onClick={() => shippingHandler()}
               className="bg-[#2196f3]"
+              loading={isLoading}
             >
               Place Order
-            </Button>
+            </LoadingButton>
           </Card>
         </Grid>
+        <Alert />
       </Grid>
     </>
   );

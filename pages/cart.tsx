@@ -22,15 +22,15 @@ import { Store } from "../utils/Store";
 import { ProductType } from "../types/product.type";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { userData } from "../utils/userData";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { useGetUser } from "../hooks/users/user.hooks";
 
 const Cart = () => {
   const { push } = useRouter();
   const { state, dispatch } = useContext(Store);
   const cartItems = state.cart.cartItems;
-  const user = userData();
+  const { data: user } = useGetUser();
 
   let totalQuantity = 0;
   for (const product of cartItems) {

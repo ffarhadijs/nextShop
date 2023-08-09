@@ -1,13 +1,14 @@
-import { Button, FormLabel, Stack, TextField, Typography } from "@mui/material";
+import { FormLabel, Stack, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import Layout from "../components/layout/Layout";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { SignupFormType } from "../types/signup.type";
 import { verifyToken } from "../utils/verifyToken";
 import { useRouter } from "next/router";
 import { alertType, useAlert } from "../hooks/useAlert";
+import { useSignup } from "../hooks/auth/auth.hooks";
+import { LoadingButton } from "@mui/lab";
 
 const schema = yup
   .object({
@@ -39,6 +40,7 @@ const Signup = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<SignupFormType>({
     resolver: yupResolver(schema),
@@ -50,19 +52,24 @@ const Signup = () => {
       isAdmin: false,
     },
   });
-  const onSubmit = async (formData: SignupFormType) => {
-    const response = await fetch("/api/auth/signup", {
-      method: "POST",
-      body: JSON.stringify(formData),
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await response.json();
-    if (response.ok) {
-      push("/login");
-      showAlert(data.message, alertType.success);
-    } else {
-      showAlert(data.message, alertType.error);
+  const { mutate, isLoading } = useSignup(
+    watch("name"),
+    watch("email"),
+    watch("password"),
+    watch("confirmPassword"),
+    watch("isAdmin"),
+    {
+      onSuccess: () => {
+        showAlert("User signed up successfully!", alertType.success);
+        push("/login");
+      },
+      onError: (error: any) => {
+        showAlert(error?.response?.data?.message, alertType.error);
+      },
     }
+  );
+  const onSubmit = async () => {
+    mutate();
   };
   return (
     <>
@@ -103,12 +110,18 @@ const Signup = () => {
             {errors.confirmPassword?.message}
           </Typography>
         </Stack>
-        <Button variant="contained" color="primary" type="submit">
+        <LoadingButton
+          variant="contained"
+          color="primary"
+          type="submit"
+          className="bg-[#2196f3]"
+          loading={isLoading}
+        >
           Signup
-        </Button>
+        </LoadingButton>
         <Typography>
-          Do you have any account already? click{" "}
-          <Link href="/login"> here </Link>
+          Do you have any account already?{" "}
+          <Link href="/login">click here </Link>
         </Typography>
       </Stack>
       <Alert />
@@ -126,7 +139,7 @@ export async function getServerSideProps(context: any) {
 
   if (result) {
     return {
-      redirect: { destination: "/dashboard", permanent: false },
+      redirect: { destination: "/", permanent: false },
     };
   }
   return { props: { result } };

@@ -1,14 +1,15 @@
-import { Button, FormLabel, Stack, TextField, Typography } from "@mui/material";
+import { FormLabel, Stack, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { LoginFormType } from "../types/login.type";
-import Layout from "../components/layout/Layout";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { verifyToken } from "../utils/verifyToken";
-import { useRouter } from "next/router";
-import { useState } from "react";
 import { alertType, useAlert } from "../hooks/useAlert";
+import { useSignin } from "../hooks/auth/auth.hooks";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useRouter } from "next/router";
+import { useQueryClient } from "react-query";
 
 const schema = yup
   .object({
@@ -28,27 +29,33 @@ const schema = yup
 
 const Login = (props: any) => {
   const { push } = useRouter();
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<LoginFormType>({
     resolver: yupResolver(schema),
   });
   const [showAlert, Alert] = useAlert();
-  const onSubmit = async (formData: LoginFormType) => {
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      body: JSON.stringify(formData),
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await response.json();
-    if (response.ok) {
-      push("/");
-      showAlert("Logged in successfully", alertType.success);
-    } else {
-      showAlert(data.message, alertType.error);
+
+  const { mutate, isLoading } = useSignin(
+    getValues().email,
+    getValues().password,
+    {
+      onSuccess: () => {
+        showAlert("User signed in successfully!", alertType.success);
+        queryClient.invalidateQueries();
+        push("/");
+      },
+      onError: (error: any) => {
+        showAlert(error?.response?.data?.message, alertType.error);
+      },
     }
+  );
+  const onSubmit = async () => {
+    mutate();
   };
 
   return (
@@ -83,11 +90,17 @@ const Login = (props: any) => {
             {errors.password?.message}
           </Typography>
         </Stack>
-        <Button variant="contained" color="primary" type="submit">
+        <LoadingButton
+          variant="contained"
+          color="primary"
+          type="submit"
+          className="bg-[#2196f3]"
+          loading={isLoading}
+        >
           Login
-        </Button>
+        </LoadingButton>
         <Typography>
-          Dont you have an account? click <Link href="/signup"> here </Link>
+          Do not you have an account? <Link href="/signup"> click here </Link>
         </Typography>
       </Stack>
       <Alert />
@@ -104,7 +117,7 @@ export async function getServerSideProps(context: any) {
   const result = verifyToken(token, secretKey!);
 
   if (result) {
-    return { redirect: { destination: "/dashboard", permanent: false } };
+    return { redirect: { destination: "/", permanent: false } };
   }
   return { props: { result } };
 }
