@@ -10,7 +10,7 @@ export default function SwiperSlider({
   ...props
 }: {
   props?: Swiper;
-  items: any[];
+  items: any;
 }) {
   return (
     <SwiperComponent
