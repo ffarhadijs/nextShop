@@ -1,36 +1,31 @@
 import {
   Box,
-  Button,
-  Card,
   Modal,
   Paper,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
+  CircularProgress,
   Typography,
 } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import AdminDashboard from ".";
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
 import { v4 } from "uuid";
-import Image from "next/image";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useDeleteUser, useGetUsersList } from "../../hooks/users/user.hooks";
+import DeleteConfirmation from "../../components/modals/deleteConfirmation/DeleteConfirmation";
+import toast from "react-hot-toast";
 
 export default function UsersList() {
   const [users, setUsers] = useState([]);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState<any>();
-  const getUsersList = async () => {
-    const response = await fetch("/api/user/usersList");
-    const data = await response.json();
-    setUsers(data.data);
-  };
+
+  const { isLoading } = useGetUsersList({
+    onSuccess: (data: any) => {
+      setUsers(data?.data.data);
+    },
+  });
 
   const deleteHandler = useCallback(
     (params: any) => () => {
@@ -39,14 +34,17 @@ export default function UsersList() {
     },
     []
   );
+  const { mutate, isLoading: deleteLoading } = useDeleteUser(deleteUserId, {
+    onSuccess: () => {
+      toast.success("User has been deleted successfully");
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
+    },
+  });
   const confirmDeleteHandler = async () => {
-    const response = await fetch(`/api/user/deleteUser/${deleteUserId}`, {
-      method: "DELETE",
-    });
+    mutate();
   };
-  useEffect(() => {
-    getUsersList();
-  }, []);
 
   const columns = [
     {
@@ -93,10 +91,11 @@ export default function UsersList() {
       headerName: "Address",
       minWidth: 100,
       width: 300,
+      sortable: false,
       renderCell: (params: any) => {
         return (
           <Typography>
-            {params.row.country} {params.row.city} {params.row.address}
+            {params.row.country}, {params.row.city}, {params.row.address}
           </Typography>
         );
       },
@@ -111,6 +110,7 @@ export default function UsersList() {
           icon={<DeleteIcon />}
           label="Delete"
           onClick={deleteHandler(params)}
+          hidden={params.row.isAdmin === true}
         />,
       ],
     },
@@ -131,68 +131,44 @@ export default function UsersList() {
 
   return (
     <AdminDashboard>
-      <Paper
-        style={{ maxWidth: "100%", width: "max-content", marginInline: "auto" }}
-      >
-        <DataGrid
-          className="px-3"
-          getRowId={(row) => v4()}
-          rows={rows}
-          rowSelection={false}
-          checkboxSelection={false}
-          columns={columns as any}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
+      {isLoading ? (
+        <Box className="w-8 mx-auto">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Paper
+          style={{
+            maxWidth: "100%",
+            width: "max-content",
+            marginInline: "auto",
           }}
-          pageSizeOptions={[5, 10, 15, 20]}
-          rowHeight={80}
-        />
-        <Modal open={openDeleteModal} onClose={() => setOpenDeleteModal(false)}>
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: 400,
-              bgcolor: "background.paper",
-              border: "2px solid #000",
-              boxShadow: 24,
-              p: 4,
+        >
+          <DataGrid
+            className="px-3"
+            getRowId={(row) => v4()}
+            rows={rows}
+            rowSelection={false}
+            checkboxSelection={false}
+            columns={columns as any}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
             }}
-          >
-            <Typography fontSize={"16px"} fontWeight={"700"} mb={"10px"}>
-              Delete User
-            </Typography>
-            <Typography>Are you sure to delete this user?</Typography>
-            <Stack
-              direction="row"
-              justifyContent={"end"}
-              mt={"20px"}
-              spacing={"10px"}
-            >
-              <Button
-                onClick={() => setOpenDeleteModal(false)}
-                className="bg-[#2196f3]"
-                color="primary"
-                variant="contained"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={confirmDeleteHandler}
-                className="bg-[#f44336]"
-                color="error"
-                variant="contained"
-              >
-                Delete
-              </Button>
-            </Stack>
-          </Box>
-        </Modal>
-      </Paper>
+            pageSizeOptions={[5, 10, 15, 20]}
+            rowHeight={80}
+          />
+        </Paper>
+      )}
+      <Modal open={openDeleteModal} onClose={() => setOpenDeleteModal(false)}>
+        <DeleteConfirmation
+          title="Delete User"
+          text="Are you sure to delete this user?"
+          confirmDeleteHandler={confirmDeleteHandler}
+          isLoading={deleteLoading}
+          setOpen={setOpenDeleteModal}
+        />
+      </Modal>
     </AdminDashboard>
   );
 }

@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { Paper, Typography, Box, Stack } from "@mui/material";
+import { useCallback, useState } from "react";
+import { Paper, Typography, Box, CircularProgress } from "@mui/material";
 import Image from "next/image";
 import AdminDashboard from ".";
 import {
@@ -13,40 +13,46 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import AddOrEditProduct from "../../components/addOrEditProduct/AddOrEditProduct";
+import {
+  useDeleteProduct,
+  useGetProductsList,
+} from "../../hooks/products/products.hooks";
+import { useQueryClient } from "react-query";
+import DeleteConfirmation from "../../components/modals/deleteConfirmation/DeleteConfirmation";
+import toast from "react-hot-toast";
 
-function EditToolbar(props: any) {
+
+
+function EditToolbar() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <GridToolbarContainer>
-      <Button
-        variant="contained"
-        className="bg-[#2196f3] "
-        startIcon={<AddIcon />}
-        onClick={handleOpen}
-      >
+      <Button variant="outlined" startIcon={<AddIcon />} onClick={handleOpen}>
         Add Product
       </Button>
       <Modal open={open} onClose={handleClose}>
-        <AddOrEditProduct />
+        <AddOrEditProduct setOpen={setOpen} />
       </Modal>
     </GridToolbarContainer>
   );
 }
 
 export default function ProductsList() {
+  const queryClient = useQueryClient();
   const [products, setProducts] = useState([]);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [editProduct, setEditProduct] = useState<any>();
   const [deleteProduct, setDeleteProduct] = useState<any>();
-  const getOrdersList = async () => {
-    const response = await fetch("/api/products");
-    const data = await response.json();
-    setProducts(data.data);
-  };
+
+  const { isLoading: getProductsLoading } = useGetProductsList({
+    onSuccess: (data: any) => {
+      setProducts(data?.data.data);
+    },
+  });
 
   const editHandler = useCallback(
     (params: any) => () => {
@@ -56,6 +62,17 @@ export default function ProductsList() {
     []
   );
 
+  const { mutate, isLoading } = useDeleteProduct(deleteProduct?.id, {
+    onSuccess: () => {
+      toast.success("Product has been deleted successfully")
+      setOpenDeleteModal(false);
+      queryClient.invalidateQueries();
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message)
+    },
+  });
+
   const deleteHandler = useCallback(
     (params: any) => () => {
       setOpenDeleteModal(true);
@@ -64,27 +81,22 @@ export default function ProductsList() {
     []
   );
 
-  useEffect(() => {
-    getOrdersList();
-  }, []);
-
   const confirmDeleteHandler = async () => {
-    const response = await fetch(
-      `/api/products/deleteProduct/${deleteProduct.id}`,
-      {
-        method: "DELETE",
-      }
-    );
+    mutate();
   };
+
   const rows = products?.map((product: any) => {
     return {
       id: product._id,
       image: product.image,
       name: product.name,
       brand: product.brand,
+      description: product.description,
       price: product.price,
       category: product.category,
       countInStock: product.countInStock,
+      rating: product.rating,
+      numReviews: product.numReviews,
     };
   });
 
@@ -99,7 +111,7 @@ export default function ProductsList() {
           <Image
             width={100}
             height={100}
-            alt={params.value.image}
+            alt={params.value}
             src={params.value}
             className="w-16 h-auto"
           />
@@ -172,29 +184,6 @@ export default function ProductsList() {
   ];
   return (
     <AdminDashboard>
-      <Paper
-        style={{ maxWidth: "100%", width: "max-content", marginInline: "auto" }}
-      >
-        <DataGrid
-          className="px-3"
-          getRowId={(row) => v4()}
-          rows={rows}
-          rowSelection={false}
-          checkboxSelection={false}
-          columns={columns as any}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10, 15, 20]}
-          rowHeight={80}
-          slots={{
-            toolbar: EditToolbar,
-          }}
-          editMode="row"
-        />
-      </Paper>
       <Modal
         open={openEditModal || openDeleteModal}
         onClose={
@@ -204,51 +193,53 @@ export default function ProductsList() {
         }
       >
         {openEditModal ? (
-          <AddOrEditProduct product={editProduct} />
+          <AddOrEditProduct
+            product={editProduct}
+            setOpen={setOpenEditModal}
+          />
         ) : (
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: 400,
-              bgcolor: "background.paper",
-              border: "2px solid #000",
-              boxShadow: 24,
-              p: 4,
-            }}
-          >
-            <Typography fontSize={"16px"} fontWeight={"700"} mb={"10px"}>
-              Delete Product
-            </Typography>
-            <Typography>Are you sure to delete this product?</Typography>
-            <Stack
-              direction="row"
-              justifyContent={"end"}
-              mt={"20px"}
-              spacing={"10px"}
-            >
-              <Button
-                onClick={() => setOpenDeleteModal(false)}
-                className="bg-[#2196f3]"
-                color="primary"
-                variant="contained"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={confirmDeleteHandler}
-                className="bg-[#f44336]"
-                color="error"
-                variant="contained"
-              >
-                Delete
-              </Button>
-            </Stack>
-          </Box>
+          <DeleteConfirmation
+            title={"Delete Product"}
+            text={"Are you sure to delete this product?"}
+            setOpen={setOpenDeleteModal}
+            confirmDeleteHandler={confirmDeleteHandler}
+            isLoading={isLoading}
+          />
         )}
       </Modal>
+      {getProductsLoading ? (
+        <Box className="mx-auto w-8">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Paper
+          style={{
+            maxWidth: "100%",
+            width: "max-content",
+            marginInline: "auto",
+          }}
+        >
+          <DataGrid
+            className="px-3"
+            getRowId={(row) => v4()}
+            rows={rows}
+            rowSelection={false}
+            checkboxSelection={false}
+            columns={columns as any}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            pageSizeOptions={[5, 10, 15, 20]}
+            rowHeight={80}
+            slots={{
+              toolbar: EditToolbar,
+            }}
+            editMode="row"
+          />
+        </Paper>
+      )}
     </AdminDashboard>
   );
 }
