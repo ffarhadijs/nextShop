@@ -1,15 +1,13 @@
 import { Box, Grid, Typography, Stack, Rating, Button } from "@mui/material";
 import Image from "next/image";
 import { useContext, useState } from "react";
-import { Store } from "../../utils/Store";
+import { Store } from "../../../utils/Store";
 import { useRouter } from "next/router";
-
 
 export default function QuickView({ product }: { product: any }) {
   const { dispatch, state } = useContext(Store);
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const { push } = useRouter();
-
 
   const addToCartHandler = () => {
     try {
@@ -51,9 +49,9 @@ export default function QuickView({ product }: { product: any }) {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: 600,
-        maxWidth:800,
-        minWidth:300,
+        width: 800,
+        maxWidth: 800,
+        minWidth: 300,
         bgcolor: "background.paper",
         border: "2px solid #000",
         boxShadow: 24,
@@ -61,16 +59,21 @@ export default function QuickView({ product }: { product: any }) {
       }}
     >
       <Grid container spacing={5}>
-        <Grid item xs={12} md={5} className="flex flex-col justify-center items-center">
+        <Grid
+          item
+          xs={12}
+          md={6}
+          className="flex flex-col justify-center items-center"
+        >
           <Image
-            style={{ width: "100%", height:"auto" }}
+            className="w-full h-full object-fill"
             src={product?.image!}
             alt={product?.name!}
             width={450}
             height={450}
           />
         </Grid>
-        <Grid item xs={12} md={7}>
+        <Grid item xs={12} md={6}>
           <Typography fontWeight={700} component={"h1"} variant="h5" mb={1}>
             {product?.name!}
           </Typography>
@@ -128,7 +131,7 @@ export default function QuickView({ product }: { product: any }) {
               {product?.description!}
             </Typography>
           </Typography>
-          
+
           <Box className="flex flex-row space-x-8 w-full mt-4">
             <Button
               fullWidth
