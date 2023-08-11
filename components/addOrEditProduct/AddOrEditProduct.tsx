@@ -8,21 +8,19 @@ import {
   Select,
   FormHelperText,
   MenuItem,
-  CircularProgress,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { alertType } from "../../hooks/useAlert";
 import { Dispatch, SetStateAction, useState } from "react";
 import Image from "next/image";
 import InputAdornment from "@mui/material/InputAdornment";
 import {
   useAddProduct,
-  useGetProduct,
   useUpdateProduct,
 } from "../../hooks/products/products.hooks";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useQueryClient } from "react-query";
+import toast from "react-hot-toast";
 
 const schema = yup.object({
   image: yup.mixed().required("Please upload a image"),
@@ -47,24 +45,13 @@ const schema = yup.object({
 const AddOrEditProduct = ({
   product,
   setOpen,
-  showAlert,
 }: {
   product?: any;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  showAlert: any;
 }) => {
   const editable = !!product;
   const [previewImage, setPreviewImage] = useState<any>(null);
-  const [editProduct, setEditProduct] = useState<any>();
   const queryClient = useQueryClient();
-  const { isFetching: productLoading, data: productData } = useGetProduct(
-    product?.id,
-    {
-      onSuccess: (data: any) => {
-        setEditProduct(data?.data?.data);
-      },
-    }
-  );
 
   const {
     register,
@@ -74,10 +61,8 @@ const AddOrEditProduct = ({
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: async () => {
-      return productData?.data?.data;
-    },
   });
+
   const data = {
     name: watch("name"),
     description: watch("description"),
@@ -85,20 +70,20 @@ const AddOrEditProduct = ({
     price: watch("price"),
     category: watch("category"),
     countInStock: watch("countInStock"),
-    image: previewImage ? "/images/" + watch("image").name : editProduct?.image,
+    image: previewImage ? "/images/" + watch("image").name : product?.image,
     slug: watch("name")?.replace(/\s/g, "-"),
-    rating: editProduct?.rating || 0,
-    numReviews: editProduct?.numReviews || 0,
+    rating: product?.rating || 0,
+    numReviews: product?.numReviews || 0,
   };
 
   const { mutate, isLoading } = useAddProduct(data, {
     onSuccess() {
-      showAlert("Product has been added successfully", alertType.success);
+      toast.success("Product has been added successfully");
       setOpen(false);
       queryClient.invalidateQueries();
     },
     onError(error: any) {
-      showAlert(error?.response?.data?.message, alertType.error);
+      toast.error(error?.response?.data?.message);
     },
   });
   const { mutate: updateMutate, isLoading: isUpdateLoading } = useUpdateProduct(
@@ -106,12 +91,12 @@ const AddOrEditProduct = ({
     product?.id,
     {
       onSuccess: () => {
-        showAlert("Product has been updated successfully", alertType.success);
+        toast.success("Product has been updated successfully");
         setOpen(false);
         queryClient.invalidateQueries();
       },
       onError: (error: any) => {
-        showAlert(error?.response?.data?.message, alertType.error);
+        toast.error(error?.response?.data?.message);
       },
     }
   );
@@ -175,20 +160,15 @@ const AddOrEditProduct = ({
                 />
               </Box>
             )}
-            {editProduct?.image && !previewImage && (
+            {product?.image && !previewImage && (
               <Box mb={2}>
                 <Image
-                  src={editProduct?.image}
+                  src={product?.image}
                   alt="Selected"
                   width={200}
                   height={200}
                   className="w-full h-auto"
                 />
-              </Box>
-            )}
-            {productLoading && (
-              <Box className="mx-auto w-8">
-                <CircularProgress />
               </Box>
             )}
             <Stack direction="column">
@@ -208,6 +188,7 @@ const AddOrEditProduct = ({
                 size="small"
                 error={!!errors.name}
                 helperText={errors.name?.message as string}
+                defaultValue={product?.name}
               />
             </Stack>
 
@@ -218,6 +199,7 @@ const AddOrEditProduct = ({
                 size="small"
                 error={!!errors.description}
                 helperText={errors.description?.message as string}
+                defaultValue={product?.description}
                 multiline
               />
             </Stack>
@@ -229,6 +211,7 @@ const AddOrEditProduct = ({
                   size="small"
                   error={!!errors.brand}
                   helperText={errors.brand?.message as string}
+                  defaultValue={product?.brand}
                 />
               </Stack>
 
@@ -268,6 +251,7 @@ const AddOrEditProduct = ({
                     ),
                     inputProps: { min: 0 },
                   }}
+                  defaultValue={product?.price}
                 />
               </Stack>
               <Stack direction="column">
@@ -281,6 +265,7 @@ const AddOrEditProduct = ({
                   InputProps={{
                     inputProps: { min: 0 },
                   }}
+                  defaultValue={product?.countInStock}
                 />
               </Stack>
             </Stack>
