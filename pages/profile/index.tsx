@@ -1,11 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FormLabel, Stack, TextField, Button } from "@mui/material";
+import { FormLabel, Stack, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { UpdateFormType } from "../../types/update.type";
-import Layout from "../../components/layout/Layout";
-import { useAlert } from "../../hooks/useAlert";
-import Link from "next/link";
+import { useUpdateProfile } from "../../hooks/auth/auth.hooks";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useQueryClient } from "react-query";
+import toast from "react-hot-toast";
 
 const schema = yup.object({
   name: yup
@@ -25,13 +26,13 @@ const schema = yup.object({
     .length(10, "Postal code length should be 10"),
 });
 const Profile = () => {
-  const [showAlert, Alert] = useAlert();
+  const queryClient = useQueryClient();
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
-    getValues,
   } = useForm<UpdateFormType>({
     resolver: yupResolver(schema),
     defaultValues: async () => {
@@ -41,19 +42,26 @@ const Profile = () => {
     },
   });
 
-  const onSubmit = async (formData: UpdateFormType) => {
-    const response = await fetch("/api/auth/update", {
-      method: "POST",
-      body: JSON.stringify(formData),
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await response.json();
-
-    if (response.ok) {
-      showAlert("Profile Info has been updated successfully", "success");
-    } else {
-      showAlert(data.message, "error");
+  const { mutate, isLoading } = useUpdateProfile(
+    watch("name"),
+    watch("lastName"),
+    watch("city"),
+    watch("country"),
+    watch("address"),
+    watch("postalCode"),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries();
+        toast.success("User data updated successfully");
+      },
+      onError(error: any) {
+        toast.error(error?.response?.data?.message);
+      },
     }
+  );
+
+  const onSubmit = async () => {
+    mutate();
   };
 
   return (
@@ -140,13 +148,17 @@ const Profile = () => {
               />
             </Stack>
           </Stack>
-          <Button type="submit" variant="contained" className="bg-[#2196f3]" sx={{ marginTop: "30px" }}>
+          <LoadingButton
+            loading={isLoading}
+            type="submit"
+            variant="contained"
+            className="bg-[#2196f3]"
+            sx={{ marginTop: "30px" }}
+          >
             submit
-          </Button>
+          </LoadingButton>
         </Stack>
       </Stack>
-
-      <Alert />
     </>
   );
 };
