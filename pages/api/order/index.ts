@@ -16,23 +16,22 @@ export default async function handler(
   const secretKey = process.env.SECRET_KEY;
   const result = verifyToken(token!, secretKey!);
   const data = req.body;
-  const payload = JSON.parse(data);
 
   if (!result) {
     return res
       .status(401)
-      .json({ status: "failed", messgae: "you are unauthorized" });
+      .json({ status: "failed", message: "you are unauthorized" });
   }
 
   const user = await User.findOne({ email: result });
 
   const newOrder = await Order.create({
-    orderItems: payload.orderItems,
-    shippingAddress: payload.shippingAddress,
-    itemsPrice: payload.itemsPrice,
-    shippingPrice: payload.shippingPrice,
-    taxPrice: payload.taxPrice,
-    totalPrice: payload.totalPrice,
+    orderItems: data.orderItems,
+    shippingAddress: data.shippingAddress,
+    itemsPrice: data.itemsPrice,
+    shippingPrice: data.shippingPrice,
+    taxPrice: data.taxPrice,
+    totalPrice: data.totalPrice,
     user: user._id,
   });
 
