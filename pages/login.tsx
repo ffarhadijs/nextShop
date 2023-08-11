@@ -5,11 +5,12 @@ import { LoginFormType } from "../types/login.type";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { verifyToken } from "../utils/verifyToken";
-import { alertType, useAlert } from "../hooks/useAlert";
 import { useSignin } from "../hooks/auth/auth.hooks";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useRouter } from "next/router";
 import { useQueryClient } from "react-query";
+import { useTheme } from "@mui/material";
+import toast from "react-hot-toast";
 
 const schema = yup
   .object({
@@ -27,37 +28,35 @@ const schema = yup
   })
   .required();
 
-const Login = (props: any) => {
+const Login = () => {
   const { push } = useRouter();
   const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
-    getValues,
+    watch,
     formState: { errors },
   } = useForm<LoginFormType>({
     resolver: yupResolver(schema),
   });
-  const [showAlert, Alert] = useAlert();
 
-  const { mutate, isLoading } = useSignin(
-    getValues().email,
-    getValues().password,
-    {
-      onSuccess: () => {
-        showAlert("User signed in successfully!", alertType.success);
-        queryClient.invalidateQueries();
-        push("/");
-      },
-      onError: (error: any) => {
-        showAlert(error?.response?.data?.message, alertType.error);
-      },
-    }
-  );
+  const { mutate, isLoading } = useSignin(watch("email"), watch("password"), {
+    onSuccess: () => {
+      toast.success("User signed in successfully!");
+      queryClient.invalidateQueries();
+      push("/");
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
+    },
+  });
+  
   const onSubmit = async () => {
     mutate();
   };
 
+  
   return (
     <>
       <Stack
@@ -74,10 +73,9 @@ const Login = (props: any) => {
           <TextField
             placeholder="Enter your email address"
             {...register("email")}
+            error={!!errors.email}
+            helperText={errors.email?.message}
           />
-          <Typography variant="caption" color="red">
-            {errors.email?.message}
-          </Typography>
         </Stack>
         <Stack direction="column">
           <FormLabel>Password:</FormLabel>
@@ -85,10 +83,9 @@ const Login = (props: any) => {
             type="password"
             placeholder="Enter your password"
             {...register("password")}
+            error={!!errors.password}
+            helperText={errors.password?.message}
           />
-          <Typography variant="caption" color="red">
-            {errors.password?.message}
-          </Typography>
         </Stack>
         <LoadingButton
           variant="contained"
@@ -103,7 +100,6 @@ const Login = (props: any) => {
           Do not you have an account? <Link href="/signup"> click here </Link>
         </Typography>
       </Stack>
-      <Alert />
     </>
   );
 };

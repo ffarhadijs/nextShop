@@ -1,7 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import Layout from "../components/layout/Layout";
+import React, { useContext } from "react";
 import {
-  Button,
   Card,
   Grid,
   MenuItem,
@@ -27,13 +25,12 @@ import Image from "next/image";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useCreateOrder } from "../hooks/orders/orders.hooks";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { alertType, useAlert } from "../hooks/useAlert";
 import { useRouter } from "next/router";
 import { useGetUser } from "../hooks/users/user.hooks";
+import toast from "react-hot-toast";
 
 const Shipping = () => {
   const { data: user, isLoading: userLoading } = useGetUser();
-  const [showAlert, Alert] = useAlert();
   const { push } = useRouter();
   const name = user?.data.data.name || "";
   const lastName = user?.data.data.lastName || "";
@@ -83,14 +80,12 @@ const Shipping = () => {
     totalPrice,
     {
       onSuccess: () => {
-        showAlert("Order has been done", alertType.success);
+        toast.success("Order has been done");
         dispatch({ type: "CART_RESET", payload: [] as any });
-        setTimeout(() => {
-          push("/");
-        }, 2000);
+        push("/");
       },
       onError: (error: any) => {
-        showAlert(error?.response?.data?.message, alertType.error);
+        toast.error(error?.response?.data?.message);
       },
     }
   );
@@ -272,7 +267,6 @@ const Shipping = () => {
             </LoadingButton>
           </Card>
         </Grid>
-        <Alert />
       </Grid>
     </>
   );

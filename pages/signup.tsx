@@ -6,9 +6,9 @@ import * as yup from "yup";
 import { SignupFormType } from "../types/signup.type";
 import { verifyToken } from "../utils/verifyToken";
 import { useRouter } from "next/router";
-import { alertType, useAlert } from "../hooks/useAlert";
 import { useSignup } from "../hooks/auth/auth.hooks";
 import { LoadingButton } from "@mui/lab";
+import toast from "react-hot-toast";
 
 const schema = yup
   .object({
@@ -36,7 +36,6 @@ const schema = yup
 
 const Signup = () => {
   const { push } = useRouter();
-  const [showAlert, Alert] = useAlert();
   const {
     register,
     handleSubmit,
@@ -49,7 +48,7 @@ const Signup = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      isAdmin: false,
+      isAdmin: true,
     },
   });
   const { mutate, isLoading } = useSignup(
@@ -60,11 +59,11 @@ const Signup = () => {
     watch("isAdmin"),
     {
       onSuccess: () => {
-        showAlert("User signed up successfully!", alertType.success);
+        toast.success("User signed up successfully!");
         push("/login");
       },
       onError: (error: any) => {
-        showAlert(error?.response?.data?.message, alertType.error);
+        toast.error(error?.response?.data?.message);
       },
     }
   );
@@ -84,31 +83,37 @@ const Signup = () => {
       >
         <Stack direction="column" width={"100%"}>
           <FormLabel>Name:</FormLabel>
-          <TextField {...register("name")} />
-          <Typography variant="caption" color="red">
-            {errors.name?.message}
-          </Typography>
+          <TextField
+            {...register("name")}
+            error={!!errors.name}
+            helperText={errors.name?.message}
+          />
         </Stack>
         <Stack direction="column" width={"100%"}>
           <FormLabel>Email:</FormLabel>
-          <TextField {...register("email")} />
-          <Typography variant="caption" color="red">
-            {errors.email?.message}
-          </Typography>
+          <TextField
+            {...register("email")}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
         </Stack>
         <Stack direction="column">
           <FormLabel>Password:</FormLabel>
-          <TextField type="password" {...register("password")} />
-          <Typography variant="caption" color="red">
-            {errors.password?.message}
-          </Typography>
+          <TextField
+            type="password"
+            {...register("password")}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
         </Stack>
         <Stack direction="column">
           <FormLabel>Confirm Password:</FormLabel>
-          <TextField type="password" {...register("confirmPassword")} />
-          <Typography variant="caption" color="red">
-            {errors.confirmPassword?.message}
-          </Typography>
+          <TextField
+            type="password"
+            {...register("confirmPassword")}
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword?.message}
+          />
         </Stack>
         <LoadingButton
           variant="contained"
@@ -124,7 +129,6 @@ const Signup = () => {
           <Link href="/login">click here </Link>
         </Typography>
       </Stack>
-      <Alert />
     </>
   );
 };
