@@ -15,7 +15,6 @@ import {
 import Link from "next/link";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { alertType, useAlert } from "../../hooks/useAlert";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { Store } from "../../utils/Store";
@@ -26,6 +25,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useGetUser } from "../../hooks/users/user.hooks";
+import toast from "react-hot-toast";
 
 export default function Header({
   theme,
@@ -34,7 +34,6 @@ export default function Header({
   theme: any;
   colorMode: any;
 }) {
-  const [showAlert, Alert] = useAlert();
   const { push } = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -45,11 +44,11 @@ export default function Header({
     const response = await fetch("/api/auth/logout");
     const data = await response.json();
     if (response.ok) {
-      showAlert("User Signed out successfully", alertType.success);
+      toast.success("User Signed out successfully");
       push("/login");
       refetch();
     } else {
-      showAlert(data.message, alertType.error);
+      toast.error(data.message);
     }
     setAnchorEl(null);
   };
@@ -149,18 +148,21 @@ export default function Header({
                       </ListItemIcon>
                       <ListItemText>Profile</ListItemText>
                     </MenuItem>
-                    <MenuItem onClick={orderHandler}>
-                      <ListItemIcon>
-                        <ListAltIcon fontSize={"small"} />
-                      </ListItemIcon>
-                      <ListItemText> Orders List</ListItemText>
-                    </MenuItem>
-                    <MenuItem onClick={dashboardHandler}>
-                      <ListItemIcon>
-                        <DashboardIcon fontSize={"small"} />
-                      </ListItemIcon>
-                      <ListItemText> Admin Dashboard </ListItemText>
-                    </MenuItem>
+                    {user?.data.data.isAdmin ? (
+                      <MenuItem onClick={dashboardHandler}>
+                        <ListItemIcon>
+                          <DashboardIcon fontSize={"small"} />
+                        </ListItemIcon>
+                        <ListItemText> Admin Dashboard </ListItemText>
+                      </MenuItem>
+                    ) : (
+                      <MenuItem onClick={orderHandler}>
+                        <ListItemIcon>
+                          <ListAltIcon fontSize={"small"} />
+                        </ListItemIcon>
+                        <ListItemText> Orders List</ListItemText>
+                      </MenuItem>
+                    )}
                     <MenuItem onClick={logoutHandler}>
                       <ListItemIcon>
                         <LogoutIcon fontSize={"small"} />
