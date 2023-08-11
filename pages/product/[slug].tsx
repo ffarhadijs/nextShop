@@ -5,35 +5,31 @@ import {
   Rating,
   Stack,
   Typography,
-  Snackbar,
-  Alert,
   Box,
   useTheme,
   Container,
   Tabs,
+  Modal,
   Tab,
+  ButtonBase,
 } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import React, { useContext, useState } from "react";
 import Image from "next/image";
 import Product from "../../models/Product";
 import connectDB from "../../utils/connectDB";
 import { ProductType } from "../../types/product.type";
-import Layout from "../../components/layout/Layout";
 import { Store } from "../../utils/Store";
 import { useRouter } from "next/router";
 import { grey } from "@mui/material/colors";
-import CropIcon from "@mui/icons-material/Crop";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import { styled } from "@mui/material/styles";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay, Pagination } from "swiper/modules";
+import { SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -44,13 +40,10 @@ import SupportAgentOutlinedIcon from "@mui/icons-material/SupportAgentOutlined";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import DiscountOutlinedIcon from "@mui/icons-material/DiscountOutlined";
 import PersonPinCircleOutlinedIcon from "@mui/icons-material/PersonPinCircleOutlined";
-import SwiperSlider from "../../components/layout/swiper/SwiperSlider";
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
+import SwiperSlider from "../../components/swiper/SwiperSlider";
+import Shipping from "../../components/modals/shipping/Shipping";
+import AskAboutProduct from "../../components/modals/askAboutProduct/AskAboutProduct";
+import toast from "react-hot-toast";
 
 function createData(name: string, feature: string) {
   return { name, feature };
@@ -104,12 +97,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const ProductDateils = ({ product }: { product: ProductType }) => {
-  const [value, setValue] = React.useState(0);
-
+  const [value, setValue] = useState(0);
+  const [shippingModal, setShippingModal] = useState(false);
+  const [askModal, setAskModal] = useState(false);
   const theme = useTheme();
   const { push } = useRouter();
   const { dispatch, state } = useContext(Store);
-  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
 
   const addToCartHandler = () => {
     try {
@@ -118,7 +111,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
       );
       const quantity = existProduct ? existProduct.quantity + 1 : 1;
       quantity > product.countInStock
-        ? setOpenSnackbar(true)
+        ? toast.error("No Available Product")
         : dispatch({
             type: "CART_ADD_ITEM",
             payload: { ...product, quantity },
@@ -139,7 +132,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
       );
       const quantity = existProduct ? existProduct.quantity + 1 : 1;
       quantity > product.countInStock
-        ? setOpenSnackbar(true)
+        ? toast.error("No Available Product")
         : dispatch({
             type: "CART_ADD_ITEM",
             payload: { ...product, quantity },
@@ -149,9 +142,32 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
       console.log(error);
     }
   };
+  const wishListHandler = (product: any) => {
+    dispatch({
+      type: "WISHLIST_ADD_ITEM",
+      payload: product,
+    });
+  };
+
+  const shippingHandler = () => {
+    setShippingModal(true);
+  };
+  const askProductHandler = () => {
+    setAskModal(true);
+  };
 
   return (
     <>
+      <Modal
+        open={shippingModal || askModal}
+        onClose={
+          shippingModal
+            ? () => setShippingModal(false)
+            : () => setAskModal(false)
+        }
+      >
+        {shippingModal ? <Shipping /> : <AskAboutProduct />}
+      </Modal>
       <Box
         bgcolor={theme.palette.mode === "dark" ? grey[900] : grey[300]}
         className="w-full py-8 mb-20 text-[24px]"
@@ -162,7 +178,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
         <Grid container spacing={5}>
           <Grid item xs={12} md={5}>
             <Image
-              style={{ width: "100%" }}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
               src={product?.image!}
               alt={product?.name!}
               width={450}
@@ -228,20 +244,22 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
               </Typography>
             </Typography>
             <Box className="flex flex-row space-x-4 text-[14px]">
-              <Box className="flex flex-row items-start">
-                <CropIcon className="mr-1" />
-                Size Guide
-              </Box>
-              <Box className="flex flex-row items-start">
+              <ButtonBase
+                onClick={shippingHandler}
+                className="flex flex-row items-start"
+              >
                 <LocalShippingIcon className="mr-1" />
                 Shipping
-              </Box>
-              <Box className="flex flex-row items-start">
+              </ButtonBase>
+              <ButtonBase
+                onClick={askProductHandler}
+                className="flex flex-row items-start"
+              >
                 <MailOutlineIcon className="mr-1" />
                 Ask About This Product
-              </Box>
+              </ButtonBase>
             </Box>
-            <Box className="flex flex-row space-x-8 w-1/2 mt-8">
+            <Box className="flex flex-row space-x-8 w-2/3 mt-8">
               <Button
                 fullWidth
                 variant="contained"
@@ -255,12 +273,21 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={buyItNowHandler}
+                onClick={wishListHandler}
                 className="bg-[#2196f3]"
               >
-                Buy It Now
+                Add To Wishlist
               </Button>
             </Box>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={buyItNowHandler}
+              className="bg-[#2196f3] mt-6"
+            >
+              Buy It Now
+            </Button>
           </Grid>
         </Grid>
         <Box
@@ -420,8 +447,8 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                   color={theme.palette.mode === "dark" ? "white" : "black"}
                   className="inline"
                 >
-                  Lorem Ipsum has been the industry standard ever
-                  since the 1500s.
+                  Lorem Ipsum has been the industry standard ever since the
+                  1500s.
                 </Typography>
               </Box>
               <Box className="list-item list-inside text-[#2196f3] py-1">
@@ -494,17 +521,6 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
           </SwiperSlide>
         ))}
       />
-
-      {/* <Snackbar
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={() => setOpenSnackbar(false)}
-      >
-        <Alert severity="error" onClose={() => setOpenSnackbar(false)}>
-          Out Of Stock!
-        </Alert>
-      </Snackbar> */}
     </>
   );
 };
