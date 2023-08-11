@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import User from "../../models/User";
-import { verifyToken } from "../../utils/verifyToken";
+import User from "../../../models/User";
+import { verifyToken } from "../../../utils/verifyToken";
 
 export default async function handler(
   req: NextApiRequest,
