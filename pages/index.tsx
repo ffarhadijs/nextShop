@@ -18,7 +18,7 @@ import Link from "next/link";
 import Product from "../models/Product";
 import connectDB from "../utils/connectDB";
 import { ProductsType } from "../types/products.type";
-import { useContext, useState } from "react";
+import { MouseEvent, useContext, useState } from "react";
 import { Store } from "../utils/Store";
 import { ProductType } from "../types/product.type";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -74,16 +74,22 @@ const services = [
 
 export default function Home({ products }: { products: ProductsType }) {
   const [quickViewModal, setQuickViewModal] = useState<boolean>(false);
-  const [product, setProduct] = useState<any>();
+  const [product, setProduct] = useState<ProductType>();
   const { dispatch, state } = useContext(Store);
 
-  const quickViewHandler = (e: any, product: any) => {
+  const quickViewHandler = (
+    e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+    product: ProductType
+  ) => {
     e.stopPropagation();
     setQuickViewModal(true);
     setProduct(product);
   };
 
-  const addToCartHandler = (product: ProductType, e: any) => {
+  const addToCartHandler = (
+    product: ProductType,
+    e: MouseEvent<HTMLDivElement | HTMLButtonElement, globalThis.MouseEvent>
+  ) => {
     e.stopPropagation();
     try {
       const existProduct = state.cart.cartItems.find(
@@ -101,7 +107,10 @@ export default function Home({ products }: { products: ProductsType }) {
     }
   };
 
-  const wishListHandler = (e: any, product: any) => {
+  const wishListHandler = (
+    e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+    product: ProductType
+  ) => {
     e.stopPropagation();
     dispatch({
       type: "WISHLIST_ADD_ITEM",
@@ -257,46 +266,48 @@ export default function Home({ products }: { products: ProductsType }) {
           {products.map((product, index) => (
             <Grid item xs={6} sm={4} md={3} key={product.slug + index}>
               <Card className="group/card">
-                <CardActionArea className="overflow-hidden relative group/cardAction">
-                  <Link href={`product/${product.slug}`}>
-                    <CardMedia
-                      className="duration-200 hover:scale-110 h-64"
-                      component="img"
-                      image={product.image}
-                      alt={product.name}
-                    />
-                  </Link>
-                  <Box className="flex flex-col w-auto h-auto space-y-2 absolute top-2 right-0 opacity-0 group-hover/cardAction:right-4 group-hover/cardAction:opacity-100 transition-all duration-300">
-                    <Tooltip title="Add to Wishlist">
-                      <Box
-                        className="text-slate-900"
-                        onClick={(e: any) => wishListHandler(e, product)}
-                      >
-                        {state.wishList.withListItems.findIndex(
-                          (item) => item._id === product._id
-                        ) === -1 ? (
-                          <FavoriteBorderIcon />
-                        ) : (
-                          <FavoriteIcon color="error" />
-                        )}
-                      </Box>
-                    </Tooltip>
-                    <Tooltip title="Add to Cart">
-                      <Box
-                        className="text-slate-900"
-                        onClick={(e: any) => addToCartHandler(product, e)}
-                      >
-                        <AddShoppingCartIcon />
-                      </Box>
-                    </Tooltip>
-                    <Tooltip title="Quick View">
-                      <Box
-                        className="text-slate-900"
-                        onClick={(e: any) => quickViewHandler(e, product)}
-                      >
-                        <SearchIcon />
-                      </Box>
-                    </Tooltip>
+                <CardActionArea>
+                  <Box className="group/cardAction overflow-hidden relative ">
+                    <Link href={`product/${product.slug}`}>
+                      <CardMedia
+                        className="duration-200 group-hover/cardAction:scale-110 h-64"
+                        component="img"
+                        image={product.image}
+                        alt={product.name}
+                      />
+                    </Link>
+                    <Box className="flex flex-col w-auto h-auto space-y-2 absolute top-2 right-0 opacity-0 group-hover/cardAction:right-4 group-hover/cardAction:opacity-100 transition-all duration-300">
+                      <Tooltip title="Add to Wishlist">
+                        <Box
+                          className="text-gray-500 bg-white rounded-full hover:bg-[#2196f3] hover:text-white p-[1px] transition-colors duration-500"
+                          onClick={(e) => wishListHandler(e, product)}
+                        >
+                          {state.wishList.withListItems.findIndex(
+                            (item) => item._id === product._id
+                          ) === -1 ? (
+                            <FavoriteBorderIcon />
+                          ) : (
+                            <FavoriteIcon color="error" />
+                          )}
+                        </Box>
+                      </Tooltip>
+                      <Tooltip title="Add to Cart">
+                        <Box
+                          className="text-gray-500 bg-white rounded-full hover:bg-[#2196f3] hover:text-white p-[1px] transition-colors duration-500"
+                          onClick={(e) => addToCartHandler(product, e)}
+                        >
+                          <AddShoppingCartIcon />
+                        </Box>
+                      </Tooltip>
+                      <Tooltip title="Quick View">
+                        <Box
+                          className="text-gray-500 bg-white rounded-full hover:bg-[#2196f3] hover:text-white p-[1px] transition-colors duration-500"
+                          onClick={(e) => quickViewHandler(e, product)}
+                        >
+                          <SearchIcon />
+                        </Box>
+                      </Tooltip>
+                    </Box>
                   </Box>
                 </CardActionArea>
                 <CardContent className="p-2 pt-4">
