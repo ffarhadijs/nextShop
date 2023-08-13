@@ -8,5 +8,7 @@ export type UserType = {
   postalCode: number;
   city: string;
   lastName: string;
-  country:string;
+  country: string;
+  __v: number;
+  _id: string;
 };
