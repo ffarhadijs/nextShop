@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { Dispatch, SetStateAction, useState } from "react";
+import {Dispatch, SetStateAction, useState } from "react";
 import Image from "next/image";
 import InputAdornment from "@mui/material/InputAdornment";
 import {
@@ -21,6 +21,9 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useQueryClient } from "react-query";
 import toast from "react-hot-toast";
+import { rowProductType } from "../../types/rowProduct.type";
+
+
 
 const schema = yup.object({
   image: yup.mixed().required("Please upload a image"),
@@ -46,11 +49,11 @@ const AddOrEditProduct = ({
   product,
   setOpen,
 }: {
-  product?: any;
+  product?: rowProductType;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const editable = !!product;
-  const [previewImage, setPreviewImage] = useState<any>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
   const {
@@ -88,7 +91,7 @@ const AddOrEditProduct = ({
   });
   const { mutate: updateMutate, isLoading: isUpdateLoading } = useUpdateProduct(
     data,
-    product?.id,
+    product?.id!,
     {
       onSuccess: () => {
         toast.success("Product has been updated successfully");
@@ -109,7 +112,7 @@ const AddOrEditProduct = ({
     }
   };
 
-  const handleFileChange = (e: any) => {
+  const handleFileChange = (e:any) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       setValue("image", selectedFile);
@@ -174,7 +177,11 @@ const AddOrEditProduct = ({
             <Stack direction="column">
               <Button variant="contained" component="label">
                 Upload Image
-                <TextField type="file" onChange={handleFileChange} hidden />
+                <TextField
+                  type="file"
+                  onChange={(e) => handleFileChange(e)}
+                  hidden
+                />
               </Button>
               <FormHelperText className="text-[#F44336] pl-4">
                 {errors.image?.message as string}

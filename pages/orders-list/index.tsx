@@ -12,9 +12,12 @@ import {
 import { useState } from "react";
 import { useOrdersList } from "../../hooks/orders/orders.hooks";
 import Image from "next/image";
+import { OrderType } from "../../types/order.type";
+import { OrderItemType } from "../../types/orderItem.type";
 
 export default function OrdersList() {
   const [orders, setOrders] = useState([]);
+
   const { isLoading, isSuccess } = useOrdersList({
     onSuccess: (data: any) => {
       setOrders(data?.data.data);
@@ -70,8 +73,8 @@ export default function OrdersList() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {orders?.map((item: any) => {
-                  return item.orderItems.map((oItem: any) => (
+                {orders?.map((item: OrderType) => {
+                  return item.orderItems.map((oItem: OrderItemType) => (
                     <TableRow
                       key={oItem._id}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

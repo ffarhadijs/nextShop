@@ -9,8 +9,8 @@ import { useSignin } from "../hooks/auth/auth.hooks";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useRouter } from "next/router";
 import { useQueryClient } from "react-query";
-import { useTheme } from "@mui/material";
 import toast from "react-hot-toast";
+import { GetServerSidePropsContext } from "next";
 
 const schema = yup
   .object({
@@ -51,12 +51,11 @@ const Login = () => {
       toast.error(error?.response?.data?.message);
     },
   });
-  
+
   const onSubmit = async () => {
     mutate();
   };
 
-  
   return (
     <>
       <Stack
@@ -106,11 +105,11 @@ const Login = () => {
 
 export default Login;
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { token } = context.req.cookies;
   const secretKey = process.env.SECRET_KEY;
 
-  const result = verifyToken(token, secretKey!);
+  const result = verifyToken(token!, secretKey!);
 
   if (result) {
     return { redirect: { destination: "/", permanent: false } };

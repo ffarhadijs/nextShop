@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { useSignup } from "../hooks/auth/auth.hooks";
 import { LoadingButton } from "@mui/lab";
 import toast from "react-hot-toast";
+import { GetServerSidePropsContext } from "next";
 
 const schema = yup
   .object({
@@ -135,11 +136,11 @@ const Signup = () => {
 
 export default Signup;
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { token } = context.req.cookies;
   const secretKey = process.env.SECRET_KEY;
 
-  const result = verifyToken(token, secretKey!);
+  const result = verifyToken(token!, secretKey!);
 
   if (result) {
     return {

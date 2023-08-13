@@ -1,41 +1,42 @@
-import { verifyToken } from "../../utils/verifyToken";
-import Layout from "../../components/layout/Layout";
-import { Box, Button, Paper, Stack, Typography, Grid } from "@mui/material";
-import { useEffect, useState } from "react";
+import { CircularProgress, Paper, Typography, Grid } from "@mui/material";
+import { ReactNode, useState } from "react";
 import Link from "next/link";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import Diversity1Icon from "@mui/icons-material/Diversity1";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import InterestsIcon from "@mui/icons-material/Interests";
 import { useRouter } from "next/router";
+import { useAllOrders } from "../../hooks/orders/orders.hooks";
+import { useGetProductsList } from "../../hooks/products/products.hooks";
+import { useGetUsersList } from "../../hooks/users/user.hooks";
+import { OrderType } from "../../types/order.type";
+import { OrdersType } from "../../types/orders.type";
+import { usersType } from "../../types/users.type";
+import { ProductsType } from "../../types/products.type";
 
-const AdminDashboard = ({ children }: any) => {
+const AdminDashboard = ({ children }: { children: ReactNode }) => {
   const { route } = useRouter();
-  const [orders, setOrders] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [products, setProducts] = useState([]);
-  const getOrdersList = async () => {
-    const response = await fetch("/api/order/ordersList");
-    const data = await response.json();
-    setOrders(data.data);
-  };
-  const getProductsList = async () => {
-    const response = await fetch("/api/products");
-    const data = await response.json();
-    setProducts(data.data);
-  };
-  const getUsersList = async () => {
-    const response = await fetch("/api/user/usersList");
-    const data = await response.json();
-    setUsers(data.data);
-  };
+  const [orders, setOrders] = useState<OrdersType>([]);
+  const [users, setUsers] = useState<usersType>([]);
+  const [products, setProducts] = useState<ProductsType>([]);
+  const { isLoading: ordersLoading } = useAllOrders({
+    onSuccess: (data: any) => {
+      setOrders(data?.data?.data);
+    },
+  });
 
-  useEffect(() => {
-    getOrdersList();
-    getUsersList();
-    getProductsList();
-  }, []);
-  console.log(route);
+  const { isLoading: productsLoading } = useGetProductsList({
+    onSuccess: (data: any) => {
+      setProducts(data?.data.data);
+    },
+  });
+
+  const { isLoading: usersLoading } = useGetUsersList({
+    onSuccess: (data: any) => {
+      setUsers(data?.data.data);
+    },
+  });
+
   return (
     <Grid container spacing={5}>
       <Grid item xs={2}>
@@ -85,11 +86,15 @@ const AdminDashboard = ({ children }: any) => {
                     Sales
                   </Typography>
                   <Typography className="text-[#2196f3] font-semibold text-[16px]">
-                    $
-                    {orders.reduce(
-                      (accumulator: any, currentValue: any) =>
-                        accumulator + currentValue.totalPrice,
-                      0
+                    {ordersLoading ? (
+                      <CircularProgress size={26} />
+                    ) : (
+                      "$" +
+                      orders.reduce(
+                        (accumulator: number, currentValue: OrderType) =>
+                          accumulator + currentValue.totalPrice,
+                        0
+                      )
                     )}
                   </Typography>
                 </Paper>
@@ -101,7 +106,11 @@ const AdminDashboard = ({ children }: any) => {
                     Users
                   </Typography>
                   <Typography className="text-[#2196f3] font-semibold text-[16px]">
-                    {users.length}
+                    {usersLoading ? (
+                      <CircularProgress size={26} />
+                    ) : (
+                      users.length
+                    )}
                   </Typography>
                 </Paper>
               </Grid>
@@ -112,7 +121,11 @@ const AdminDashboard = ({ children }: any) => {
                     Orders
                   </Typography>
                   <Typography className="text-[#2196f3] font-semibold text-[16px]">
-                    {orders.length}
+                    {ordersLoading ? (
+                      <CircularProgress size={26} />
+                    ) : (
+                      orders.length
+                    )}
                   </Typography>
                 </Paper>
               </Grid>
@@ -123,12 +136,16 @@ const AdminDashboard = ({ children }: any) => {
                     Products
                   </Typography>
                   <Typography className="text-[#2196f3] font-semibold text-[16px]">
-                    {products.length}
+                    {productsLoading ? (
+                      <CircularProgress size={26} />
+                    ) : (
+                      products.length
+                    )}
                   </Typography>
                 </Paper>
               </Grid>
             </Grid>
-            <Stack></Stack>
+            <Grid container spacing="20px" my={"20px"}></Grid>
           </>
         )}
       </Grid>

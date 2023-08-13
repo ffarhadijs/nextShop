@@ -1,4 +1,4 @@
-import { Container, Typography, Button, Grid, TextField } from "@mui/material";
+import { Container, Typography, Button, Grid, TextField, useTheme } from "@mui/material";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import PhoneInTalkOutlinedIcon from "@mui/icons-material/PhoneInTalkOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
@@ -22,7 +22,8 @@ const customerSupport = [
   { link: "Help & Support" },
 ];
 
-export default function Footer({ theme }: { theme: any }) {
+export default function Footer() {
+  const theme = useTheme()
   return (
     <footer className={`py-14 ${
       theme.palette.mode === "dark" ? "bg-[#212121]" : "bg-[#e0e0e0]"

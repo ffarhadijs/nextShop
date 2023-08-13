@@ -5,6 +5,9 @@ import AdminDashboard from ".";
 import {
   DataGrid,
   GridActionsCellItem,
+  GridColDef,
+  GridRenderCellParams,
+  GridRowParams,
   GridToolbarContainer,
 } from "@mui/x-data-grid";
 import { v4 } from "uuid";
@@ -20,7 +23,9 @@ import {
 import { useQueryClient } from "react-query";
 import DeleteConfirmation from "../../components/modals/deleteConfirmation/DeleteConfirmation";
 import toast from "react-hot-toast";
-
+import { ProductsType } from "../../types/products.type";
+import { ProductType } from "../../types/product.type";
+import { rowProductType } from "../../types/rowProduct.type";
 
 
 function EditToolbar() {
@@ -42,11 +47,11 @@ function EditToolbar() {
 
 export default function ProductsList() {
   const queryClient = useQueryClient();
-  const [products, setProducts] = useState([]);
-  const [openEditModal, setOpenEditModal] = useState(false);
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [editProduct, setEditProduct] = useState<any>();
-  const [deleteProduct, setDeleteProduct] = useState<any>();
+  const [products, setProducts] = useState<ProductsType>([]);
+  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+  const [editProduct, setEditProduct] = useState<rowProductType>();
+  const [deleteProduct, setDeleteProduct] = useState<rowProductType>();
 
   const { isLoading: getProductsLoading } = useGetProductsList({
     onSuccess: (data: any) => {
@@ -55,26 +60,26 @@ export default function ProductsList() {
   });
 
   const editHandler = useCallback(
-    (params: any) => () => {
+    (params: GridRowParams<any>) => () => {
       setOpenEditModal(true);
       setEditProduct(params.row);
     },
     []
   );
 
-  const { mutate, isLoading } = useDeleteProduct(deleteProduct?.id, {
+  const { mutate, isLoading } = useDeleteProduct(deleteProduct?.id!, {
     onSuccess: () => {
-      toast.success("Product has been deleted successfully")
+      toast.success("Product has been deleted successfully");
       setOpenDeleteModal(false);
       queryClient.invalidateQueries();
     },
     onError: (error: any) => {
-      toast.error(error?.response?.data?.message)
+      toast.error(error?.response?.data?.message);
     },
   });
 
   const deleteHandler = useCallback(
-    (params: any) => () => {
+    (params: GridRowParams<any>) => () => {
       setOpenDeleteModal(true);
       setDeleteProduct(params.row);
     },
@@ -85,7 +90,7 @@ export default function ProductsList() {
     mutate();
   };
 
-  const rows = products?.map((product: any) => {
+  const rows: rowProductType[] = products?.map((product: ProductType) => {
     return {
       id: product._id,
       image: product.image,
@@ -100,13 +105,13 @@ export default function ProductsList() {
     };
   });
 
-  const columns = [
+  const columns: GridColDef[] = [
     {
       field: "image",
       headerName: "Image",
       align: "center",
       headerAlign: "center",
-      renderCell: (params: any) => {
+      renderCell: (params: GridRenderCellParams) => {
         return (
           <Image
             width={100}
@@ -142,7 +147,7 @@ export default function ProductsList() {
       headerName: "Price",
       type: "number",
       minWidth: 80,
-      renderCell: (params: any) => {
+      renderCell: (params: GridRenderCellParams) => {
         return <Typography>$ {params.value}</Typography>;
       },
     },
@@ -164,7 +169,7 @@ export default function ProductsList() {
       field: "actions",
       type: "actions",
       width: 80,
-      getActions: (params: any) => [
+      getActions: (params) => [
         <GridActionsCellItem
           key={1}
           icon={<EditIcon />}
@@ -193,10 +198,7 @@ export default function ProductsList() {
         }
       >
         {openEditModal ? (
-          <AddOrEditProduct
-            product={editProduct}
-            setOpen={setOpenEditModal}
-          />
+          <AddOrEditProduct product={editProduct!} setOpen={setOpenEditModal} />
         ) : (
           <DeleteConfirmation
             title={"Delete Product"}
@@ -225,7 +227,7 @@ export default function ProductsList() {
             rows={rows}
             rowSelection={false}
             checkboxSelection={false}
-            columns={columns as any}
+            columns={columns}
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 5 },

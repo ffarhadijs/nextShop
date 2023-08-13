@@ -26,7 +26,7 @@ function Layout({ children }: { children: React.ReactNode }) {
               },
             }}
           />
-          <Header theme={theme} colorMode={colorMode} />
+          <Header colorMode={colorMode} />
           {route === "/" || route === "/product/[slug]" ? (
             <Box sx={{ minHeight: "85vh" }}>{children}</Box>
           ) : (
@@ -37,7 +37,7 @@ function Layout({ children }: { children: React.ReactNode }) {
               {children}
             </Container>
           )}
-          <Footer theme={theme} />
+          <Footer />
         </ThemeProvider>
       </ColorModeContext.Provider>
     </Box>

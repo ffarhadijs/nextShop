@@ -11,6 +11,7 @@ import {
   ListItemText,
   ListItemIcon,
   Container,
+  useTheme,
 } from "@mui/material";
 import Link from "next/link";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
@@ -28,12 +29,13 @@ import { useGetUser } from "../../hooks/users/user.hooks";
 import toast from "react-hot-toast";
 
 export default function Header({
-  theme,
   colorMode,
 }: {
-  theme: any;
-  colorMode: any;
+  colorMode: {
+    toggleColorMode: () => void;
+  };
 }) {
+  const theme = useTheme();
   const { push } = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);

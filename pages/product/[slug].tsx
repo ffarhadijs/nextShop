@@ -44,6 +44,7 @@ import SwiperSlider from "../../components/swiper/SwiperSlider";
 import Shipping from "../../components/modals/shipping/Shipping";
 import AskAboutProduct from "../../components/modals/askAboutProduct/AskAboutProduct";
 import toast from "react-hot-toast";
+import { GetServerSidePropsContext } from "next";
 
 function createData(name: string, feature: string) {
   return { name, feature };
@@ -142,7 +143,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
       console.log(error);
     }
   };
-  const wishListHandler = (product: any) => {
+  const wishListHandler = (product: ProductType) => {
     dispatch({
       type: "WISHLIST_ADD_ITEM",
       payload: product,
@@ -273,7 +274,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={wishListHandler}
+                onClick={()=>wishListHandler(product)}
                 className="bg-[#2196f3]"
               >
                 Add To Wishlist
@@ -527,8 +528,8 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
 
 export default ProductDateils;
 
-export async function getServerSideProps(context: any) {
-  const { slug } = context.params;
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { slug } = context.params!;
   await connectDB();
   const product = await Product.findOne({ slug });
 
