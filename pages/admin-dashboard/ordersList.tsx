@@ -1,28 +1,23 @@
-import {
-  Box,
-  Card,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  Avatar,
-} from "@mui/material";
+import { Paper, Typography, Box } from "@mui/material";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AdminDashboard from ".";
-import { DataGrid, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { v4 } from "uuid";
-const columns = [
+import { useAllOrders } from "../../hooks/orders/orders.hooks";
+import CircularProgress from "@mui/material/CircularProgress";
+import { OrdersType } from "../../types/orders.type";
+import { OrderType } from "../../types/order.type";
+import { OrderItemType } from "../../types/orderItem.type";
+import { orderRowType } from "../../types/row.type";
+
+const columns: GridColDef[] = [
   {
     field: "image",
     headerName: "Image",
     align: "center",
     headerAlign: "center",
-    renderCell: (params: any) => {
+    renderCell: (params: GridRenderCellParams) => {
       return (
         <Image
           width={100}
@@ -58,7 +53,7 @@ const columns = [
     headerName: "Unit Price",
     type: "number",
     minWidth: 80,
-    renderCell: (params: any) => {
+    renderCell: (params: GridRenderCellParams) => {
       return <Typography>$ {params.value}</Typography>;
     },
   },
@@ -69,7 +64,7 @@ const columns = [
     headerName: "Total",
     type: "number",
     minWidth: 80,
-    renderCell: (params: any) => {
+    renderCell: (params: GridRenderCellParams) => {
       return <Typography>$ {params.value}</Typography>;
     },
   },
@@ -94,36 +89,31 @@ const columns = [
     headerAlign: "center",
     headerName: "PaidAt",
     minWidth: 160,
-
-    renderCell: (params: any) => {
+    renderCell: (params: GridRenderCellParams) => {
       return <Typography>{new Date(params.value).toLocaleString()}</Typography>;
     },
   },
 ];
 
 export default function OrdersList() {
-  const [orders, setOrders] = useState([]);
-  const getOrdersList = async () => {
-    const response = await fetch("/api/order/allOrders");
-    const data = await response.json();
-    setOrders(data.data);
-  };
+  const [orders, setOrders] = useState<OrdersType>([]);
+  const { isLoading } = useAllOrders({
+    onSuccess: (data: any) => {
+      setOrders(data?.data?.data);
+    },
+  });
 
-  useEffect(() => {
-    getOrdersList();
-  }, []);
-
-  const rows = []
+  const rows = ([] as any[])
     .concat(
-      ...orders?.map((order: any) =>
-        order.orderItems.map((item: any) => ({
+      ...orders?.map((order: OrderType) =>
+        order.orderItems.map((item: OrderItemType) => ({
           ...item,
           createdAt: order.createdAt,
           shippingAddress: order.shippingAddress,
         }))
       )
     )
-    .map((oItem: any) => {
+    .map((oItem: orderRowType) => {
       return {
         image: oItem.image,
         quantity: oItem.quantity,
@@ -144,23 +134,29 @@ export default function OrdersList() {
 
   return (
     <AdminDashboard>
-      <Paper style={{ maxWidth: "100%", marginInline: "auto" }}>
-        <DataGrid
-          className="px-3"
-          getRowId={(row) => v4()}
-          rows={rows}
-          rowSelection={false}
-          checkboxSelection={false}
-          columns={columns as any}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10, 15, 20]}
-          rowHeight={80}
-        />
-      </Paper>
+      {isLoading ? (
+        <Box className="mx-auto w-8">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Paper style={{ maxWidth: "100%", marginInline: "auto" }}>
+          <DataGrid
+            className="px-3"
+            getRowId={(row) => v4()}
+            rows={rows}
+            rowSelection={false}
+            checkboxSelection={false}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            pageSizeOptions={[5, 10, 15, 20]}
+            rowHeight={80}
+          />
+        </Paper>
+      )}
     </AdminDashboard>
   );
 }

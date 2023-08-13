@@ -1,13 +1,13 @@
-import {
-  Box,
-  Modal,
-  Paper,
-  CircularProgress,
-  Typography,
-} from "@mui/material";
+import { Box, Modal, Paper, CircularProgress, Typography } from "@mui/material";
 import { useCallback, useState } from "react";
 import AdminDashboard from ".";
-import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridColDef,
+  GridRenderCellParams,
+  GridRowParams,
+} from "@mui/x-data-grid";
 import { v4 } from "uuid";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
@@ -15,11 +15,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useDeleteUser, useGetUsersList } from "../../hooks/users/user.hooks";
 import DeleteConfirmation from "../../components/modals/deleteConfirmation/DeleteConfirmation";
 import toast from "react-hot-toast";
+import { productRowType } from "../../types/row.type";
 
 export default function UsersList() {
   const [users, setUsers] = useState([]);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [deleteUserId, setDeleteUserId] = useState<any>();
+  const [deleteUserId, setDeleteUserId] = useState<string>();
 
   const { isLoading } = useGetUsersList({
     onSuccess: (data: any) => {
@@ -28,13 +29,13 @@ export default function UsersList() {
   });
 
   const deleteHandler = useCallback(
-    (params: any) => () => {
+    (params: GridRowParams<any>) => () => {
       setOpenDeleteModal(true);
       setDeleteUserId(params.row.id);
     },
     []
   );
-  const { mutate, isLoading: deleteLoading } = useDeleteUser(deleteUserId, {
+  const { mutate, isLoading: deleteLoading } = useDeleteUser(deleteUserId!, {
     onSuccess: () => {
       toast.success("User has been deleted successfully");
     },
@@ -46,7 +47,7 @@ export default function UsersList() {
     mutate();
   };
 
-  const columns = [
+  const columns: GridColDef[] = [
     {
       field: "name",
       align: "left",
@@ -54,7 +55,7 @@ export default function UsersList() {
       headerName: "Full Name",
       minWidth: 100,
       width: 200,
-      renderCell: (params: any) => {
+      renderCell: (params: GridRenderCellParams) => {
         return (
           <Typography>
             {params.row.name} {params.row.lastName}
@@ -76,7 +77,7 @@ export default function UsersList() {
       headerAlign: "left",
       headerName: "Admin",
       minWidth: 60,
-      renderCell: (params: any) => {
+      renderCell: (params: GridRenderCellParams) => {
         return (
           <Box>
             {params.row.isAdmin === false ? <CloseIcon /> : <CheckIcon />}
@@ -92,7 +93,7 @@ export default function UsersList() {
       minWidth: 100,
       width: 300,
       sortable: false,
-      renderCell: (params: any) => {
+      renderCell: (params: GridRenderCellParams) => {
         return (
           <Typography>
             {params.row.country}, {params.row.city}, {params.row.address}
@@ -104,7 +105,7 @@ export default function UsersList() {
       field: "actions",
       type: "actions",
       width: 80,
-      getActions: (params: any) => [
+      getActions: (params) => [
         <GridActionsCellItem
           key={2}
           icon={<DeleteIcon />}
@@ -116,7 +117,7 @@ export default function UsersList() {
     },
   ];
 
-  const rows = users?.map((user: any) => {
+  const rows: productRowType[] = users?.map((user: productRowType) => {
     return {
       id: user._id,
       name: user.name,
@@ -149,7 +150,7 @@ export default function UsersList() {
             rows={rows}
             rowSelection={false}
             checkboxSelection={false}
-            columns={columns as any}
+            columns={columns}
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 5 },
