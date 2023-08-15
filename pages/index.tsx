@@ -1,26 +1,15 @@
 import {
   Box,
   Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
   Grid,
   Stack,
   Container,
   Typography,
-  Rating,
-  Tooltip,
-  Modal,
 } from "@mui/material";
 import Link from "next/link";
 import Product from "../models/Product";
 import connectDB from "../utils/connectDB";
 import { ProductsType } from "../types/products.type";
-import { MouseEvent, useContext, useState } from "react";
-import { Store } from "../utils/Store";
-import { ProductType } from "../types/product.type";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -30,10 +19,6 @@ import Image from "next/image";
 import c1 from "../public/images/carousel (1).jpg";
 import c2 from "../public/images/carousel (2).jpg";
 import c3 from "../public/images/carousel (3).jpg";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import SearchIcon from "@mui/icons-material/Search";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import AssignmentReturnOutlinedIcon from "@mui/icons-material/AssignmentReturnOutlined";
 import PaymentOutlinedIcon from "@mui/icons-material/PaymentOutlined";
 import SupportAgentOutlinedIcon from "@mui/icons-material/SupportAgentOutlined";
@@ -42,8 +27,7 @@ import DiscountOutlinedIcon from "@mui/icons-material/DiscountOutlined";
 import PersonPinCircleOutlinedIcon from "@mui/icons-material/PersonPinCircleOutlined";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import SwiperSlider from "../components/swiper/SwiperSlider";
-import QuickView from "../components/modals/quickView/QuickView";
-import toast from "react-hot-toast";
+import ProductItem from "../components/productItem/ProductItem";
 
 const services = [
   {
@@ -73,56 +57,9 @@ const services = [
 ];
 
 export default function Home({ products }: { products: ProductsType }) {
-  const [quickViewModal, setQuickViewModal] = useState<boolean>(false);
-  const [product, setProduct] = useState<ProductType>();
-  const { dispatch, state } = useContext(Store);
-
-  const quickViewHandler = (
-    e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
-    product: ProductType
-  ) => {
-    e.stopPropagation();
-    setQuickViewModal(true);
-    setProduct(product);
-  };
-
-  const addToCartHandler = (
-    product: ProductType,
-    e: MouseEvent<HTMLDivElement | HTMLButtonElement, globalThis.MouseEvent>
-  ) => {
-    e.stopPropagation();
-    try {
-      const existProduct = state.cart.cartItems.find(
-        (item: ProductType) => item._id === product._id
-      );
-      const quantity = existProduct ? existProduct.quantity + 1 : 1;
-      quantity > product.countInStock
-        ? toast.error("No Available Product")
-        : dispatch({
-            type: "CART_ADD_ITEM",
-            payload: { ...product, quantity },
-          });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const wishListHandler = (
-    e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
-    product: ProductType
-  ) => {
-    e.stopPropagation();
-    dispatch({
-      type: "WISHLIST_ADD_ITEM",
-      payload: product,
-    });
-  };
-
+  
   return (
     <Box>
-      <Modal open={quickViewModal} onClose={() => setQuickViewModal(false)}>
-        <QuickView product={product} />
-      </Modal>
       <Swiper
         navigation={true}
         centeredSlides={true}
@@ -265,91 +202,11 @@ export default function Home({ products }: { products: ProductsType }) {
         <Grid container spacing={3} mb={"60px"}>
           {products.map((product, index) => (
             <Grid item xs={6} sm={4} md={3} key={product.slug + index}>
-              <Card className="group/card">
-                <CardActionArea>
-                  <Box className="group/cardAction overflow-hidden relative ">
-                    <Link href={`product/${product.slug}`}>
-                      <CardMedia
-                        className="duration-200 group-hover/cardAction:scale-110 h-64"
-                        component="img"
-                        image={product.image}
-                        alt={product.name}
-                      />
-                    </Link>
-                    <Box className="flex flex-col w-auto h-auto space-y-2 absolute top-2 right-0 opacity-0 group-hover/cardAction:right-4 group-hover/cardAction:opacity-100 transition-all duration-300">
-                      <Tooltip title="Add to Wishlist">
-                        <Box
-                          className="text-gray-500 bg-white rounded-full hover:bg-[#2196f3] hover:text-white p-[1px] transition-colors duration-500"
-                          onClick={(e) => wishListHandler(e, product)}
-                        >
-                          {state.wishList.withListItems.findIndex(
-                            (item) => item._id === product._id
-                          ) === -1 ? (
-                            <FavoriteBorderIcon />
-                          ) : (
-                            <FavoriteIcon color="error" />
-                          )}
-                        </Box>
-                      </Tooltip>
-                      <Tooltip title="Add to Cart">
-                        <Box
-                          className="text-gray-500 bg-white rounded-full hover:bg-[#2196f3] hover:text-white p-[1px] transition-colors duration-500"
-                          onClick={(e) => addToCartHandler(product, e)}
-                        >
-                          <AddShoppingCartIcon />
-                        </Box>
-                      </Tooltip>
-                      <Tooltip title="Quick View">
-                        <Box
-                          className="text-gray-500 bg-white rounded-full hover:bg-[#2196f3] hover:text-white p-[1px] transition-colors duration-500"
-                          onClick={(e) => quickViewHandler(e, product)}
-                        >
-                          <SearchIcon />
-                        </Box>
-                      </Tooltip>
-                    </Box>
-                  </Box>
-                </CardActionArea>
-                <CardContent className="p-2 pt-4">
-                  <Typography
-                    component={Link}
-                    href={`product/${product.slug}`}
-                    className="text-[15px] font-bold"
-                    sx={{
-                      transition: "all 0.2s",
-                      ":hover": {
-                        color: "primary.main",
-                      },
-                    }}
-                  >
-                    {product.name}
-                  </Typography>
-                </CardContent>
-
-                <CardActions className="flex flex-row justify-between relative">
-                  <Typography>$ {product.price} </Typography>
-                  <Button
-                    onClick={(e) => addToCartHandler(product, e)}
-                    size="small"
-                    color="primary"
-                    className="group-hover/card:opacity-100 opacity-0 absolute -right-10 bottom-2 group-hover/card:right-2 transition-all duration-500"
-                  >
-                    Add To Cart
-                  </Button>
-                  <Rating
-                    value={product?.rating!}
-                    precision={0.1}
-                    readOnly
-                    size="small"
-                    className="group-hover/card:opacity-0 opacity-100 absolute right-2 bottom-3 group-hover/card:-right-10 transition-all duration-500"
-                  />
-                </CardActions>
-              </Card>
+              <ProductItem product={product} />
             </Grid>
           ))}
         </Grid>
       </Container>
-
       <Box className="bg-[url('/images/banner.jpg')] bg-cover bg-no-repeat bg-fixed w-full h-[600px] relative">
         <Box className="border border-white rounded-lg w-[488px] h-[328px] absolute top-20 left-10 flex flex-col justify-center items-center">
           <Box className="bg-white w-[460px] h-[300px] absolute rounded-lg flex flex-col justify-center items-center p-8">
