@@ -20,12 +20,16 @@ import {
   TextField,
   Pagination,
   Container,
+  Drawer,
+  Divider,
+  Button,
 } from "@mui/material";
 import { TbColumns1, TbColumns2, TbColumns3 } from "react-icons/tb";
 import { useRouter } from "next/router";
 import SwiperSlider from "../../components/swiper/SwiperSlider";
 import { SwiperSlide } from "swiper/react";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import { AiOutlineMenu } from "react-icons/ai";
 
 const productPerPage = 6;
 
@@ -34,6 +38,118 @@ const views = [
   { icon: <TbColumns2 />, columns: 6 },
   { icon: <TbColumns3 />, columns: 4 },
 ];
+export function FilterPanel({
+  categoriesList,
+  maxPrice,
+  minPrice,
+}: {
+  categoriesList: string[];
+  maxPrice: number;
+  minPrice: number;
+}) {
+  const { query, push, pathname } = useRouter();
+  const [queryValue, setQueryValue] = useState<any>(query.searchQuery || "");
+  const [categoryValue, setCategoryValue] = useState<any>(query.category || "");
+  const [priceValue, setPriceValue] = useState<any>(
+    [query.min, query.max] || [minPrice, maxPrice]
+  );
+
+  const filterHandler = () => {
+    push({
+      pathname,
+      query,
+    });
+  };
+  const resetFilterHandler = () => {
+    push({
+      pathname: pathname,
+      query: null,
+    });
+  };
+
+  return (
+    <>
+      <Box>
+        {" "}
+        <Typography className="text-[18px] font-[600]">
+          Filter Panel
+        </Typography>{" "}
+      </Box>
+      <Box>
+        <Box>
+          <Typography className="mt-10 text-[16px] font-[600]">
+            Product Name:
+          </Typography>
+          <Divider className="mb-5" />
+          <TextField
+            onChange={(e) => {
+              query.searchQuery = e.target.value;
+              setQueryValue(e.target.value);
+            }}
+            size="small"
+            value={queryValue}
+            label="Search"
+            fullWidth
+          />
+        </Box>
+        <Box>
+          <Typography className=" mt-10 text-[16px] font-[600]">
+            Category:
+          </Typography>
+          <Divider className="mb-5" />
+          <RadioGroup defaultValue="All" value={categoryValue}>
+            {["All", ...categoriesList].map((item: string, index: number) => (
+              <FormControlLabel
+                value={item}
+                onChange={(event) => {
+                  setCategoryValue((event.target as HTMLInputElement).value);
+                  query.category = (event.target as HTMLInputElement).value;
+                }}
+                control={<Radio size="small" />}
+                label={item}
+                key={item + index}
+              />
+            ))}
+          </RadioGroup>
+        </Box>
+        <Box>
+          <Typography className="mt-10 text-[16px] font-[600]">
+            Price:
+          </Typography>
+          <Divider className="mb-5" />
+          <Slider
+            defaultValue={[minPrice, maxPrice]}
+            value={priceValue}
+            valueLabelDisplay="auto"
+            max={maxPrice}
+            step={25}
+            min={minPrice}
+            onChange={(_, value: any) => {
+              setPriceValue(value);
+              query.min = String(value[0]);
+              query.max = String(value[1]);
+            }}
+          />
+        </Box>
+        <Button
+          onClick={filterHandler}
+          variant="contained"
+          className="bg-[#2196f3] "
+        >
+          Filter
+        </Button>
+        <Button
+          onClick={resetFilterHandler}
+          variant="contained"
+          className="bg-[#2196f3] "
+        >
+          Reset
+        </Button>
+      </Box>
+    </>
+  );
+}
+
 export default function Shop({
   products,
   categoriesList,
@@ -42,39 +158,21 @@ export default function Shop({
   countProducts,
 }: {
   products: ProductsType;
-  categoriesList: any;
+  categoriesList: string[];
   maxPrice: number;
   minPrice: number;
   countProducts: number;
 }) {
-  const { query, push, pathname } = useRouter();
   const theme = useTheme();
   const [columns, setColumns] = useState<number>(4);
   const [pageNumber, setPageNumber] = useState<number>(1);
-
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  const { query, push, pathname } = useRouter();
   const viewHandler = (column: number) => {
     setColumns(column);
   };
-  const changeHandler = ({
-    searchQuery,
-    category,
-    price,
-    sort,
-    page,
-  }: {
-    searchQuery?: string;
-    category?: string;
-    price?: number[];
-    sort?: string;
-    page?: number;
-  }) => {
-    if (searchQuery) query.searchQuery = searchQuery;
-    if (!searchQuery) delete query.searchQuery;
-    if (price) {
-      query.min = String(price[0]);
-      query.max = String(price[1]);
-    }
-    if (category) query.category = category;
+
+  const changeHandler = ({ sort, page }: { sort?: string; page?: number }) => {
     if (sort) query.sort = sort;
     if (page) query.page = String(page);
     push({
@@ -83,150 +181,173 @@ export default function Shop({
     });
   };
 
+  // const openDrawerHandler = () => {};
   return (
-    <Grid container>
+    <>
       <Container maxWidth="lg">
-        <Grid container className="my-5 items-end">
-          <Grid item xs={3}>
-            {" "}
-            Filter Panel
-          </Grid>
+        <Drawer
+          anchor={"left"}
+          open={openDrawer}
+          onClose={() => setOpenDrawer(false)}
+          PaperProps={{
+            sx: {
+              width: "260px",
+              padding: "24px",
+            },
+          }}
+        >
+          <FilterPanel
+            categoriesList={categoriesList}
+            maxPrice={maxPrice}
+            minPrice={minPrice}
+          />
+        </Drawer>
+        <Grid container>
           <Grid
-            container
-            xs={3}
+            item
+            sm={3}
+            xs={0}
             sx={{
-              [theme.breakpoints.down("md")]: {
+              [theme.breakpoints.down("sm")]: {
                 display: "none",
               },
             }}
-            className="items-center"
+            className="my-5 pr-5"
           >
-            <Typography>View:</Typography>
-            {views.map((item) => (
-              <IconButton
-                key={item.columns}
-                onClick={() => viewHandler(item.columns)}
-                className={`p-[1px] text-[20px] ${
-                  columns === item.columns && "text-[#2196f3]"
-                } transition-colors duration-500 hover:text-[#2196f3]`}
-              >
-                {item.icon}
-              </IconButton>
-            ))}
+            <FilterPanel
+              categoriesList={categoriesList}
+              maxPrice={maxPrice}
+              minPrice={minPrice}
+            />
           </Grid>
-          <Grid item xs={3}>
-            Showing:
-            {countProducts === 0
-              ? "No Product"
-              : countProducts === 1
-              ? "1 Product"
-              : countProducts + " Products"}
-          </Grid>
-          <Grid item xs={3} className="flex flex-row">
-            <InputLabel className=" text-white text-[16px] w-16">
-              Sort:
-            </InputLabel>
-            <Select
-              size="small"
-              variant="standard"
-              onChange={(e) =>
-                changeHandler({ sort: e.target.value as string })
-              }
-              className="w-full"
-              defaultValue={"oldest"}
+          <Grid container sm={9} xs={12} className="my-5 items-end">
+            <Grid
+              container
+              xs={4}
+              sx={{
+                [theme.breakpoints.down("sm")]: {
+                  display: "none",
+                },
+              }}
+              className="items-center pl-2"
             >
-              <MenuItem value={"oldest"}>Oldest</MenuItem>
-              <MenuItem value={"newest"}>Newest</MenuItem>
-              <MenuItem value={"price-lowToHigh"}>price:Low to High</MenuItem>
-              <MenuItem value={"price-highToLow"}>price:Hight to Low</MenuItem>
-              <MenuItem value={"rated"}>Top Rated</MenuItem>
-            </Select>
-          </Grid>
-        </Grid>
-        <Grid container>
-          <Grid item xs={3} pr={"0px"}>
-            <Box>
-              <Typography className="border-b border-white mb-5">
-                Product Name:
+              <Typography className="text-[16px] font-[600]">View:</Typography>
+              {views.map((item) => (
+                <IconButton
+                  key={item.columns}
+                  onClick={() => viewHandler(item.columns)}
+                  className={`p-[1px] text-[20px] ${
+                    columns === item.columns && "text-[#2196f3]"
+                  } transition-colors duration-500 hover:text-[#2196f3]`}
+                >
+                  {item.icon}
+                </IconButton>
+              ))}
+            </Grid>
+            <Grid
+              order={{ xs: 0 }}
+              item
+              xs={6}
+              sx={{
+                [theme.breakpoints.up("sm")]: {
+                  display: "none",
+                },
+              }}
+              className="items-center pl-2"
+            >
+              <IconButton onClick={() => setOpenDrawer(true)}>
+                <AiOutlineMenu />
+              </IconButton>
+            </Grid>
+            <Grid
+              item
+              order={{ xs: 2, sm: 0 }}
+              xs={6}
+              sm={4}
+              sx={{
+                [theme.breakpoints.down("md")]: {
+                  paddingLeft: "8px",
+                  paddingTop: "8px",
+                },
+              }}
+              mx={"auto"}
+              textAlign={"center"}
+            >
+              <Typography className="text-[16px] font-[600] inline">
+                Showing:
               </Typography>
-              <TextField
-                onChange={(e) => changeHandler({ searchQuery: e.target.value })}
+              <Typography className="text-[14px] font-[500] inline">
+                {countProducts === 0
+                  ? "No Product"
+                  : countProducts === 1
+                  ? "1 Product"
+                  : countProducts + " Products"}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              xs={6}
+              sm={4}
+              order={{ xs: 1 }}
+              className="flex flex-row pr-3 items-end"
+            >
+              <InputLabel className=" text-white text-[16px] font-[600] w-14">
+                Sort:
+              </InputLabel>
+              <Select
                 size="small"
-                label="Search"
-                fullWidth
-              />
-            </Box>
-            <Box>
-              <Typography className="border-b border-white mb-5 mt-10">
-                Category:
-              </Typography>
-              <RadioGroup
-                defaultValue="All"
-                value={query.category ? query.category : "All"}
+                variant="standard"
+                onChange={(e) =>
+                  changeHandler({ sort: e.target.value as string })
+                }
+                className="w-full"
+                defaultValue={"oldest"}
               >
-                {["All", ...categoriesList].map(
-                  (item: string, index: number) => (
-                    <FormControlLabel
-                      value={item}
-                      onChange={(event) =>
-                        changeHandler({
-                          category: (event.target as HTMLInputElement).value,
-                        })
-                      }
-                      control={<Radio size="small" />}
-                      label={item}
-                      key={item + index}
-                    />
-                  )
-                )}
-              </RadioGroup>
-            </Box>
-            <Box>
-              <Typography className="border-b border-white mb-5 my-10">
-                Price:
-              </Typography>
-
-              <Slider
-                defaultValue={[minPrice, maxPrice]}
-                valueLabelDisplay="auto"
-                max={maxPrice}
-                step={10}
-                min={minPrice}
-                onChange={(_, value) => {
-                  changeHandler({ price: value as number[] });
-                }}
-              />
-            </Box>
-          </Grid>
-          <Grid container xs={9} spacing={3}>
-            {products.map((product: ProductType, index: number) => (
-              <Grid item xs={6} sm={columns} key={product.slug + index}>
-                <ProductItem product={product} />
-              </Grid>
-            ))}
-            {products.length !== 0 && (
-              <Grid
-                item
-                xs={12}
-                className="flex flex-row justify-center mx-auto"
-              >
-                <Pagination
-                  className="mx-auto"
-                  count={Math.ceil(countProducts / productPerPage)}
-                  color="primary"
-                  onChange={(e, value) => {
-                    setPageNumber(value);
-                    changeHandler({ page: value });
-                  }}
-                  page={pageNumber}
-                />
-              </Grid>
-            )}
+                <MenuItem value={"oldest"}>Oldest</MenuItem>
+                <MenuItem value={"newest"}>Newest</MenuItem>
+                <MenuItem value={"price-lowToHigh"}>price:Low to High</MenuItem>
+                <MenuItem value={"price-highToLow"}>
+                  price:Hight to Low
+                </MenuItem>
+                <MenuItem value={"rated"}>Top Rated</MenuItem>
+              </Select>
+            </Grid>
+            <Grid order={{ xs: 3 }} container xs={12} className="mt-4 mx-auto ">
+              {products.map((product: ProductType, index: number) => (
+                <Grid
+                  item
+                  xs={6}
+                  sm={columns}
+                  key={product.slug + index}
+                  className="px-2 py-2"
+                >
+                  <ProductItem product={product} />
+                </Grid>
+              ))}
+              {products.length !== 0 && (
+                <Grid
+                  item
+                  xs={12}
+                  className="flex flex-row justify-center mx-auto"
+                >
+                  <Pagination
+                    className="mx-auto"
+                    count={Math.ceil(countProducts / productPerPage)}
+                    color="primary"
+                    onChange={(e, value) => {
+                      setPageNumber(value);
+                      changeHandler({ page: value });
+                    }}
+                    page={pageNumber}
+                  />
+                </Grid>
+              )}
+            </Grid>
           </Grid>
         </Grid>
       </Container>
 
-      <Grid item xs={12}>
+      <Box>
         <Typography
           textAlign={"center"}
           mb={"35px"}
@@ -250,8 +371,8 @@ export default function Shop({
             </SwiperSlide>
           ))}
         />
-      </Grid>
-    </Grid>
+      </Box>
+    </>
   );
 }
 
