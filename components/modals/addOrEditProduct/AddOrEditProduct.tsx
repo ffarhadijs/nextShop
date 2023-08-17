@@ -11,19 +11,17 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import {Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Image from "next/image";
 import InputAdornment from "@mui/material/InputAdornment";
 import {
   useAddProduct,
   useUpdateProduct,
-} from "../../hooks/products/products.hooks";
+} from "../../../hooks/products/products.hooks";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useQueryClient } from "react-query";
 import toast from "react-hot-toast";
-import { rowProductType } from "../../types/rowProduct.type";
-
-
+import { rowProductType } from "../../../types/rowProduct.type";
 
 const schema = yup.object({
   image: yup.mixed().required("Please upload a image"),
@@ -112,7 +110,7 @@ const AddOrEditProduct = ({
     }
   };
 
-  const handleFileChange = (e:any) => {
+  const handleFileChange = (e: any) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       setValue("image", selectedFile);
@@ -189,7 +187,7 @@ const AddOrEditProduct = ({
             </Stack>
 
             <Stack direction="column">
-              <FormLabel>Name:</FormLabel>
+              <FormLabel className="text-[14px] sm:text-[16px]">Name:</FormLabel>
               <TextField
                 {...register("name")}
                 size="small"
@@ -200,7 +198,7 @@ const AddOrEditProduct = ({
             </Stack>
 
             <Stack direction="column">
-              <FormLabel>Description:</FormLabel>
+              <FormLabel className="text-[14px] sm:text-[16px]">Description:</FormLabel>
               <TextField
                 {...register("description")}
                 size="small"
@@ -212,7 +210,7 @@ const AddOrEditProduct = ({
             </Stack>
             <Stack direction={"row"} spacing={"10px"}>
               <Stack direction="column" width={"50%"}>
-                <FormLabel>Brand:</FormLabel>
+                <FormLabel className="text-[14px] sm:text-[16px]">Brand:</FormLabel>
                 <TextField
                   {...register("brand")}
                   size="small"
@@ -223,7 +221,7 @@ const AddOrEditProduct = ({
               </Stack>
 
               <Stack direction="column" width={"50%"}>
-                <FormLabel>Category</FormLabel>
+                <FormLabel className="text-[14px] sm:text-[16px]">Category</FormLabel>
                 <Select
                   {...register("category")}
                   size="small"
@@ -245,7 +243,7 @@ const AddOrEditProduct = ({
 
             <Stack direction={"row"} spacing={"10px"}>
               <Stack direction="column">
-                <FormLabel>Price:</FormLabel>
+                <FormLabel className="text-[14px] sm:text-[16px]">Price:</FormLabel>
                 <TextField
                   {...register("price")}
                   size="small"
@@ -262,7 +260,9 @@ const AddOrEditProduct = ({
                 />
               </Stack>
               <Stack direction="column">
-                <FormLabel>Count In Stock:</FormLabel>
+                <FormLabel className="text-[14px] sm:text-[16px]">
+                  Count In Stock:
+                </FormLabel>
                 <TextField
                   {...register("countInStock")}
                   size="small"
