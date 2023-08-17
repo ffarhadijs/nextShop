@@ -1,4 +1,12 @@
-import { Box, Button, Grid, Stack, Container, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  Stack,
+  Container,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import Link from "next/link";
 import Product from "../models/Product";
 import connectDB from "../utils/connectDB";
@@ -50,6 +58,7 @@ export const services = [
 ];
 
 export default function Home({ products }: { products: ProductsType }) {
+  const theme = useTheme();
   return (
     <Box>
       <Swiper
@@ -66,33 +75,21 @@ export default function Home({ products }: { products: ProductsType }) {
         className="mySwiper"
         slidesPerView={1}
       >
-        <SwiperSlide
-          style={{ position: "relative", width: "100%", height: "700px" }}
-        >
+        <SwiperSlide className="!relative !w-full !h-[400px] sm:!h-[500px] md:!h-[600px] lg:!h-[700px] ">
           <Image
             src={c1}
             alt="c1"
-            style={{
-              position: "absolute",
-              width: "100%",
-              height: "700px",
-            }}
+            className="absolute w-full h-full object-cover"
           />
-          <Stack
-            direction={"column"}
-            alignItems={"center"}
-            justifyContent={"center"}
-            spacing={"15px"}
-            style={{
-              width: "100%",
-              height: "100%",
-              position: "absolute",
-            }}
-          >
+          <Box className="flex flex-col items-center justify-center space-y-4 w-full h-full absolute">
             <Typography fontSize={17} fontWeight={700} color={"black"}>
               Limited Time Offer
             </Typography>
-            <Typography fontSize={50} fontWeight={700} color={"black"}>
+            <Typography
+              fontWeight={700}
+              color={"black"}
+              className="text-[30px] sm:text-[40px] md:text-[50px]"
+            >
               Winter-Spring!
             </Typography>
             <Typography fontSize={16} fontWeight={400} color={"black"}>
@@ -106,29 +103,23 @@ export default function Home({ products }: { products: ProductsType }) {
             >
               Go Shopping
             </Button>
-          </Stack>
+          </Box>
         </SwiperSlide>
-        <SwiperSlide style={{ position: "relative" }}>
+        <SwiperSlide className="!relative !w-full !h-[400px] sm:!h-[500px] md:!h-[600px] lg:!h-[700px] ">
           <Image
             src={c2}
             alt="c2"
-            style={{ position: "absolute", width: "100%", height: "700px" }}
+            className="absolute w-full h-full object-cover"
           />
-          <Stack
-            direction={"column"}
-            alignItems={"flex-start"}
-            justifyContent={"center"}
-            spacing={"10px"}
-            style={{
-              position: "absolute",
-              top: "230px",
-              left: "50px",
-            }}
-          >
+          <Box className="flex flex-col items-start justify-center space-y-3 w-full h-full absolute left-[50px]">
             <Typography fontSize={18} fontWeight={700} color={"black"}>
               Buy Now From This Shop
             </Typography>
-            <Typography fontSize={55} fontWeight={700} color={"black"}>
+            <Typography
+              className="text-[30px] sm:text-[40px] md:text-[50px]"
+              fontWeight={700}
+              color={"black"}
+            >
               New Season Canvas
             </Typography>
             <Typography fontSize={16} fontWeight={400} color={"black"}>
@@ -142,29 +133,23 @@ export default function Home({ products }: { products: ProductsType }) {
             >
               Go Shopping
             </Button>
-          </Stack>
+          </Box>
         </SwiperSlide>
-        <SwiperSlide style={{ position: "relative" }}>
+        <SwiperSlide className="!relative !w-full !h-[400px] sm:!h-[500px] md:!h-[600px] lg:!h-[700px] ">
           <Image
             src={c3}
             alt="c3"
-            style={{ position: "absolute", width: "100%", height: "700px" }}
+            className="absolute w-full h-full object-cover"
           />
-          <Stack
-            direction={"column"}
-            alignItems={"flex-start"}
-            justifyContent={"center"}
-            spacing={"10px"}
-            style={{
-              position: "absolute",
-              top: "230px",
-              left: "50px",
-            }}
-          >
+          <Box className="flex flex-col items-start justify-center space-y-3 w-full h-full absolute left-[50px]">
             <Typography fontSize={18} fontWeight={700} color={"black"}>
               Exclusive Offer
             </Typography>
-            <Typography fontSize={55} fontWeight={700} color={"black"}>
+            <Typography
+              className="text-[30px] sm:text-[40px] md:text-[50px]"
+              fontWeight={700}
+              color={"black"}
+            >
               Spring-Show!
             </Typography>
             <Typography fontSize={16} fontWeight={400} color={"black"}>
@@ -178,7 +163,7 @@ export default function Home({ products }: { products: ProductsType }) {
             >
               Go Shopping
             </Button>
-          </Stack>
+          </Box>
         </SwiperSlide>
       </Swiper>
 
@@ -187,7 +172,7 @@ export default function Home({ products }: { products: ProductsType }) {
           <Typography color={"primary"} className="font-bold pb-4">
             See Our Collection
           </Typography>
-          <Typography className="font-[500] text-[30px]">
+          <Typography className="font-[500] text-[24px] sm:text-[30px]">
             Recent Products
           </Typography>
         </Stack>
@@ -199,16 +184,27 @@ export default function Home({ products }: { products: ProductsType }) {
           ))}
         </Grid>
       </Container>
-      <Box className="bg-[url('/images/banner.jpg')] bg-cover bg-no-repeat bg-fixed w-full h-[600px] relative">
-        <Box className="border border-white rounded-lg w-[488px] h-[328px] absolute top-20 left-10 flex flex-col justify-center items-center">
-          <Box className="bg-white w-[460px] h-[300px] absolute rounded-lg flex flex-col justify-center items-center p-8">
+      <Box className="bg-[url('/images/banner.jpg')] bg-cover bg-no-repeat bg-fixed w-full !h-[400px] sm:!h-[500px] md:!h-[600px] lg:!h-[700px] relative flex flex-col justify-center items-start">
+        <Box
+          className={`border ${
+            theme.palette.mode === "dark" ? "border-[#121212]" : "border-white"
+          } rounded-lg w-[268px] sm:w-[348px] md:w-[388px] lg:w-[448px] h-[268px] sm:h-[328px] absolute  left-10 flex flex-col justify-center items-center`}
+        >
+          <Box
+            className={`${
+              theme.palette.mode === "dark" ? "bg-[#121212]" : "bg-white"
+            } w-60 sm:w-80 md:w-[360px] lg:w-[420px] h-[240px] sm:h-[300px] absolute rounded-lg flex flex-col justify-center items-center p-8`}
+          >
             <Typography fontSize={"16px"} fontWeight={600} color="primary.main">
               Limited Time Offer!
             </Typography>
-            <Typography fontSize={"42px"} fontWeight={600} color="black">
+            <Typography
+              fontWeight={600}
+              className="text-[32px] sm:text[32px] md:text-[42px]"
+            >
               -40% OFF{" "}
             </Typography>
-            <Typography fontSize={"14px"} fontWeight={500} color="black">
+            <Typography fontSize={"14px"} fontWeight={500}>
               Get The Best Deals Now
             </Typography>
             <Button
@@ -222,34 +218,42 @@ export default function Home({ products }: { products: ProductsType }) {
         </Box>
       </Box>
       <Container maxWidth="lg">
-        <Typography
-          textAlign={"center"}
-          mb={"35px"}
-          mt={"80px"}
-          fontSize={"24px"}
-        >
+        <Typography className="text-[24px] sm:text-[30px] mb-[35px] mt-[80px] text-center">
           Our Services
         </Typography>
         <SwiperSlider
-          {...{ slidesPerView: 4, spaceBetween: 30 }}
+          {...{
+            spaceBetween: 30,
+            breakpoints: {
+              1024: {
+                slidesPerView: 4,
+              },
+              768: {
+                slidesPerView: 3,
+              },
+              641: {
+                slidesPerView: 2,
+              },
+              640: {
+                slidesPerView: 1,
+              },
+            },
+          }}
           items={services.map((item, index) => (
             <SwiperSlide key={item.text + index}>
               <Box className="flex flex-col justify-center items-center ">
-                <Box className="bg-gray-200 mb-4 rounded-full w-24 h-24 hover:bg-[#2196f3] hover:text-white transition-colors duration-700 text-slate-700 flex flex-col justify-center items-center ">
+                <Box className="bg-gray-200 mb-4  rounded-full w-24 h-24 hover:bg-[#2196f3] hover:text-white transition-colors duration-700 text-slate-700 flex flex-col justify-center items-center ">
                   {item.icon}
                 </Box>
-                <Typography fontSize={"18px"}>{item.text}</Typography>
+                <Typography fontSize={"18px"} className="text-center">
+                  {item.text}
+                </Typography>
               </Box>
             </SwiperSlide>
           ))}
         />
 
-        <Typography
-          textAlign={"center"}
-          mb={"35px"}
-          mt={"80px"}
-          fontSize={"24px"}
-        >
+        <Typography className="text-[24px] sm:text-[30px] mt-[80px] mb-[35px] text-center">
           FOLLOW US ON INSTAGRAM
         </Typography>
       </Container>

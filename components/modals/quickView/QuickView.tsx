@@ -44,21 +44,13 @@ export default function QuickView({ product }: { product: any }) {
   };
   return (
     <Box
+    width={{xs:350 ,sm:500 ,md:800}}
+      className={` absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  border-[2px] border-solid border-black shadow-lg `}
       sx={{
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        width: 800,
-        maxWidth: 800,
-        minWidth: 300,
         bgcolor: "background.paper",
-        border: "2px solid #000",
-        boxShadow: 24,
-        p: 4,
       }}
     >
-      <Grid container spacing={5}>
+      <Grid container>
         <Grid
           item
           xs={12}
@@ -73,7 +65,7 @@ export default function QuickView({ product }: { product: any }) {
             height={450}
           />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} p={3}>
           <Typography fontWeight={700} component={"h1"} variant="h5" mb={1}>
             {product?.name!}
           </Typography>

@@ -33,7 +33,7 @@ export default function Footer() {
         
       >
         <Grid container spacing={"20px"}>
-          <Grid item xs={3} className="flex flex-col space-y-3">
+          <Grid item sm={6} md={3} className="flex flex-col space-y-3">
             <Typography className="font-[600] text-[20px] mb-4">
               About The Store
             </Typography>
@@ -68,7 +68,7 @@ export default function Footer() {
               </Link>
             </Typography>
           </Grid>
-          <Grid item xs={3} className="flex flex-col space-y-3">
+          <Grid item sm={6} md={3} className="flex flex-col space-y-3">
             <Typography className="font-[600] text-[20px] mb-4">
               Quick Links
             </Typography>
@@ -82,7 +82,7 @@ export default function Footer() {
               </Link>
             ))}
           </Grid>
-          <Grid item xs={3} className="flex flex-col space-y-3">
+          <Grid item sm={6} md={3} className="flex flex-col space-y-3">
             <Typography className="font-[600] text-[20px] mb-4">
               Customer Support
             </Typography>
@@ -96,7 +96,7 @@ export default function Footer() {
               </Link>
             ))}
           </Grid>
-          <Grid item xs={3} className="flex flex-col space-y-3">
+          <Grid item sm={6} md={3} className="flex flex-col space-y-3">
             <Typography className="font-[600] text-[20px] mb-4">
               Newsletter
             </Typography>

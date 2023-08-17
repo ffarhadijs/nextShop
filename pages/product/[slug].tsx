@@ -39,7 +39,16 @@ import AskAboutProduct from "../../components/modals/askAboutProduct/AskAboutPro
 import toast from "react-hot-toast";
 import { GetServerSidePropsContext } from "next";
 import { services } from "..";
+import { tabsClasses } from "@mui/material/Tabs";
 
+const description = [
+  "Fabric 1: 100% Polyester",
+  "Fabric 3: 100% Polyester, Lining: 100% Polyester",
+  "Fabric 2: 75% Polyester, 20% Viscose, 5% Elastane",
+  "Fabric 2: 75% Polyester, 20% Viscose, 5% Elastane",
+  "Fabric 3: 100% Polyester, Lining: 100% Polyester",
+  "Fabric 1: 100% Polyester",
+];
 function createData(name: string, feature: string) {
   return { name, feature };
 }
@@ -58,7 +67,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
@@ -124,6 +132,12 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
     setAskModal(true);
   };
 
+  const details = [
+    { title: "Products Type:", detail: product?.category! },
+    { title: "Brand:", detail: product?.brand! },
+    { title: "Availability:", detail: product?.countInStock! },
+    { title: "Description:", detail: product?.description! },
+  ];
   return (
     <>
       <Modal
@@ -154,7 +168,12 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
             />
           </Grid>
           <Grid item xs={12} md={7}>
-            <Typography fontWeight={700} component={"h1"} variant="h4" mb={3}>
+            <Typography
+              fontWeight={700}
+              component={"h1"}
+              mb={3}
+              className="text-[24px] sm:text-[30px] "
+            >
               {product?.name!}
             </Typography>
             <Typography
@@ -183,34 +202,21 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 ({product?.numReviews} Reviews){" "}
               </Typography>
             </Stack>
-            <Typography variant="h6" my={1} fontSize={"18px"} className="">
-              Products Type:
-              <Typography component="span" fontSize={"15px"}>
-                {" "}
-                {product?.category!}{" "}
+            {details.map((item, index) => (
+              <Typography
+                key={index}
+                variant="h6"
+                my={1}
+                fontSize={"18px"}
+                className=""
+              >
+                {item.title}
+                <Typography component="span" fontSize={"15px"}>
+                  {item.detail}
+                </Typography>
               </Typography>
-            </Typography>
-            <Typography variant="h6" my={1} fontSize={"18px"}>
-              Brand:
-              <Typography component="span" fontSize={"15px"}>
-                {" "}
-                {product?.brand!}{" "}
-              </Typography>
-            </Typography>
-            <Typography variant="h6" my={1} fontSize={"18px"}>
-              Availability:
-              <Typography component={"span"} fontSize={"15px"}>
-                {" "}
-                {product?.countInStock!}
-              </Typography>
-            </Typography>
-            <Typography variant="h6" my={1} fontSize={"18px"}>
-              Description:
-              <Typography component={"span"} fontSize={"15px"}>
-                {" "}
-                {product?.description!}
-              </Typography>
-            </Typography>
+            ))}
+
             <Box className="flex flex-row space-x-4 text-[14px]">
               <ButtonBase
                 onClick={shippingHandler}
@@ -227,13 +233,13 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 Ask About This Product
               </ButtonBase>
             </Box>
-            <Box className="flex flex-row space-x-8 w-2/3 mt-8">
+            <Box className="flex flex-row space-x-8 w-full mt-8">
               <Button
                 fullWidth
                 variant="contained"
                 color="primary"
                 onClick={addToCartHandler}
-                className="bg-[#2196f3]"
+                className="bg-[#2196f3] w-max"
               >
                 Add To Cart
               </Button>
@@ -242,7 +248,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 variant="contained"
                 color="primary"
                 onClick={() => wishListHandler(product)}
-                className="bg-[#2196f3]"
+                className="bg-[#2196f3] w-max"
               >
                 Add To Wishlist
               </Button>
@@ -264,7 +270,14 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
           <Tabs
             value={value}
             onChange={handleChange}
-            aria-label="basic tabs example"
+            variant="scrollable"
+            scrollButtons
+            allowScrollButtonsMobile
+            sx={{
+              [`& .${tabsClasses.scrollButtons}`]: {
+                "&.Mui-disabled": { display: "none" },
+              },
+            }}
           >
             <Tab label="Description" id="simple-tab-0" />
             <Tab label="Additional Information" id="simple-tab-1" />
@@ -288,78 +301,22 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 ipsum. Nulla libero. Vivamus pharetra posuere sapien.
               </Typography>
               <Grid container spacing={"10px"}>
-                <Grid
-                  item
-                  xs={6}
-                  className="list-item list-inside text-[#2196f3]"
-                >
-                  <Typography
-                    color={theme.palette.mode === "dark" ? "white" : "black"}
-                    className="inline"
+                {description.map((item: string, index: number) => (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    key={index}
+                    className="list-item list-inside text-[#2196f3]"
                   >
-                    Fabric 1: 100% Polyester
-                  </Typography>
-                </Grid>
-                <Grid
-                  item
-                  xs={6}
-                  className="list-item list-inside text-[#2196f3]"
-                >
-                  <Typography
-                    color={theme.palette.mode === "dark" ? "white" : "black"}
-                    className="inline"
-                  >
-                    Fabric 3: 100% Polyester, Lining: 100% Polyester{" "}
-                  </Typography>
-                </Grid>
-                <Grid
-                  item
-                  xs={6}
-                  className="list-item list-inside text-[#2196f3]"
-                >
-                  <Typography
-                    color={theme.palette.mode === "dark" ? "white" : "black"}
-                    className="inline"
-                  >
-                    Fabric 2: 75% Polyester, 20% Viscose, 5% Elastane
-                  </Typography>
-                </Grid>
-                <Grid
-                  item
-                  xs={6}
-                  className="list-item list-inside text-[#2196f3]"
-                >
-                  <Typography
-                    color={theme.palette.mode === "dark" ? "white" : "black"}
-                    className="inline"
-                  >
-                    Fabric 2: 75% Polyester, 20% Viscose, 5% Elastane
-                  </Typography>
-                </Grid>
-                <Grid
-                  item
-                  xs={6}
-                  className="list-item list-inside text-[#2196f3]"
-                >
-                  <Typography
-                    color={theme.palette.mode === "dark" ? "white" : "black"}
-                    className="inline"
-                  >
-                    Fabric 3: 100% Polyester, Lining: 100% Polyester
-                  </Typography>
-                </Grid>
-                <Grid
-                  item
-                  xs={6}
-                  className="list-item list-inside text-[#2196f3]"
-                >
-                  <Typography
-                    color={theme.palette.mode === "dark" ? "white" : "black"}
-                    className="inline"
-                  >
-                    Fabric 1: 100% Polyester
-                  </Typography>
-                </Grid>
+                    <Typography
+                      color={theme.palette.mode === "dark" ? "white" : "black"}
+                      className="inline"
+                    >
+                      {item}
+                    </Typography>
+                  </Grid>
+                ))}
               </Grid>
             </Box>
           )}
@@ -381,7 +338,9 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                           component="th"
                           scope="row"
                           align="left"
-                          width={"500px"}
+                          sx={{
+                            width: { xs: 120, sm: 500 },
+                          }}
                         >
                           {row.name}
                         </TableCell>
@@ -450,11 +409,27 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
           )}
         </div>
 
-        <Typography textAlign={"center"} my={"35px"} fontSize={"24px"}>
+        <Typography className="text-[24px] sm:text-[30px] my-[35px]  text-center">
           Our Services
         </Typography>
         <SwiperSlider
-          {...{ slidesPerView: 4, spaceBetween: 30 }}
+          {...{
+            breakpoints: {
+              1024: {
+                slidesPerView: 4,
+              },
+              768: {
+                slidesPerView: 3,
+              },
+              641: {
+                slidesPerView: 2,
+              },
+              640: {
+                slidesPerView: 1,
+              },
+            },
+            spaceBetween: 30,
+          }}
           items={services.map((item, index) => (
             <SwiperSlide key={item.text + index}>
               <Box className="flex flex-col justify-center items-center ">
@@ -467,12 +442,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
           ))}
         />
       </Container>
-      <Typography
-        textAlign={"center"}
-        mb={"35px"}
-        mt={"55px"}
-        fontSize={"24px"}
-      >
+      <Typography className="text-[24px] sm:text-[30px] mt-[80px] mb-[35px] text-center">
         FOLLOW US ON INSTAGRAM
       </Typography>
       <SwiperSlider

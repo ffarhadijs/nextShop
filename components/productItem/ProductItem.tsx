@@ -76,11 +76,11 @@ export default function ProductItem({ product }: { product: ProductType }) {
         <QuickView product={quickProduct} />
       </Modal>
       <Card className="group/card">
-        <CardActionArea>
+        <CardActionArea className=" h-40 sm:h-48 md:h-56">
           <Box className="group/cardAction overflow-hidden relative ">
             <Link href={`product/${product.slug}`}>
               <CardMedia
-                className="duration-200 group-hover/cardAction:scale-110 h-64"
+                className="duration-200 group-hover/cardAction:scale-110 h-40 sm:h-48 md:h-56"
                 component="img"
                 image={product.image}
                 alt={product.name}
