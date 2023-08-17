@@ -6,30 +6,24 @@ import { ProductsType } from "../../types/products.type";
 import connectDB from "../../utils/connectDB";
 import {
   Box,
-  FormControlLabel,
-  Slider,
   Grid,
   IconButton,
   InputLabel,
   MenuItem,
-  Radio,
-  RadioGroup,
   Select,
   Typography,
   useTheme,
-  TextField,
   Pagination,
   Container,
   Drawer,
-  Divider,
-  Button,
 } from "@mui/material";
 import { TbColumns1, TbColumns2, TbColumns3 } from "react-icons/tb";
 import { useRouter } from "next/router";
 import SwiperSlider from "../../components/swiper/SwiperSlider";
 import { SwiperSlide } from "swiper/react";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import { AiOutlineMenu } from "react-icons/ai";
+import { BsInstagram } from "react-icons/bs";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { FilterPanel } from "../../components/filterPanel/FilterPanel";
 
 const productPerPage = 6;
 
@@ -38,117 +32,6 @@ const views = [
   { icon: <TbColumns2 />, columns: 6 },
   { icon: <TbColumns3 />, columns: 4 },
 ];
-export function FilterPanel({
-  categoriesList,
-  maxPrice,
-  minPrice,
-}: {
-  categoriesList: string[];
-  maxPrice: number;
-  minPrice: number;
-}) {
-  const { query, push, pathname } = useRouter();
-  const [queryValue, setQueryValue] = useState<any>(query.searchQuery || "");
-  const [categoryValue, setCategoryValue] = useState<any>(query.category || "");
-  const [priceValue, setPriceValue] = useState<any>(
-    [query.min, query.max] || [minPrice, maxPrice]
-  );
-
-  const filterHandler = () => {
-    push({
-      pathname,
-      query,
-    });
-  };
-  const resetFilterHandler = () => {
-    push({
-      pathname: pathname,
-      query: null,
-    });
-  };
-
-  return (
-    <>
-      <Box>
-        {" "}
-        <Typography className="text-[18px] font-[600]">
-          Filter Panel
-        </Typography>{" "}
-      </Box>
-      <Box>
-        <Box>
-          <Typography className="mt-10 text-[16px] font-[600]">
-            Product Name:
-          </Typography>
-          <Divider className="mb-5" />
-          <TextField
-            onChange={(e) => {
-              query.searchQuery = e.target.value;
-              setQueryValue(e.target.value);
-            }}
-            size="small"
-            value={queryValue}
-            label="Search"
-            fullWidth
-          />
-        </Box>
-        <Box>
-          <Typography className=" mt-10 text-[16px] font-[600]">
-            Category:
-          </Typography>
-          <Divider className="mb-5" />
-          <RadioGroup defaultValue="All" value={categoryValue}>
-            {["All", ...categoriesList].map((item: string, index: number) => (
-              <FormControlLabel
-                value={item}
-                onChange={(event) => {
-                  setCategoryValue((event.target as HTMLInputElement).value);
-                  query.category = (event.target as HTMLInputElement).value;
-                }}
-                control={<Radio size="small" />}
-                label={item}
-                key={item + index}
-              />
-            ))}
-          </RadioGroup>
-        </Box>
-        <Box>
-          <Typography className="mt-10 text-[16px] font-[600]">
-            Price:
-          </Typography>
-          <Divider className="mb-5" />
-          <Slider
-            defaultValue={[minPrice, maxPrice]}
-            value={priceValue}
-            valueLabelDisplay="auto"
-            max={maxPrice}
-            step={25}
-            min={minPrice}
-            onChange={(_, value: any) => {
-              setPriceValue(value);
-              query.min = String(value[0]);
-              query.max = String(value[1]);
-            }}
-          />
-        </Box>
-        <Button
-          onClick={filterHandler}
-          variant="contained"
-          className="bg-[#2196f3] "
-        >
-          Filter
-        </Button>
-        <Button
-          onClick={resetFilterHandler}
-          variant="contained"
-          className="bg-[#2196f3] "
-        >
-          Reset
-        </Button>
-      </Box>
-    </>
-  );
-}
 
 export default function Shop({
   products,
@@ -181,7 +64,6 @@ export default function Shop({
     });
   };
 
-  // const openDrawerHandler = () => {};
   return (
     <>
       <Container maxWidth="lg">
@@ -193,6 +75,7 @@ export default function Shop({
             sx: {
               width: "260px",
               padding: "24px",
+              position: "relative",
             },
           }}
         >
@@ -200,7 +83,15 @@ export default function Shop({
             categoriesList={categoriesList}
             maxPrice={maxPrice}
             minPrice={minPrice}
+            setOpenDrawer={setOpenDrawer}
+            openDrawer={openDrawer}
           />
+          <IconButton
+            onClick={() => setOpenDrawer(false)}
+            className="absolute top-4 right-4"
+          >
+            <AiOutlineClose />
+          </IconButton>
         </Drawer>
         <Grid container>
           <Grid
@@ -220,7 +111,7 @@ export default function Shop({
               minPrice={minPrice}
             />
           </Grid>
-          <Grid container sm={9} xs={12} className="my-5 items-end">
+          <Grid container sm={9} xs={12} className="my-5 items-start">
             <Grid
               container
               xs={4}
@@ -306,9 +197,7 @@ export default function Shop({
                 <MenuItem value={"oldest"}>Oldest</MenuItem>
                 <MenuItem value={"newest"}>Newest</MenuItem>
                 <MenuItem value={"price-lowToHigh"}>price:Low to High</MenuItem>
-                <MenuItem value={"price-highToLow"}>
-                  price:Hight to Low
-                </MenuItem>
+                <MenuItem value={"price-highToLow"}>price:High to Low</MenuItem>
                 <MenuItem value={"rated"}>Top Rated</MenuItem>
               </Select>
             </Grid>
@@ -328,7 +217,7 @@ export default function Shop({
                 <Grid
                   item
                   xs={12}
-                  className="flex flex-row justify-center mx-auto"
+                  className="flex flex-row justify-center mx-auto mt-8"
                 >
                   <Pagination
                     className="mx-auto"
@@ -346,7 +235,6 @@ export default function Shop({
           </Grid>
         </Grid>
       </Container>
-
       <Box>
         <Typography
           textAlign={"center"}
@@ -365,7 +253,7 @@ export default function Shop({
                 className={`bg-[url('/images/instagram/img${item}.jpg')] bg-cover bg-no-repeat h-[200px] group`}
               >
                 <Box className="w-full h-full bg-black/0 group-hover:bg-black/50 relative flex flex-col justify-center items-center transition-all duration-500">
-                  <InstagramIcon className="opacity-0 group-hover:opacity-100 absolute transition-all duration-500 text-[36px]" />
+                  <BsInstagram className="opacity-0 group-hover:opacity-100 absolute transition-all duration-500 text-[36px]" />
                 </Box>
               </Box>
             </SwiperSlide>

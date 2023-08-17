@@ -14,17 +14,19 @@ import {
   useTheme,
 } from "@mui/material";
 import Link from "next/link";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { FaSun } from "react-icons/fa";
+import { BsFillMoonStarsFill } from "react-icons/bs";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { Store } from "../../utils/Store";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import LogoutIcon from "@mui/icons-material/Logout";
-import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import {
+  MdAccountCircle,
+  MdOutlineListAlt,
+  MdOutlineLogout,
+  MdOutlineDashboard,
+  MdFavoriteBorder,
+} from "react-icons/md";
+import { IoBagHandleSharp } from "react-icons/io5";
 import { useGetUser } from "../../hooks/users/user.hooks";
 import toast from "react-hot-toast";
 
@@ -104,9 +106,9 @@ export default function Header({
                 className="hover:bg-inherit"
               >
                 {theme.palette.mode === "dark" ? (
-                  <Brightness7Icon />
+                  <FaSun size={24}/>
                 ) : (
-                  <Brightness4Icon />
+                  <BsFillMoonStarsFill size={24} />
                 )}
               </IconButton>
               <Link href="/cart">
@@ -114,7 +116,7 @@ export default function Header({
                   badgeContent={state?.cart.cartItems.length}
                   color="primary"
                 >
-                  <LocalMallOutlinedIcon />
+                  <IoBagHandleSharp size={24} />
                 </Badge>
               </Link>
               <Link href={"/favorite"}>
@@ -122,7 +124,7 @@ export default function Header({
                   badgeContent={state?.wishList.withListItems.length}
                   color="primary"
                 >
-                  <FavoriteBorderIcon />
+                  <MdFavoriteBorder size={24}/>
                 </Badge>
               </Link>
 
@@ -146,28 +148,28 @@ export default function Header({
                   >
                     <MenuItem onClick={profileHandler}>
                       <ListItemIcon>
-                        <AccountCircleIcon fontSize={"small"} />
+                        <MdAccountCircle fontSize={20} />
                       </ListItemIcon>
                       <ListItemText>Profile</ListItemText>
                     </MenuItem>
                     {user?.data.data.isAdmin ? (
                       <MenuItem onClick={dashboardHandler}>
                         <ListItemIcon>
-                          <DashboardIcon fontSize={"small"} />
+                          <MdOutlineDashboard fontSize={20} />
                         </ListItemIcon>
                         <ListItemText> Admin Dashboard </ListItemText>
                       </MenuItem>
                     ) : (
                       <MenuItem onClick={orderHandler}>
                         <ListItemIcon>
-                          <ListAltIcon fontSize={"small"} />
+                          <MdOutlineListAlt fontSize={20} />
                         </ListItemIcon>
                         <ListItemText> Orders List</ListItemText>
                       </MenuItem>
                     )}
                     <MenuItem onClick={logoutHandler}>
                       <ListItemIcon>
-                        <LogoutIcon fontSize={"small"} />
+                        <MdOutlineLogout fontSize={20} />
                       </ListItemIcon>
                       <ListItemText> Logout </ListItemText>
                     </MenuItem>

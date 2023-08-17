@@ -1,8 +1,8 @@
 import { Container, Typography, Button, Grid, TextField, useTheme } from "@mui/material";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import PhoneInTalkOutlinedIcon from "@mui/icons-material/PhoneInTalkOutlined";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import Link from "next/link";
+import {IoLocationOutline} from "react-icons/io5"
+import {BiSolidPhoneCall} from "react-icons/bi"
+import {AiOutlineMail} from "react-icons/ai"
 
 const quickLinks = [
   { link: "About Us" },
@@ -41,7 +41,7 @@ export default function Footer() {
               One of the most popular on the web is shopping.
             </Typography>
             <Typography className="text-[14px] w-fit flex flex-row items-start">
-              <LocationOnOutlinedIcon className="text-[18px] mr-2" />
+              <IoLocationOutline className="text-[18px] mr-2" />
               <Link
                 href={"#"}
                 className="hover:text-[#2196f3] transition-colors duration-500"
@@ -50,7 +50,7 @@ export default function Footer() {
               </Link>
             </Typography>
             <Typography className="text-[14px] flex flex-row items-start">
-              <PhoneInTalkOutlinedIcon className="text-[18px] mr-2" />
+              <BiSolidPhoneCall className="text-[18px] mr-2" />
               <Link
                 href={"tel:+01 321 654 214"}
                 className="hover:text-[#2196f3] transition-colors duration-500"
@@ -59,7 +59,7 @@ export default function Footer() {
               </Link>
             </Typography>
             <Typography className="text-[14px] flex flex-row items-start">
-              <EmailOutlinedIcon className="text-[18px] mr-2" />
+              <AiOutlineMail className="text-[18px] mr-2" />
               <Link
                 href={"mailto:rb0214192@gmail.com"}
                 className="hover:text-[#2196f3] transition-colors duration-500"

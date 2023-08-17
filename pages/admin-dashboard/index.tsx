@@ -1,10 +1,10 @@
 import { CircularProgress, Paper, Typography, Grid } from "@mui/material";
 import { ReactNode, useState } from "react";
 import Link from "next/link";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import Diversity1Icon from "@mui/icons-material/Diversity1";
-import LocalMallIcon from "@mui/icons-material/LocalMall";
-import InterestsIcon from "@mui/icons-material/Interests";
+import { HiMiniCurrencyDollar } from "react-icons/hi2";
+import { FaUsers } from "react-icons/fa";
+import { RiShoppingBag3Fill } from "react-icons/ri";
+import { GiClothes } from "react-icons/gi";
 import { useRouter } from "next/router";
 import { useAllOrders } from "../../hooks/orders/orders.hooks";
 import { useGetProductsList } from "../../hooks/products/products.hooks";
@@ -81,7 +81,7 @@ const AdminDashboard = ({ children }: { children: ReactNode }) => {
             <Grid container spacing="20px">
               <Grid item xs={3}>
                 <Paper elevation={2} className="text-center py-8">
-                  <MonetizationOnIcon className="text-[50px] mb-3" />
+                  <HiMiniCurrencyDollar className="text-[50px] mb-3 mx-auto" />
                   <Typography className="text-[20px] font-bold mb-2">
                     Sales
                   </Typography>
@@ -101,7 +101,7 @@ const AdminDashboard = ({ children }: { children: ReactNode }) => {
               </Grid>
               <Grid item xs={3}>
                 <Paper className="text-center py-8">
-                  <Diversity1Icon className="text-[50px] mb-3" />
+                  <FaUsers className="text-[50px] mb-3 mx-auto" />
                   <Typography className="text-[20px] font-bold mb-2">
                     Users
                   </Typography>
@@ -116,7 +116,7 @@ const AdminDashboard = ({ children }: { children: ReactNode }) => {
               </Grid>
               <Grid item xs={3}>
                 <Paper className="text-center py-8">
-                  <LocalMallIcon className="text-[50px] mb-3" />
+                  <RiShoppingBag3Fill className="text-[50px] mb-3 mx-auto" />
                   <Typography className="text-[20px] font-bold mb-2">
                     Orders
                   </Typography>
@@ -131,7 +131,7 @@ const AdminDashboard = ({ children }: { children: ReactNode }) => {
               </Grid>
               <Grid item xs={3}>
                 <Paper className="text-center py-8">
-                  <InterestsIcon className="text-[50px] mb-3" />
+                  <GiClothes className="text-[50px] mb-3 mx-auto" />
                   <Typography className="text-[20px] font-bold mb-2">
                     Products
                   </Typography>

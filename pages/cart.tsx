@@ -22,8 +22,7 @@ import { Store } from "../utils/Store";
 import { ProductType } from "../types/product.type";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { MdDeleteOutline, MdOutlineAddShoppingCart } from "react-icons/md";
 import { useGetUser } from "../hooks/users/user.hooks";
 
 const Cart = () => {
@@ -152,7 +151,7 @@ const Cart = () => {
                         <TableCell align="right" colSpan={1}>
                           <Tooltip title="Delete">
                             <IconButton onClick={() => removeHandler(item)}>
-                              <DeleteOutlineOutlinedIcon color="error" />
+                              <MdDeleteOutline color="red" />
                             </IconButton>
                           </Tooltip>
                         </TableCell>
@@ -189,7 +188,7 @@ const Cart = () => {
           <Typography className="text-2xl font-bold">
             Add some products to your cart
           </Typography>
-          <AddShoppingCartIcon className="mx-auto my-8 text-[50px]" />
+          <MdOutlineAddShoppingCart className="mx-auto my-8 text-[50px]" />
         </Box>
       )}
     </>

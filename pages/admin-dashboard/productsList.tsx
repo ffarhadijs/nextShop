@@ -12,9 +12,8 @@ import {
 } from "@mui/x-data-grid";
 import { v4 } from "uuid";
 import { Modal, Button } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
+import { MdEdit } from "react-icons/md";
+import { MdDeleteOutline } from "react-icons/md";
 import AddOrEditProduct from "../../components/addOrEditProduct/AddOrEditProduct";
 import {
   useDeleteProduct,
@@ -27,7 +26,6 @@ import { ProductsType } from "../../types/products.type";
 import { ProductType } from "../../types/product.type";
 import { rowProductType } from "../../types/rowProduct.type";
 
-
 function EditToolbar() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -35,7 +33,7 @@ function EditToolbar() {
 
   return (
     <GridToolbarContainer>
-      <Button variant="outlined" startIcon={<AddIcon />} onClick={handleOpen}>
+      <Button variant="outlined" onClick={handleOpen}>
         Add Product
       </Button>
       <Modal open={open} onClose={handleClose}>
@@ -172,14 +170,14 @@ export default function ProductsList() {
       getActions: (params) => [
         <GridActionsCellItem
           key={1}
-          icon={<EditIcon />}
+          icon={<MdEdit fontSize={18}/>}
           label="Edit"
           onClick={editHandler(params)}
           showInMenu
         />,
         <GridActionsCellItem
           key={2}
-          icon={<DeleteIcon />}
+          icon={<MdDeleteOutline fontSize={18}/>}
           label="Delete"
           onClick={deleteHandler(params)}
           showInMenu

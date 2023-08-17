@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Grid,
-  Stack,
-  Container,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, Stack, Container, Typography } from "@mui/material";
 import Link from "next/link";
 import Product from "../models/Product";
 import connectDB from "../utils/connectDB";
@@ -19,45 +12,44 @@ import Image from "next/image";
 import c1 from "../public/images/carousel (1).jpg";
 import c2 from "../public/images/carousel (2).jpg";
 import c3 from "../public/images/carousel (3).jpg";
-import AssignmentReturnOutlinedIcon from "@mui/icons-material/AssignmentReturnOutlined";
-import PaymentOutlinedIcon from "@mui/icons-material/PaymentOutlined";
-import SupportAgentOutlinedIcon from "@mui/icons-material/SupportAgentOutlined";
-import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
-import DiscountOutlinedIcon from "@mui/icons-material/DiscountOutlined";
-import PersonPinCircleOutlinedIcon from "@mui/icons-material/PersonPinCircleOutlined";
-import InstagramIcon from "@mui/icons-material/Instagram";
+import { GiReturnArrow } from "react-icons/gi";
+import { MdPayment } from "react-icons/md";
+import { BiSupport } from "react-icons/bi";
+import { TbWorldPin } from "react-icons/tb";
+import { MdOutlineDiscount } from "react-icons/md";
+import { FiPackage } from "react-icons/fi";
+import { BsInstagram } from "react-icons/bs";
 import SwiperSlider from "../components/swiper/SwiperSlider";
 import ProductItem from "../components/productItem/ProductItem";
 
-const services = [
+export const services = [
   {
     text: "Easy Return Policy",
-    icon: <AssignmentReturnOutlinedIcon style={{ fontSize: "50px" }} />,
+    icon: <GiReturnArrow fontSize={50} />,
   },
   {
     text: "Secure Payment Methods",
-    icon: <PaymentOutlinedIcon style={{ fontSize: "50px" }} />,
+    icon: <MdPayment fontSize={50} />,
   },
   {
     text: "24/7 Customer Support",
-    icon: <SupportAgentOutlinedIcon style={{ fontSize: "50px" }} />,
+    icon: <BiSupport fontSize={50} />,
   },
   {
     text: "Free Shipping World Wide",
-    icon: <LocalShippingOutlinedIcon style={{ fontSize: "50px" }} />,
+    icon: <TbWorldPin fontSize={50} />,
   },
   {
     text: "Weekend Discound Coupon",
-    icon: <DiscountOutlinedIcon style={{ fontSize: "50px" }} />,
+    icon: <MdOutlineDiscount fontSize={50} />,
   },
   {
     text: "Track Your Package",
-    icon: <PersonPinCircleOutlinedIcon style={{ fontSize: "50px" }} />,
+    icon: <FiPackage fontSize={50} />,
   },
 ];
 
 export default function Home({ products }: { products: ProductsType }) {
-  
   return (
     <Box>
       <Swiper
@@ -270,7 +262,7 @@ export default function Home({ products }: { products: ProductsType }) {
               className={`bg-[url('/images/instagram/img${item}.jpg')] bg-cover bg-no-repeat h-[200px] group`}
             >
               <Box className="w-full h-full bg-black/0 group-hover:bg-black/50 relative flex flex-col justify-center items-center transition-all duration-500">
-                <InstagramIcon className="opacity-0 group-hover:opacity-100 absolute transition-all duration-500 text-[36px]" />
+                <BsInstagram className="opacity-0 group-hover:opacity-100 absolute transition-all duration-500 text-[36px]" />
               </Box>
             </Box>
           </SwiperSlide>

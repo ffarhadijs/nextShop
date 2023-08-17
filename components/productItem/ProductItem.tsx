@@ -13,10 +13,12 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import { ProductType } from "../../types/product.type";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import SearchIcon from "@mui/icons-material/Search";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import {
+  MdFavoriteBorder,
+  MdFavorite,
+  MdOutlineAddShoppingCart,
+} from "react-icons/md";
+import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import toast from "react-hot-toast";
 import { MouseEvent, useContext, useState } from "react";
 import { Store } from "../../utils/Store";
@@ -87,32 +89,32 @@ export default function ProductItem({ product }: { product: ProductType }) {
             <Box className="flex flex-col w-auto h-auto space-y-2 absolute top-2 right-0 opacity-0 group-hover/cardAction:right-4 group-hover/cardAction:opacity-100 transition-all duration-300">
               <Tooltip title="Add to Wishlist">
                 <Box
-                  className="text-gray-500 bg-white rounded-full hover:bg-[#2196f3] hover:text-white p-[1px] transition-colors duration-500"
+                  className="text-gray-500 bg-white rounded-full w-max h-auto flex items-center justify-center hover:bg-[#2196f3] hover:text-white p-[2px] transition-colors duration-500"
                   onClick={(e) => wishListHandler(e, product)}
                 >
                   {state.wishList.withListItems.findIndex(
                     (item) => item._id === product._id
                   ) === -1 ? (
-                    <FavoriteBorderIcon />
+                    <MdFavoriteBorder size={22} />
                   ) : (
-                    <FavoriteIcon color="error" />
+                    <MdFavorite color="red" size={22} />
                   )}
                 </Box>
               </Tooltip>
               <Tooltip title="Add to Cart">
                 <Box
-                  className="text-gray-500 bg-white rounded-full hover:bg-[#2196f3] hover:text-white p-[1px] transition-colors duration-500"
+                  className="text-gray-500 bg-white rounded-full w-max h-auto flex items-center justify-center hover:bg-[#2196f3] hover:text-white p-[2px] transition-colors duration-500"
                   onClick={(e) => addToCartHandler(product, e)}
                 >
-                  <AddShoppingCartIcon />
+                  <MdOutlineAddShoppingCart size={22} />
                 </Box>
               </Tooltip>
               <Tooltip title="Quick View">
                 <Box
-                  className="text-gray-500 bg-white rounded-full hover:bg-[#2196f3] hover:text-white p-[1px] transition-colors duration-500"
+                  className="text-gray-500 bg-white rounded-full w-max h-auto flex items-center justify-center hover:bg-[#2196f3] hover:text-white p-[2px] transition-colors duration-500"
                   onClick={(e) => quickViewHandler(e, product)}
                 >
-                  <SearchIcon />
+                  <HiMiniMagnifyingGlass size={22} />
                 </Box>
               </Tooltip>
             </Box>

@@ -9,9 +9,8 @@ import {
   GridRowParams,
 } from "@mui/x-data-grid";
 import { v4 } from "uuid";
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
+import { MdDeleteOutline } from "react-icons/md";
 import { useDeleteUser, useGetUsersList } from "../../hooks/users/user.hooks";
 import DeleteConfirmation from "../../components/modals/deleteConfirmation/DeleteConfirmation";
 import toast from "react-hot-toast";
@@ -80,7 +79,11 @@ export default function UsersList() {
       renderCell: (params: GridRenderCellParams) => {
         return (
           <Box>
-            {params.row.isAdmin === false ? <CloseIcon /> : <CheckIcon />}
+            {params.row.isAdmin === false ? (
+              <AiOutlineClose className="text-[20px]"/>
+            ) : (
+              <AiOutlineCheck className="text-[20px]"/>
+            )}
           </Box>
         );
       },
@@ -108,7 +111,7 @@ export default function UsersList() {
       getActions: (params) => [
         <GridActionsCellItem
           key={2}
-          icon={<DeleteIcon />}
+          icon={<MdDeleteOutline className="text-[20px]" color="red"/>}
           label="Delete"
           onClick={deleteHandler(params)}
           hidden={params.row.isAdmin === true}

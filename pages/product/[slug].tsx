@@ -26,56 +26,23 @@ import { ProductType } from "../../types/product.type";
 import { Store } from "../../utils/Store";
 import { useRouter } from "next/router";
 import { grey } from "@mui/material/colors";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import { MdOutlineLocalShipping, MdOutlineEmail } from "react-icons/md";
 import { styled } from "@mui/material/styles";
 import { SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import AssignmentReturnOutlinedIcon from "@mui/icons-material/AssignmentReturnOutlined";
-import PaymentOutlinedIcon from "@mui/icons-material/PaymentOutlined";
-import SupportAgentOutlinedIcon from "@mui/icons-material/SupportAgentOutlined";
-import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
-import DiscountOutlinedIcon from "@mui/icons-material/DiscountOutlined";
-import PersonPinCircleOutlinedIcon from "@mui/icons-material/PersonPinCircleOutlined";
+import { BsInstagram } from "react-icons/bs";
 import SwiperSlider from "../../components/swiper/SwiperSlider";
 import Shipping from "../../components/modals/shipping/Shipping";
 import AskAboutProduct from "../../components/modals/askAboutProduct/AskAboutProduct";
 import toast from "react-hot-toast";
 import { GetServerSidePropsContext } from "next";
+import { services } from "..";
 
 function createData(name: string, feature: string) {
   return { name, feature };
 }
-
-const services = [
-  {
-    text: "Easy Return Policy",
-    icon: <AssignmentReturnOutlinedIcon style={{ fontSize: "50px" }} />,
-  },
-  {
-    text: "Secure Payment Methods",
-    icon: <PaymentOutlinedIcon style={{ fontSize: "50px" }} />,
-  },
-  {
-    text: "24/7 Customer Support",
-    icon: <SupportAgentOutlinedIcon style={{ fontSize: "50px" }} />,
-  },
-  {
-    text: "Free Shipping World Wide",
-    icon: <LocalShippingOutlinedIcon style={{ fontSize: "50px" }} />,
-  },
-  {
-    text: "Weekend Discound Coupon",
-    icon: <DiscountOutlinedIcon style={{ fontSize: "50px" }} />,
-  },
-  {
-    text: "Track Your Package",
-    icon: <PersonPinCircleOutlinedIcon style={{ fontSize: "50px" }} />,
-  },
-];
 
 const rows = [
   createData("Color", "Blue, Purple, White"),
@@ -249,14 +216,14 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 onClick={shippingHandler}
                 className="flex flex-row items-start"
               >
-                <LocalShippingIcon className="mr-1" />
+                <MdOutlineLocalShipping className="mr-1 text-[20px]" />
                 Shipping
               </ButtonBase>
               <ButtonBase
                 onClick={askProductHandler}
                 className="flex flex-row items-start"
               >
-                <MailOutlineIcon className="mr-1" />
+                <MdOutlineEmail className="mr-1 text-[20px]" />
                 Ask About This Product
               </ButtonBase>
             </Box>
@@ -274,7 +241,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={()=>wishListHandler(product)}
+                onClick={() => wishListHandler(product)}
                 className="bg-[#2196f3]"
               >
                 Add To Wishlist
@@ -516,7 +483,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
               className={`bg-[url('/images/instagram/img${item}.jpg')] bg-cover bg-no-repeat h-[200px] group`}
             >
               <Box className="w-full h-full bg-black/0 group-hover:bg-black/50 relative flex flex-col justify-center items-center transition-all duration-500">
-                <InstagramIcon className="opacity-0 group-hover:opacity-100 absolute transition-all duration-500 text-[36px]" />
+                <BsInstagram className="opacity-0 group-hover:opacity-100 absolute transition-all duration-500 text-[36px]" />
               </Box>
             </Box>
           </SwiperSlide>

@@ -17,8 +17,7 @@ import React, { useContext } from "react";
 import { Store } from "../../utils/Store";
 import { ProductType } from "../../types/product.type";
 import Image from "next/image";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import {MdDeleteOutline,MdFavoriteBorder} from "react-icons/md";
 
 const Cart = () => {
   const { state, dispatch } = useContext(Store);
@@ -127,7 +126,7 @@ const Cart = () => {
                         <TableCell align="right" colSpan={1}>
                           <Tooltip title="Delete">
                             <IconButton onClick={() => removeHandler(item)}>
-                              <DeleteOutlineOutlinedIcon color="error" />
+                              <MdDeleteOutline color="red" />
                             </IconButton>
                           </Tooltip>
                         </TableCell>
@@ -144,7 +143,7 @@ const Cart = () => {
           <Typography className="text-2xl font-bold">
             Add some products to your wish list
           </Typography>
-          <FavoriteBorderIcon className="mx-auto my-8 text-[50px]" />
+          <MdFavoriteBorder className="mx-auto my-8 text-[50px]" />
         </Box>
       )}
     </>

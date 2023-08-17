@@ -22,7 +22,7 @@ import {
 import { Store } from "../utils/Store";
 import { ProductType } from "../types/product.type";
 import Image from "next/image";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import {MdDeleteOutline} from "react-icons/md";
 import { useCreateOrder } from "../hooks/orders/orders.hooks";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useRouter } from "next/router";
@@ -225,7 +225,7 @@ const Shipping = () => {
                       <TableCell align="right" colSpan={1}>
                         <Tooltip title="Delete">
                           <IconButton onClick={() => removeHandler(item)}>
-                            <DeleteOutlineOutlinedIcon color="error" />
+                            <MdDeleteOutline color="error" />
                           </IconButton>
                         </Tooltip>
                       </TableCell>
