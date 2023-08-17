@@ -211,6 +211,8 @@ export default function Home({ products }: { products: ProductsType }) {
               variant="contained"
               color={"primary"}
               className="mt-4 bg-[#2196f3]"
+              LinkComponent={Link}
+              href="/shop"
             >
               Discover Now
             </Button>

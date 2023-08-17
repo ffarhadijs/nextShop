@@ -17,27 +17,27 @@ export default function DeleteConfirmation({
 }) {
   return (
     <Box
+      width={{ xs: 350, sm: 400 }}
       sx={{
         position: "absolute",
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: 400,
         bgcolor: "background.paper",
         border: "2px solid #000",
         boxShadow: 24,
         p: 4,
       }}
     >
-      <Typography fontSize={"16px"} fontWeight={"700"} mb={"10px"}>
+      <Typography fontSize={"18px"} fontWeight={"700"} mb={"24px"}>
         {title}
       </Typography>
       <Typography>{text}</Typography>
       <Stack
         direction="row"
         justifyContent={"end"}
-        mt={"20px"}
-        spacing={"10px"}
+        mt={"30px"}
+        spacing={"15px"}
       >
         <Button
           onClick={() => setOpen(false)}

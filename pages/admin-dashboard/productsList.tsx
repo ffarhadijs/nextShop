@@ -14,7 +14,7 @@ import { v4 } from "uuid";
 import { Modal, Button } from "@mui/material";
 import { MdEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
-import AddOrEditProduct from "../../components/addOrEditProduct/AddOrEditProduct";
+import AddOrEditProduct from "../../components/modals/addOrEditProduct/AddOrEditProduct";
 import {
   useDeleteProduct,
   useGetProductsList,

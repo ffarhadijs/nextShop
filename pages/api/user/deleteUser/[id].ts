@@ -40,7 +40,6 @@ export default async function handler(
   }
 
   const deleteUser = await User.deleteOne({ _id: id });
-  console.log(deleteUser,"deleteUser");
   if (deleteUser.deletedCount === 1) {
     return res.status(201).json({
       status: "success",

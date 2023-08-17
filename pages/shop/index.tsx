@@ -236,12 +236,7 @@ export default function Shop({
         </Grid>
       </Container>
       <Box>
-        <Typography
-          textAlign={"center"}
-          mb={"35px"}
-          mt={"80px"}
-          fontSize={"24px"}
-        >
+        <Typography className="text-center mb-[35px] mt-[80px] text-[24px] sm:text-[30px]">
           FOLLOW US ON INSTAGRAM
         </Typography>
 

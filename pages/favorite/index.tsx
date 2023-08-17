@@ -33,8 +33,8 @@ const Cart = () => {
           <Grid item xs={12}>
             <Card component={Paper} sx={{ padding: 2, marginY: 4 }}>
               <TableContainer>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
+                <Table sx={{minWidth:"800px"}}>
+                  <TableHead >
                     <TableRow>
                       <TableCell colSpan={2} className="font-bold text-[16px]">
                         Product
@@ -71,7 +71,7 @@ const Cart = () => {
                       <TableCell
                         align="left"
                         colSpan={1}
-                        className="font-bold text-[16px]"
+                        className="font-bold text-[16px] w-max"
                       >
                         Count In Stock
                       </TableCell>

@@ -225,7 +225,7 @@ const Shipping = () => {
                       <TableCell align="right" colSpan={1}>
                         <Tooltip title="Delete">
                           <IconButton onClick={() => removeHandler(item)}>
-                            <MdDeleteOutline color="error" />
+                            <MdDeleteOutline color="red" />
                           </IconButton>
                         </Tooltip>
                       </TableCell>

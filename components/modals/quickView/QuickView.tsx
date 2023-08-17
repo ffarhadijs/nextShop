@@ -44,7 +44,7 @@ export default function QuickView({ product }: { product: any }) {
   };
   return (
     <Box
-    width={{xs:350 ,sm:500 ,md:800}}
+      width={{ xs: 350, sm: 500, md: 800 }}
       className={` absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  border-[2px] border-solid border-black shadow-lg `}
       sx={{
         bgcolor: "background.paper",

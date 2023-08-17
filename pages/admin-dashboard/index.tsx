@@ -16,30 +16,16 @@ import { ProductsType } from "../../types/products.type";
 
 const AdminDashboard = ({ children }: { children: ReactNode }) => {
   const { route } = useRouter();
-  const [orders, setOrders] = useState<OrdersType>([]);
-  const [users, setUsers] = useState<usersType>([]);
-  const [products, setProducts] = useState<ProductsType>([]);
-  const { isLoading: ordersLoading } = useAllOrders({
-    onSuccess: (data: any) => {
-      setOrders(data?.data?.data);
-    },
-  });
+  const { isLoading: ordersLoading, data: ordersList } = useAllOrders();
 
-  const { isLoading: productsLoading } = useGetProductsList({
-    onSuccess: (data: any) => {
-      setProducts(data?.data.data);
-    },
-  });
+  const { isLoading: productsLoading, data: productsList } =
+    useGetProductsList();
 
-  const { isLoading: usersLoading } = useGetUsersList({
-    onSuccess: (data: any) => {
-      setUsers(data?.data.data);
-    },
-  });
+  const { isLoading: usersLoading, data: usersList } = useGetUsersList();
 
   return (
     <Grid container spacing={5}>
-      <Grid item xs={2}>
+      <Grid item xs={12} sm={3} md={2}>
         <Paper elevation={2} className="py-4 px-2">
           <Link
             href="/admin-dashboard/ordersList"
@@ -73,16 +59,16 @@ const AdminDashboard = ({ children }: { children: ReactNode }) => {
           </Link>
         </Paper>
       </Grid>
-      <Grid item xs={10}>
+      <Grid item xs={12} sm={9} md={10}>
         {route !== "/admin-dashboard" ? (
           children
         ) : (
           <>
             <Grid container spacing="20px">
-              <Grid item xs={3}>
+              <Grid item xs={6} sm={3}>
                 <Paper elevation={2} className="text-center py-8">
                   <HiMiniCurrencyDollar className="text-[50px] mb-3 mx-auto" />
-                  <Typography className="text-[20px] font-bold mb-2">
+                  <Typography className="text-[18px] sm:text-[20px] font-bold mb-2">
                     Sales
                   </Typography>
                   <Typography className="text-[#2196f3] font-semibold text-[16px]">
@@ -90,7 +76,7 @@ const AdminDashboard = ({ children }: { children: ReactNode }) => {
                       <CircularProgress size={26} />
                     ) : (
                       "$" +
-                      orders.reduce(
+                      ordersList?.data.data.reduce(
                         (accumulator: number, currentValue: OrderType) =>
                           accumulator + currentValue.totalPrice,
                         0
@@ -99,47 +85,47 @@ const AdminDashboard = ({ children }: { children: ReactNode }) => {
                   </Typography>
                 </Paper>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={6} sm={3}>
                 <Paper className="text-center py-8">
                   <FaUsers className="text-[50px] mb-3 mx-auto" />
-                  <Typography className="text-[20px] font-bold mb-2">
+                  <Typography className="text-[18px] sm:text-[20px] font-bold mb-2">
                     Users
                   </Typography>
                   <Typography className="text-[#2196f3] font-semibold text-[16px]">
                     {usersLoading ? (
                       <CircularProgress size={26} />
                     ) : (
-                      users.length
+                      usersList.data.data.length
                     )}
                   </Typography>
                 </Paper>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={6} sm={3}>
                 <Paper className="text-center py-8">
                   <RiShoppingBag3Fill className="text-[50px] mb-3 mx-auto" />
-                  <Typography className="text-[20px] font-bold mb-2">
+                  <Typography className="text-[18px] sm:text-[20px] font-bold mb-2">
                     Orders
                   </Typography>
                   <Typography className="text-[#2196f3] font-semibold text-[16px]">
                     {ordersLoading ? (
                       <CircularProgress size={26} />
                     ) : (
-                      orders.length
+                      ordersList?.data.data.length
                     )}
                   </Typography>
                 </Paper>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={6} sm={3}>
                 <Paper className="text-center py-8">
                   <GiClothes className="text-[50px] mb-3 mx-auto" />
-                  <Typography className="text-[20px] font-bold mb-2">
+                  <Typography className="text-[18px] sm:text-[20px] font-bold mb-2" >
                     Products
                   </Typography>
                   <Typography className="text-[#2196f3] font-semibold text-[16px]">
                     {productsLoading ? (
                       <CircularProgress size={26} />
                     ) : (
-                      products.length
+                      productsList?.data?.data.length
                     )}
                   </Typography>
                 </Paper>

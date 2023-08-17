@@ -8,7 +8,7 @@ import { QueryKey } from "../../enums/queryKey";
 import axios from "axios";
 
 export function useGetUsersList(options?: UseQueryOptions) {
-  return useQuery({
+  return useQuery<any,any>({
     queryKey: QueryKey.UsersList,
     queryFn: () => axios.get(`/api/user/usersList`),
     ...options,

@@ -1,19 +1,82 @@
-import {
-  Box,
-  CircularProgress,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { useState } from "react";
 import { useOrdersList } from "../../hooks/orders/orders.hooks";
 import Image from "next/image";
 import { OrderType } from "../../types/order.type";
 import { OrderItemType } from "../../types/orderItem.type";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { v4 } from "uuid";
+import { orderRowType } from "../../types/row.type";
+
+const columns: GridColDef[] = [
+  {
+    field: "image",
+    headerName: "Image",
+    align: "center",
+    headerAlign: "center",
+    renderCell: (params: GridRenderCellParams) => {
+      return (
+        <Image
+          width={100}
+          height={100}
+          alt={"Asdasd"}
+          src={params.value}
+          className="w-16 h-auto"
+        />
+      );
+    },
+    sortable: false,
+    width: 100,
+  },
+  {
+    field: "name",
+    align: "center",
+    headerAlign: "center",
+    headerName: "Name",
+    minWidth: 150,
+  },
+  {
+    field: "quantity",
+    headerName: "Quantity",
+    type: "number",
+    align: "center",
+    headerAlign: "center",
+    minWidth: 120,
+  },
+  {
+    field: "unitPrice",
+    align: "center",
+    headerAlign: "center",
+    headerName: "Unit Price",
+    type: "number",
+    minWidth: 120,
+    renderCell: (params: GridRenderCellParams) => {
+      return <Typography>$ {params.value}</Typography>;
+    },
+  },
+  {
+    field: "total",
+    align: "center",
+    headerAlign: "center",
+    headerName: "Total",
+    type: "number",
+    minWidth: 120,
+    renderCell: (params: GridRenderCellParams) => {
+      return <Typography>$ {params.value}</Typography>;
+    },
+  },
+
+  {
+    field: "paidAt",
+    align: "center",
+    headerAlign: "center",
+    headerName: "PaidAt",
+    minWidth: 200,
+    renderCell: (params: GridRenderCellParams) => {
+      return <Typography>{new Date(params.value).toLocaleString()}</Typography>;
+    },
+  },
+];
 
 export default function OrdersList() {
   const [orders, setOrders] = useState([]);
@@ -24,92 +87,44 @@ export default function OrdersList() {
     },
   });
 
+  const rows = ([] as any[])
+    .concat(
+      ...orders?.map((order: OrderType) =>
+        order.orderItems.map((item: OrderItemType) => ({
+          ...item,
+          createdAt: order.createdAt,
+        }))
+      )
+    )
+    .map((oItem: orderRowType) => {
+      return {
+        image: oItem.image,
+        quantity: oItem.quantity,
+        paidAt: oItem.createdAt,
+        name: oItem.name,
+        total: oItem.price,
+        unitPrice: oItem.price / oItem.quantity,
+      };
+    });
+
   return (
     <Box>
       {isSuccess && (
-        <Paper style={{ maxWidth: "100%", marginInline: "auto" }}>
-          <TableContainer>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell colSpan={2} className="font-bold text-[16px]">
-                    Image
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    colSpan={4}
-                    className="font-bold text-[16px]"
-                  >
-                    Name
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    colSpan={2}
-                    className="font-bold text-[16px]"
-                  >
-                    Quantity
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    colSpan={2}
-                    className="font-bold text-[16px]"
-                  >
-                    Unit Price
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    colSpan={2}
-                    className="font-bold text-[16px]"
-                  >
-                    Total
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    colSpan={2}
-                    className="font-bold text-[16px]"
-                  >
-                    Order Date
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {orders?.map((item: OrderType) => {
-                  return item.orderItems.map((oItem: OrderItemType) => (
-                    <TableRow
-                      key={oItem._id}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row" colSpan={2}>
-                        <Image
-                          width={100}
-                          height={100}
-                          src={oItem.image}
-                          alt={oItem.name}
-                          className="w-20 h-auto"
-                        />
-                      </TableCell>
-                      <TableCell className="text-left text-[16px]" colSpan={4}>
-                        {oItem.name}
-                      </TableCell>
-                      <TableCell className="text-left text-[16px]" colSpan={2}>
-                        {oItem.quantity}
-                      </TableCell>
-                      <TableCell className="text-left text-[16px]" colSpan={2}>
-                        $ {oItem.price}
-                      </TableCell>
-                      <TableCell className="text-left text-[16px]" colSpan={2}>
-                        $ {oItem.price * oItem.quantity}
-                      </TableCell>
-                      <TableCell className="text-left text-[16px]" colSpan={2}>
-                        {new Date(item.createdAt).toLocaleString()}
-                      </TableCell>
-                    </TableRow>
-                  ));
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
+        <DataGrid
+          className="px-3 max-w-4xl mx-auto"
+          getRowId={(row) => v4()}
+          rows={rows}
+          rowSelection={false}
+          checkboxSelection={false}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 5 },
+            },
+          }}
+          pageSizeOptions={[5, 10, 15, 20]}
+          rowHeight={80}
+        />
       )}
       {isLoading && (
         <Box className="mx-auto w-8">
