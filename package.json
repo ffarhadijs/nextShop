@@ -24,6 +24,8 @@
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "cookie": "^0.5.0",
+    "echarts": "^5.4.3",
+    "echarts-for-react": "^3.0.2",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.2",
     "js-cookie": "^3.0.5",
