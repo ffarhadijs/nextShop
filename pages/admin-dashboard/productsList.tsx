@@ -11,7 +11,7 @@ import {
   GridToolbarContainer,
 } from "@mui/x-data-grid";
 import { v4 } from "uuid";
-import { Modal, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import { MdEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 import AddOrEditProduct from "../../components/modals/addOrEditProduct/AddOrEditProduct";
@@ -29,16 +29,13 @@ import { rowProductType } from "../../types/rowProduct.type";
 function EditToolbar() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   return (
     <GridToolbarContainer>
       <Button variant="outlined" onClick={handleOpen}>
         Add Product
       </Button>
-      <Modal open={open} onClose={handleClose}>
-        <AddOrEditProduct setOpen={setOpen} />
-      </Modal>
+      <AddOrEditProduct setOpen={setOpen} open={open} />
     </GridToolbarContainer>
   );
 }
@@ -122,7 +119,6 @@ export default function ProductsList() {
       },
       sortable: false,
       width: 100,
-      type: "actions",
     },
     {
       field: "name",
@@ -170,14 +166,14 @@ export default function ProductsList() {
       getActions: (params) => [
         <GridActionsCellItem
           key={1}
-          icon={<MdEdit fontSize={18}/>}
+          icon={<MdEdit fontSize={18} />}
           label="Edit"
           onClick={editHandler(params)}
           showInMenu
         />,
         <GridActionsCellItem
           key={2}
-          icon={<MdDeleteOutline fontSize={18}/>}
+          icon={<MdDeleteOutline fontSize={18} />}
           label="Delete"
           onClick={deleteHandler(params)}
           showInMenu
@@ -187,26 +183,20 @@ export default function ProductsList() {
   ];
   return (
     <AdminDashboard>
-      <Modal
-        open={openEditModal || openDeleteModal}
-        onClose={
-          openEditModal
-            ? () => setOpenEditModal(false)
-            : () => setOpenDeleteModal(false)
-        }
-      >
-        {openEditModal ? (
-          <AddOrEditProduct product={editProduct!} setOpen={setOpenEditModal} />
-        ) : (
-          <DeleteConfirmation
-            title={"Delete Product"}
-            text={"Are you sure to delete this product?"}
-            setOpen={setOpenDeleteModal}
-            confirmDeleteHandler={confirmDeleteHandler}
-            isLoading={isLoading}
-          />
-        )}
-      </Modal>
+      <AddOrEditProduct
+        open={openEditModal}
+        product={editProduct!}
+        setOpen={setOpenEditModal}
+      />
+
+      <DeleteConfirmation
+        open={openDeleteModal}
+        setOpen={setOpenDeleteModal}
+        title={"Delete Product"}
+        text={"Are you sure to delete this product?"}
+        confirmDeleteHandler={confirmDeleteHandler}
+        isLoading={isLoading}
+      />
       {getProductsLoading ? (
         <Box className="mx-auto w-8">
           <CircularProgress />

@@ -22,7 +22,7 @@ const columns: GridColDef[] = [
         <Image
           width={100}
           height={100}
-          alt={params.value.image}
+          alt={"order image"}
           src={params.value}
           className="w-16 h-auto"
         />

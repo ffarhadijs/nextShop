@@ -111,9 +111,10 @@ export default function Shop({
               minPrice={minPrice}
             />
           </Grid>
-          <Grid container sm={9} xs={12} className="my-5 items-start">
+          <Grid container item sm={9} xs={12} className="my-5 items-start">
             <Grid
               container
+              item
               xs={4}
               sx={{
                 [theme.breakpoints.down("sm")]: {
@@ -201,7 +202,7 @@ export default function Shop({
                 <MenuItem value={"rated"}>Top Rated</MenuItem>
               </Select>
             </Grid>
-            <Grid order={{ xs: 3 }} container xs={12} className="mt-4 mx-auto ">
+            <Grid order={{ xs: 3 }} container item xs={12} className="mt-4 mx-auto ">
               {products.map((product: ProductType, index: number) => (
                 <Grid
                   item

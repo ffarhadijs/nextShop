@@ -1,4 +1,4 @@
-import { Box, Modal, Paper, CircularProgress, Typography } from "@mui/material";
+import { Box, Paper, CircularProgress, Typography } from "@mui/material";
 import { useCallback, useState } from "react";
 import AdminDashboard from ".";
 import {
@@ -80,9 +80,9 @@ export default function UsersList() {
         return (
           <Box>
             {params.row.isAdmin === false ? (
-              <AiOutlineClose className="text-[20px]"/>
+              <AiOutlineClose className="text-[20px]" />
             ) : (
-              <AiOutlineCheck className="text-[20px]"/>
+              <AiOutlineCheck className="text-[20px]" />
             )}
           </Box>
         );
@@ -111,7 +111,7 @@ export default function UsersList() {
       getActions: (params) => [
         <GridActionsCellItem
           key={2}
-          icon={<MdDeleteOutline className="text-[20px]" color="red"/>}
+          icon={<MdDeleteOutline className="text-[20px]" color="red" />}
           label="Delete"
           onClick={deleteHandler(params)}
           hidden={params.row.isAdmin === true}
@@ -164,15 +164,15 @@ export default function UsersList() {
           />
         </Paper>
       )}
-      <Modal open={openDeleteModal} onClose={() => setOpenDeleteModal(false)}>
-        <DeleteConfirmation
-          title="Delete User"
-          text="Are you sure to delete this user?"
-          confirmDeleteHandler={confirmDeleteHandler}
-          isLoading={deleteLoading}
-          setOpen={setOpenDeleteModal}
-        />
-      </Modal>
+
+      <DeleteConfirmation
+        open={openDeleteModal}
+        setOpen={setOpenDeleteModal}
+        title="Delete User"
+        text="Are you sure to delete this user?"
+        confirmDeleteHandler={confirmDeleteHandler}
+        isLoading={deleteLoading}
+      />
     </AdminDashboard>
   );
 }

@@ -6,6 +6,7 @@ import {
   Container,
   Typography,
   useTheme,
+  Modal,
 } from "@mui/material";
 import Link from "next/link";
 import Product from "../models/Product";
@@ -29,6 +30,9 @@ import { FiPackage } from "react-icons/fi";
 import { BsInstagram } from "react-icons/bs";
 import SwiperSlider from "../components/swiper/SwiperSlider";
 import ProductItem from "../components/productItem/ProductItem";
+import QuickView from "../components/modals/quickView/QuickView";
+import { useState } from "react";
+import { ProductType } from "../types/product.type";
 
 export const services = [
   {
@@ -59,8 +63,21 @@ export const services = [
 
 export default function Home({ products }: { products: ProductsType }) {
   const theme = useTheme();
+  const [quickModal, setQuickModal] = useState<{
+    modal: boolean;
+    product: ProductType | null;
+  }>({
+    modal: false,
+    product: null,
+  });
+
   return (
     <Box>
+      <QuickView
+        product={quickModal.product}
+        quickModal={quickModal}
+        setQuickModal={setQuickModal}
+      />
       <Swiper
         navigation={true}
         centeredSlides={true}
@@ -179,7 +196,7 @@ export default function Home({ products }: { products: ProductsType }) {
         <Grid container spacing={3} mb={"60px"}>
           {products.map((product, index) => (
             <Grid item xs={6} sm={4} md={3} key={product.slug + index}>
-              <ProductItem product={product} />
+              <ProductItem product={product} setQuickModal={setQuickModal} />
             </Grid>
           ))}
         </Grid>

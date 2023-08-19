@@ -9,7 +9,6 @@ import {
   useTheme,
   Container,
   Tabs,
-  Modal,
   Tab,
   ButtonBase,
 } from "@mui/material";
@@ -140,16 +139,8 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
   ];
   return (
     <>
-      <Modal
-        open={shippingModal || askModal}
-        onClose={
-          shippingModal
-            ? () => setShippingModal(false)
-            : () => setAskModal(false)
-        }
-      >
-        {shippingModal ? <Shipping /> : <AskAboutProduct />}
-      </Modal>
+      <Shipping open={shippingModal} setOpen={setShippingModal} />
+      <AskAboutProduct open={askModal} setOpen={setAskModal} />
       <Box
         bgcolor={theme.palette.mode === "dark" ? grey[900] : grey[300]}
         className="w-full py-8 mb-20 text-[24px]"

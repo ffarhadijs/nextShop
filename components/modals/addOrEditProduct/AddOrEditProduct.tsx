@@ -8,6 +8,7 @@ import {
   Select,
   FormHelperText,
   MenuItem,
+  Modal,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -46,9 +47,11 @@ const schema = yup.object({
 const AddOrEditProduct = ({
   product,
   setOpen,
+  open,
 }: {
   product?: rowProductType;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  open: boolean;
 }) => {
   const editable = !!product;
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -120,7 +123,7 @@ const AddOrEditProduct = ({
   };
 
   return (
-    <>
+    <Modal open={open} onClose={() => setOpen(false)}>
       <Stack
         direction={"row"}
         justifyContent={"left"}
@@ -187,7 +190,9 @@ const AddOrEditProduct = ({
             </Stack>
 
             <Stack direction="column">
-              <FormLabel className="text-[14px] sm:text-[16px]">Name:</FormLabel>
+              <FormLabel className="text-[14px] sm:text-[16px]">
+                Name:
+              </FormLabel>
               <TextField
                 {...register("name")}
                 size="small"
@@ -198,7 +203,9 @@ const AddOrEditProduct = ({
             </Stack>
 
             <Stack direction="column">
-              <FormLabel className="text-[14px] sm:text-[16px]">Description:</FormLabel>
+              <FormLabel className="text-[14px] sm:text-[16px]">
+                Description:
+              </FormLabel>
               <TextField
                 {...register("description")}
                 size="small"
@@ -210,7 +217,9 @@ const AddOrEditProduct = ({
             </Stack>
             <Stack direction={"row"} spacing={"10px"}>
               <Stack direction="column" width={"50%"}>
-                <FormLabel className="text-[14px] sm:text-[16px]">Brand:</FormLabel>
+                <FormLabel className="text-[14px] sm:text-[16px]">
+                  Brand:
+                </FormLabel>
                 <TextField
                   {...register("brand")}
                   size="small"
@@ -221,7 +230,9 @@ const AddOrEditProduct = ({
               </Stack>
 
               <Stack direction="column" width={"50%"}>
-                <FormLabel className="text-[14px] sm:text-[16px]">Category</FormLabel>
+                <FormLabel className="text-[14px] sm:text-[16px]">
+                  Category
+                </FormLabel>
                 <Select
                   {...register("category")}
                   size="small"
@@ -243,7 +254,9 @@ const AddOrEditProduct = ({
 
             <Stack direction={"row"} spacing={"10px"}>
               <Stack direction="column">
-                <FormLabel className="text-[14px] sm:text-[16px]">Price:</FormLabel>
+                <FormLabel className="text-[14px] sm:text-[16px]">
+                  Price:
+                </FormLabel>
                 <TextField
                   {...register("price")}
                   size="small"
@@ -289,7 +302,7 @@ const AddOrEditProduct = ({
           </LoadingButton>
         </Stack>
       </Stack>
-    </>
+    </Modal>
   );
 };
 

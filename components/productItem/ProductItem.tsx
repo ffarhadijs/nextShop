@@ -9,7 +9,6 @@ import {
   Typography,
   Rating,
   Tooltip,
-  Modal,
 } from "@mui/material";
 import Link from "next/link";
 import { ProductType } from "../../types/product.type";
@@ -20,22 +19,29 @@ import {
 } from "react-icons/md";
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import toast from "react-hot-toast";
-import { MouseEvent, useContext, useState } from "react";
+import { Dispatch, MouseEvent, SetStateAction, useContext } from "react";
 import { Store } from "../../utils/Store";
-import QuickView from "../modals/quickView/QuickView";
 
-export default function ProductItem({ product }: { product: ProductType }) {
+export default function ProductItem({
+  product,
+  setQuickModal,
+}: {
+  product: ProductType;
+  setQuickModal?: Dispatch<
+    SetStateAction<{
+      modal: boolean;
+      product: ProductType | null;
+    }>
+  >;
+}) {
   const { dispatch, state } = useContext(Store);
-  const [quickViewModal, setQuickViewModal] = useState<boolean>(false);
-  const [quickProduct, setQuickProduct] = useState<ProductType>();
 
   const quickViewHandler = (
     e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
     product: ProductType
   ) => {
     e.stopPropagation();
-    setQuickViewModal(true);
-    setQuickProduct(product);
+    setQuickModal!({ product, modal: true });
   };
 
   const addToCartHandler = (
@@ -72,9 +78,6 @@ export default function ProductItem({ product }: { product: ProductType }) {
 
   return (
     <Box>
-      <Modal open={quickViewModal} onClose={() => setQuickViewModal(false)}>
-        <QuickView product={quickProduct} />
-      </Modal>
       <Card className="group/card">
         <CardActionArea className=" h-40 sm:h-48 md:h-56">
           <Box className="group/cardAction overflow-hidden relative ">
