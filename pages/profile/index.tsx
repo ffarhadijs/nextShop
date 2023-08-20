@@ -164,3 +164,7 @@ const Profile = () => {
 };
 
 export default Profile;
+
+
+Profile.title = "Profile Page|Shop Next";
+Profile.description = "Update your individual informations";

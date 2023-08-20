@@ -196,3 +196,5 @@ const Cart = () => {
 };
 
 export default Cart;
+
+Cart.title = "Cart Page|Shop Next";

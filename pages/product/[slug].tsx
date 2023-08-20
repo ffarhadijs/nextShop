@@ -39,6 +39,7 @@ import toast from "react-hot-toast";
 import { GetServerSidePropsContext } from "next";
 import { services } from "..";
 import { tabsClasses } from "@mui/material/Tabs";
+import Head from "next/head";
 
 const description = [
   "Fabric 1: 100% Polyester",
@@ -139,6 +140,10 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
   ];
   return (
     <>
+      <Head>
+        <title>{product.name}</title>
+        <meta name="description" content={product.description} />
+      </Head>
       <Shipping open={shippingModal} setOpen={setShippingModal} />
       <AskAboutProduct open={askModal} setOpen={setAskModal} />
       <Box

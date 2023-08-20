@@ -149,3 +149,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   return { props: { result } };
 }
+
+Signup.title = "Signup Page|Shop Next";
+Signup.description = "Signup to complete your shipping information";

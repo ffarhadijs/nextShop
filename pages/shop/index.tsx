@@ -202,7 +202,13 @@ export default function Shop({
                 <MenuItem value={"rated"}>Top Rated</MenuItem>
               </Select>
             </Grid>
-            <Grid order={{ xs: 3 }} container item xs={12} className="mt-4 mx-auto ">
+            <Grid
+              order={{ xs: 3 }}
+              container
+              item
+              xs={12}
+              className="mt-4 mx-auto "
+            >
               {products.map((product: ProductType, index: number) => (
                 <Grid
                   item
@@ -335,3 +341,6 @@ export async function getServerSideProps({ query }: { query: any }) {
     },
   };
 }
+
+Shop.title = "Shop Page|Shop Next";
+Shop.description = "List of Products Page with Filtering";

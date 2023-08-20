@@ -34,6 +34,8 @@ import QuickView from "../components/modals/quickView/QuickView";
 import { useState } from "react";
 import { ProductType } from "../types/product.type";
 
+Home.title = "Home Page|Shop Next";
+Home.description = "Next shop is the best online shop for buy clothes";
 export const services = [
   {
     text: "Easy Return Policy",

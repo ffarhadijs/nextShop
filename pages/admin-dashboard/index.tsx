@@ -213,3 +213,4 @@ const AdminDashboard = ({ children }: { children: ReactNode }) => {
 };
 
 export default AdminDashboard;
+AdminDashboard.title = "Admin Dashboard Page|Shop Next";

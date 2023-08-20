@@ -19,7 +19,7 @@ import { ProductType } from "../../types/product.type";
 import Image from "next/image";
 import {MdDeleteOutline,MdFavoriteBorder} from "react-icons/md";
 
-const Cart = () => {
+const FavoriteList = () => {
   const { state, dispatch } = useContext(Store);
 
   const removeHandler = (item: ProductType) => {
@@ -150,4 +150,6 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default FavoriteList;
+
+FavoriteList.title = "Favorite List Page|Shop Next";

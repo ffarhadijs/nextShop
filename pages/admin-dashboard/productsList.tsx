@@ -233,3 +233,5 @@ export default function ProductsList() {
     </AdminDashboard>
   );
 }
+
+ProductsList.title = "Products List Page|Shop Next";

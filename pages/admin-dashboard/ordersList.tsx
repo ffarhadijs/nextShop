@@ -160,3 +160,5 @@ export default function OrdersList() {
     </AdminDashboard>
   );
 }
+
+OrdersList.title = "Orders List Page|Shop Next";

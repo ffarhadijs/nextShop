@@ -4,8 +4,16 @@ import StoreProvider from "../utils/Store";
 import Layout from "../components/layout/Layout";
 import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
 import { useState } from "react";
+import Head from "next/head";
+import { NextComponentType, NextPageContext } from "next";
 
-export default function App({ Component, pageProps }: AppProps) {
+type CustomProps = AppProps & {
+  Component: NextComponentType<NextPageContext, any, any> & {
+    title: string;
+    description: string;
+  };
+};
+export default function App({ Component, pageProps }: CustomProps) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -18,6 +26,10 @@ export default function App({ Component, pageProps }: AppProps) {
   );
   return (
     <QueryClientProvider client={queryClient}>
+      <Head>
+        <title>{Component.title}</title>
+        <meta name="description" content={Component.description} />
+      </Head>
       <Hydrate state={pageProps.dehydratedState}>
         <StoreProvider>
           <Layout>

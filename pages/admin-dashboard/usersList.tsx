@@ -176,3 +176,5 @@ export default function UsersList() {
     </AdminDashboard>
   );
 }
+
+UsersList.title = "Users List Page|Shop Next";

@@ -22,7 +22,7 @@ import {
 import { Store } from "../utils/Store";
 import { ProductType } from "../types/product.type";
 import Image from "next/image";
-import {MdDeleteOutline} from "react-icons/md";
+import { MdDeleteOutline } from "react-icons/md";
 import { useCreateOrder } from "../hooks/orders/orders.hooks";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useRouter } from "next/router";
@@ -273,3 +273,6 @@ const Shipping = () => {
 };
 
 export default Shipping;
+
+Shipping.title = "Shipping Page|Shop Next";
+Shipping.description = "check your shopping list";

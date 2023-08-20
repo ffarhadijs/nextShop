@@ -134,3 +134,4 @@ export default function OrdersList() {
     </Box>
   );
 }
+OrdersList.title = "Orders List Page|Shop Next";

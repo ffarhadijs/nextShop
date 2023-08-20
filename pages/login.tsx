@@ -116,3 +116,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   return { props: { result } };
 }
+
+Login.title = "Login Page|Shop Next";
+Login.description = "Login to complete your shopping";
