@@ -2,6 +2,7 @@ import { Button, Stack, Box, TextField, FormLabel, Modal } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-hot-toast";
 
 const schema = yup.object({
   name: yup
@@ -26,13 +27,23 @@ export default function AskAboutProduct({
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    toast.success("Your message has been sent!");
+    setOpen(false);
+  };
 
   return (
-    <Modal open={open} onClose={() => setOpen(false)}>
+    <Modal
+      open={open}
+      onClose={() => {
+        setOpen(false);
+        reset();
+      }}
+    >
       <Box
         sx={{
           position: "absolute",

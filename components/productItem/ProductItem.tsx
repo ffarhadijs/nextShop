@@ -81,7 +81,7 @@ export default function ProductItem({
       <Card className="group/card">
         <CardActionArea className=" h-40 sm:h-48 md:h-56">
           <Box className="group/cardAction overflow-hidden relative ">
-            <Link href={`product/${product.slug}`}>
+            <Link href={`shop/${product.slug}`}>
               <CardMedia
                 className="duration-200 group-hover/cardAction:scale-110 h-40 sm:h-48 md:h-56"
                 component="img"
@@ -126,7 +126,7 @@ export default function ProductItem({
         <CardContent className="p-2 pt-4">
           <Typography
             component={Link}
-            href={`product/${product.slug}`}
+            href={`shop/${product.slug}`}
             className="text-[15px] font-bold"
             sx={{
               transition: "all 0.2s",

@@ -40,6 +40,7 @@ import { GetServerSidePropsContext } from "next";
 import { services } from "..";
 import { tabsClasses } from "@mui/material/Tabs";
 import Head from "next/head";
+import BreadCrumbs from "../../components/breadCrumbs/BreadCrumbs";
 
 const description = [
   "Fabric 1: 100% Polyester",
@@ -140,18 +141,13 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
   ];
   return (
     <>
+    <BreadCrumbs/>
       <Head>
         <title>{product.name}</title>
         <meta name="description" content={product.description} />
       </Head>
       <Shipping open={shippingModal} setOpen={setShippingModal} />
       <AskAboutProduct open={askModal} setOpen={setAskModal} />
-      <Box
-        bgcolor={theme.palette.mode === "dark" ? grey[900] : grey[300]}
-        className="w-full py-8 mb-20 text-[24px]"
-      >
-        <Container maxWidth="lg">{product?.name!}</Container>
-      </Box>
       <Container maxWidth="lg">
         <Grid container spacing={5}>
           <Grid item xs={12} md={5}>

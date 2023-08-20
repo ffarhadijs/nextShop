@@ -24,6 +24,7 @@ import { SwiperSlide } from "swiper/react";
 import { BsInstagram } from "react-icons/bs";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { FilterPanel } from "../../components/filterPanel/FilterPanel";
+import BreadCrumbs from "../../components/breadCrumbs/BreadCrumbs";
 
 const productPerPage = 6;
 
@@ -66,6 +67,8 @@ export default function Shop({
 
   return (
     <>
+      <BreadCrumbs />
+
       <Container maxWidth="lg">
         <Drawer
           anchor={"left"}

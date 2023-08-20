@@ -1,9 +1,7 @@
 import { blue } from "@mui/material/colors";
-import { alpha, createTheme, getContrastRatio } from "@mui/material/styles";
+import { createTheme, getContrastRatio } from "@mui/material/styles";
 import { createContext, useMemo, useState } from "react";
 
-const violetBase = "#FF5733";
-const violetMain = alpha(violetBase, 0.7);
 
 export const themeSettings = (mode: "light" | "dark") => {
   return {
