@@ -28,15 +28,18 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useRouter } from "next/router";
 import { useGetUser } from "../hooks/users/user.hooks";
 import toast from "react-hot-toast";
+import { useUserExist } from "../hooks/users/useUserExist";
 
 const Shipping = () => {
   const { data: user, isLoading: userLoading } = useGetUser();
   const { push } = useRouter();
+  const userToken = useUserExist();
   const name = user?.data.data.name || "";
   const lastName = user?.data.data.lastName || "";
   const address = user?.data.data.address || "";
   const city = user?.data.data.city || "";
   const country = user?.data.data.country || "";
+  const postalCode = user?.data.data.postalCode || "";
 
   const { state, dispatch } = useContext(Store);
   const cartItems = state?.cart?.cartItems || [];
@@ -54,7 +57,7 @@ const Shipping = () => {
   const shippingPrice = itemsPrice >= 200 ? 0 : 15;
   const taxPrice = Math.round(itemsPrice * 0.15);
   const totalPrice = itemsPrice + taxPrice + shippingPrice;
-  const shippingAddress = { name, lastName, address, city, country };
+  const shippingAddress = { name, lastName, address, city, country, postalCode };
 
   const changeHandler = (value: number, item: ProductType) => {
     dispatch({ type: "CART_ADD_ITEM", payload: { ...item, quantity: value } });

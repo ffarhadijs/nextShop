@@ -23,6 +23,20 @@ export default async function handler(
       .json({ status: "failed", message: "you are unauthorized" });
   }
 
+  if (
+    !data.shippingAddress.country ||
+    !data.shippingAddress.city ||
+    !data.shippingAddress.address ||
+    !data.shippingAddress.lastName ||
+    !data.shippingAddress.postalCode
+  ) {
+    return res
+      .status(422)
+      .json({
+        status: "failed",
+        message: "You should complete your shipping address",
+      });
+  }
   const user = await User.findOne({ email: result });
 
   const newOrder = await Order.create({
@@ -39,5 +53,4 @@ export default async function handler(
     status: "Success",
     message: "Order added successfully",
   });
-
 }
