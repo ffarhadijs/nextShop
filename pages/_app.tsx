@@ -6,6 +6,10 @@ import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
 import { useState } from "react";
 import Head from "next/head";
 import { NextComponentType, NextPageContext } from "next";
+import { useEffect } from 'react';
+import NProgress from 'nprogress';
+import { useRouter } from "next/router";
+
 
 type CustomProps = AppProps & {
   Component: NextComponentType<NextPageContext, any, any> & {
@@ -14,6 +18,7 @@ type CustomProps = AppProps & {
   };
 };
 export default function App({ Component, pageProps }: CustomProps) {
+  const {events} = useRouter()
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -24,6 +29,12 @@ export default function App({ Component, pageProps }: CustomProps) {
         },
       })
   );
+  useEffect(() => {
+    events.on('routeChangeStart', () =>  NProgress.start());
+
+    events.on('routeChangeComplete', () =>  NProgress.done());
+    events.on('routeChangeError', () =>  NProgress.done());
+  }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <Head>
