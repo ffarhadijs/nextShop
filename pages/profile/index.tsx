@@ -7,6 +7,7 @@ import { useUpdateProfile } from "../../hooks/auth/auth.hooks";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useQueryClient } from "react-query";
 import toast from "react-hot-toast";
+import { useUserExist } from "../../hooks/users/useUserExist";
 
 const schema = yup.object({
   name: yup
@@ -27,6 +28,7 @@ const schema = yup.object({
 });
 const Profile = () => {
   const queryClient = useQueryClient();
+  const userToken = useUserExist();
 
   const {
     register,

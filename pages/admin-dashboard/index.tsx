@@ -11,10 +11,12 @@ import { useGetProductsList } from "../../hooks/products/products.hooks";
 import { useGetUsersList } from "../../hooks/users/user.hooks";
 import { OrderType } from "../../types/order.type";
 import ReactEcharts from "echarts-for-react";
+import { useUserExist } from "../../hooks/users/useUserExist";
 
 const AdminDashboard = ({ children }: { children: ReactNode }) => {
   const { route } = useRouter();
   const { isLoading: ordersLoading, data: ordersList } = useAllOrders();
+  const userToken = useUserExist();
 
   const { isLoading: productsLoading, data: productsList } =
     useGetProductsList();
@@ -75,7 +77,7 @@ const AdminDashboard = ({ children }: { children: ReactNode }) => {
           show: false,
         },
         data: [
-          { value: usersList.data.data.length, name: "Users" },
+          { value: usersList?.data.data.length, name: "Users" },
           { value: productsList?.data?.data.length, name: "Products" },
           { value: ordersList?.data.data.length, name: "Orders" },
         ],
@@ -198,7 +200,7 @@ const AdminDashboard = ({ children }: { children: ReactNode }) => {
                   style={{ height: "400px", width: "100%" }}
                 />
               </Grid>
-              <Grid xs={12} md={6}>
+              <Grid item xs={12} md={6}>
                 <ReactEcharts
                   option={pieOption}
                   style={{ height: "400px", width: "100%" }}

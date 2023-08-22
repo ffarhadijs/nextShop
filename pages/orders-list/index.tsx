@@ -7,6 +7,7 @@ import { OrderItemType } from "../../types/orderItem.type";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { v4 } from "uuid";
 import { orderRowType } from "../../types/row.type";
+import { useUserExist } from "../../hooks/users/useUserExist";
 
 const columns: GridColDef[] = [
   {
@@ -80,6 +81,7 @@ const columns: GridColDef[] = [
 
 export default function OrdersList() {
   const [orders, setOrders] = useState([]);
+  const userToken = useUserExist();
 
   const { isLoading, isSuccess } = useOrdersList({
     onSuccess: (data: any) => {

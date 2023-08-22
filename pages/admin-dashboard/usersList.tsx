@@ -15,11 +15,13 @@ import { useDeleteUser, useGetUsersList } from "../../hooks/users/user.hooks";
 import DeleteConfirmation from "../../components/modals/deleteConfirmation/DeleteConfirmation";
 import toast from "react-hot-toast";
 import { productRowType } from "../../types/row.type";
+import { useUserExist } from "../../hooks/users/useUserExist";
 
 export default function UsersList() {
   const [users, setUsers] = useState([]);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState<string>();
+  const userToken = useUserExist();
 
   const { isLoading } = useGetUsersList({
     onSuccess: (data: any) => {
