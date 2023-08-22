@@ -48,7 +48,7 @@ export default function Header({
     const response = await fetch("/api/auth/logout");
     const data = await response.json();
     if (response.ok) {
-      toast.success("User Signed out successfully");
+      toast.success("User signed out successfully");
       push("/login");
       refetch();
     } else {
@@ -106,7 +106,7 @@ export default function Header({
                 className="hover:bg-inherit"
               >
                 {theme.palette.mode === "dark" ? (
-                  <FaSun size={24}/>
+                  <FaSun size={24} />
                 ) : (
                   <BsFillMoonStarsFill size={24} />
                 )}
@@ -124,7 +124,7 @@ export default function Header({
                   badgeContent={state?.wishList.withListItems.length}
                   color="primary"
                 >
-                  <MdFavoriteBorder size={24}/>
+                  <MdFavoriteBorder size={24} />
                 </Badge>
               </Link>
 

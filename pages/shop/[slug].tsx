@@ -149,7 +149,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
       <Shipping open={shippingModal} setOpen={setShippingModal} />
       <AskAboutProduct open={askModal} setOpen={setAskModal} />
       <Container maxWidth="lg">
-        <Grid container spacing={5}>
+        <Grid container spacing={5} my={5}>
           <Grid item xs={12} md={5}>
             <Image
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
