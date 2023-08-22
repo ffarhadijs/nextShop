@@ -11,12 +11,10 @@ import { useGetProductsList } from "../../hooks/products/products.hooks";
 import { useGetUsersList } from "../../hooks/users/user.hooks";
 import { OrderType } from "../../types/order.type";
 import ReactEcharts from "echarts-for-react";
-import { useUserExist } from "../../hooks/users/useUserExist";
 
 const AdminDashboard = ({ children }: { children: ReactNode }) => {
   const { route } = useRouter();
   const { isLoading: ordersLoading, data: ordersList } = useAllOrders();
-  const userToken = useUserExist();
 
   const { isLoading: productsLoading, data: productsList } =
     useGetProductsList();

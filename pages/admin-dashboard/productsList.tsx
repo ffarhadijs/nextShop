@@ -25,7 +25,6 @@ import toast from "react-hot-toast";
 import { ProductsType } from "../../types/products.type";
 import { ProductType } from "../../types/product.type";
 import { rowProductType } from "../../types/rowProduct.type";
-import { useUserExist } from "../../hooks/users/useUserExist";
 
 function EditToolbar() {
   const [open, setOpen] = useState(false);
@@ -48,7 +47,6 @@ export default function ProductsList() {
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [editProduct, setEditProduct] = useState<rowProductType>();
   const [deleteProduct, setDeleteProduct] = useState<rowProductType>();
-  const userToken = useUserExist();
 
   const { isLoading: getProductsLoading } = useGetProductsList({
     onSuccess: (data: any) => {

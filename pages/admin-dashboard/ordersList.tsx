@@ -10,7 +10,6 @@ import { OrdersType } from "../../types/orders.type";
 import { OrderType } from "../../types/order.type";
 import { OrderItemType } from "../../types/orderItem.type";
 import { orderRowType } from "../../types/row.type";
-import { useUserExist } from "../../hooks/users/useUserExist";
 
 const columns: GridColDef[] = [
   {
@@ -103,7 +102,6 @@ export default function OrdersList() {
       setOrders(data?.data?.data);
     },
   });
-  const userToken = useUserExist();
 
   const rows = ([] as any[])
     .concat(

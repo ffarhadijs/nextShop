@@ -105,17 +105,5 @@ const Login = () => {
 
 export default Login;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { token } = context.req.cookies;
-  const secretKey = process.env.SECRET_KEY;
-
-  const result = verifyToken(token!, secretKey!);
-
-  if (result) {
-    return { redirect: { destination: "/", permanent: false } };
-  }
-  return { props: { result } };
-}
-
 Login.title = "Login Page|Shop Next";
 Login.description = "Login to complete your shopping";

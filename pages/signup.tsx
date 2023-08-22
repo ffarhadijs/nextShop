@@ -136,19 +136,5 @@ const Signup = () => {
 
 export default Signup;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { token } = context.req.cookies;
-  const secretKey = process.env.SECRET_KEY;
-
-  const result = verifyToken(token!, secretKey!);
-
-  if (result) {
-    return {
-      redirect: { destination: "/", permanent: false },
-    };
-  }
-  return { props: { result } };
-}
-
 Signup.title = "Signup Page|Shop Next";
 Signup.description = "Signup to complete your shipping information";
