@@ -45,7 +45,7 @@ export default function ProductsList() {
   const [products, setProducts] = useState<ProductsType>([]);
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
-  const [editProduct, setEditProduct] = useState<rowProductType>();
+  const [editProduct, setEditProduct] = useState<rowProductType | null>();
   const [deleteProduct, setDeleteProduct] = useState<rowProductType>();
 
   const { isLoading: getProductsLoading } = useGetProductsList({

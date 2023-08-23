@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
 import InputAdornment from "@mui/material/InputAdornment";
 import {
@@ -54,9 +54,10 @@ const AddOrEditProduct = ({
   open: boolean;
 }) => {
   const editable = !!product;
+
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const queryClient = useQueryClient();
-
+  const [eProduct, setEProduct] = useState<rowProductType | null>();
   const {
     register,
     handleSubmit,
@@ -111,6 +112,7 @@ const AddOrEditProduct = ({
     } else {
       mutate();
     }
+    setEProduct(null);
   };
 
   const handleFileChange = (e: any) => {
@@ -121,9 +123,25 @@ const AddOrEditProduct = ({
       register("image");
     }
   };
+  useEffect(() => {
+    setEProduct(product!);
+    setValue("name", product?.name);
+    setValue("description", product?.description);
+    setValue("brand", product?.brand);
+    setValue("price", product?.price);
+    setValue("category", product?.category);
+    setValue("countInStock", product?.countInStock);
+    setValue("image", product?.image);
+  }, [product]);
 
   return (
-    <Modal open={open} onClose={() => setOpen(false)}>
+    <Modal
+      open={open}
+      onClose={() => {
+        setOpen(false);
+        setEProduct(null);
+      }}
+    >
       <Stack
         direction={"row"}
         justifyContent={"left"}
@@ -198,7 +216,7 @@ const AddOrEditProduct = ({
                 size="small"
                 error={!!errors.name}
                 helperText={errors.name?.message as string}
-                defaultValue={product?.name}
+                defaultValue={eProduct?.name}
               />
             </Stack>
 
@@ -211,7 +229,7 @@ const AddOrEditProduct = ({
                 size="small"
                 error={!!errors.description}
                 helperText={errors.description?.message as string}
-                defaultValue={product?.description}
+                defaultValue={eProduct?.description}
                 multiline
               />
             </Stack>
@@ -225,7 +243,7 @@ const AddOrEditProduct = ({
                   size="small"
                   error={!!errors.brand}
                   helperText={errors.brand?.message as string}
-                  defaultValue={product?.brand}
+                  defaultValue={eProduct?.brand}
                 />
               </Stack>
 
@@ -269,7 +287,7 @@ const AddOrEditProduct = ({
                     ),
                     inputProps: { min: 0 },
                   }}
-                  defaultValue={product?.price}
+                  defaultValue={eProduct?.price}
                 />
               </Stack>
               <Stack direction="column">
@@ -285,7 +303,7 @@ const AddOrEditProduct = ({
                   InputProps={{
                     inputProps: { min: 0 },
                   }}
-                  defaultValue={product?.countInStock}
+                  defaultValue={eProduct?.countInStock}
                 />
               </Stack>
             </Stack>
