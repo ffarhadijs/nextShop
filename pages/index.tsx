@@ -219,7 +219,7 @@ export default function Home({ products }: { products: ProductsType }) {
             </Typography>
             <Typography
               fontWeight={600}
-              className="text-[32px] sm:text[32px] md:text-[42px]"
+              className="text-[32px] md:text-[42px]"
             >
               -40% OFF{" "}
             </Typography>
