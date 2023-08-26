@@ -49,7 +49,7 @@ const Signup = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      isAdmin: true,
+      isAdmin: false,
     },
   });
   const { mutate, isLoading } = useSignup(
