@@ -133,14 +133,14 @@ export default function ProductItem({
         </Box>
 
         <Box className="flex flex-row p-2 justify-between items-center relative">
-          <Typography>$ {product.price} </Typography>
+          <p>$ {product.price} </p>
           <button
             onClick={(e) => addToCartHandler(product, e)}
             className="group-hover/card:opacity-100 text-[#2196f3] text-[14px] px-[6px] py-[2px] rounded-sm hover:bg-[#2195f331] opacity-0 absolute -right-10 bottom-2 group-hover/card:right-2 transition-all duration-500"
           >
             ADD TO CART
           </button>
-          <span className="flex justify-center items-center group-hover/card:opacity-0 opacity-100 absolute right-2 bottom-2 group-hover/card:-right-10 transition-all duration-500">
+          <span className="flex justify-center items-center group-hover/card:opacity-0 opacity-100 absolute right-[11px] bottom-2 group-hover/card:-right-10 transition-all duration-500">
             <Rating
               value={product?.rating!}
               precision={0.1}
