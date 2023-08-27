@@ -12,12 +12,9 @@ export default function middleware(req: NextApiRequest & NextRequest) {
       url!.includes("shipping") ||
       url!.includes("orders"))
   ) {
-    return NextResponse.redirect(new URL('/login', req.url));
-    // return NextResponse.redirect("/login");
+    return NextResponse.redirect(new URL('/login', url));
   }
   if (token && (url!.includes("login") || url!.includes("signup"))) {
-    // return NextResponse.redirect("/");
-    return NextResponse.redirect(new URL('/', req.url));
-
+    return NextResponse.redirect(new URL('/', url));
   }
 }

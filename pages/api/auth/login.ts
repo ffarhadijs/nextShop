@@ -34,7 +34,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       serialize("token", token, {
         maxAge: 24 * 60 * 60,
         path: "/",
-        httpOnly: true,
+        httpOnly: false,
       })
     )
     .json({ status: "success", message: "Logged in!", data: { email } });

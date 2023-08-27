@@ -15,12 +15,13 @@ import { useDeleteUser, useGetUsersList } from "../../hooks/users/user.hooks";
 import DeleteConfirmation from "../../components/modals/deleteConfirmation/DeleteConfirmation";
 import toast from "react-hot-toast";
 import { productRowType } from "../../types/row.type";
+import { useQueryClient } from "react-query";
 
 export default function UsersList() {
   const [users, setUsers] = useState([]);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState<string>();
-
+  const queryClient = useQueryClient();
   const { isLoading } = useGetUsersList({
     onSuccess: (data: any) => {
       setUsers(data?.data.data);
@@ -37,6 +38,8 @@ export default function UsersList() {
   const { mutate, isLoading: deleteLoading } = useDeleteUser(deleteUserId!, {
     onSuccess: () => {
       toast.success("User has been deleted successfully");
+      queryClient.invalidateQueries();
+      setOpenDeleteModal(false);
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message);
@@ -111,7 +114,14 @@ export default function UsersList() {
       getActions: (params) => [
         <GridActionsCellItem
           key={2}
-          icon={<MdDeleteOutline className="text-[20px]" color="red" />}
+          icon={
+            <MdDeleteOutline
+              className={`text-[20px] ${
+                params.row.isAdmin === true ? "hidden" : "inline-block"
+              }`}
+              color="red"
+            />
+          }
           label="Delete"
           onClick={deleteHandler(params)}
           hidden={params.row.isAdmin === true}
