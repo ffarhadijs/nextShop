@@ -31,9 +31,18 @@ const FavoriteList = () => {
       {state?.wishList.withListItems.length ? (
         <Grid container spacing={3} alignItems={"start"}>
           <Grid item xs={12}>
-            <Card component={Paper} sx={{ padding: 2, marginY: 4, width:"fit-content", marginLeft:"auto", marginRight:"auto" }}>
+            <Card
+              component={Paper}
+              sx={{
+                padding: 2,
+                marginY: 4,
+                width: "fit-content",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
               <TableContainer>
-                <Table sx={{ minWidth: "800px", width:"1000px" }}>
+                <Table sx={{ minWidth: "800px", width: "1000px" }}>
                   <TableHead>
                     <TableRow>
                       <TableCell
@@ -100,13 +109,13 @@ const FavoriteList = () => {
                         </TableCell>
                         <TableCell
                           colSpan={4}
-                          className="text-left text-[16px]"
+                          style={{ textAlign: "left", fontSize: "16px" }}
                         >
                           {item.name}
                         </TableCell>
                         <TableCell
                           colSpan={2}
-                          className="text-left text-[16px]"
+                          style={{ textAlign: "left", fontSize: "16px" }}
                         >
                           $ {item.price}
                         </TableCell>
@@ -116,13 +125,13 @@ const FavoriteList = () => {
                         </TableCell>
                         <TableCell
                           colSpan={2}
-                          className="text-left text-[16px]"
+                          style={{ textAlign: "left", fontSize: "16px" }}
                         >
                           {item.category}
                         </TableCell>
                         <TableCell
                           colSpan={1}
-                          className="text-left text-[16px]"
+                          style={{ textAlign: "left", fontSize: "16px" }}
                         >
                           {item.countInStock}
                         </TableCell>

@@ -129,8 +129,9 @@ export default function Shop({
                 [theme.breakpoints.down("sm")]: {
                   display: "none",
                 },
+                alignItems: "center",
+                paddingLeft: "0.5rem",
               }}
-              className="items-center pl-2"
             >
               <Typography fontSize={"16px"} fontWeight={600}>
                 View:
@@ -162,8 +163,9 @@ export default function Shop({
                 [theme.breakpoints.up("sm")]: {
                   display: "none",
                 },
+                alignItems: "center",
+                paddingLeft: "0.5rem",
               }}
-              className="items-center pl-2"
             >
               <IconButton onClick={() => setOpenDrawer(true)}>
                 <AiOutlineMenu />
@@ -199,18 +201,21 @@ export default function Shop({
               xs={6}
               sm={4}
               order={{ xs: 1 }}
-              className="flex flex-row pr-3 items-end"
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                paddingRight: "12px",
+                alignItems: "flex-end",
+              }}
             >
-              <InputLabel className=" text-white text-[16px] font-[600] w-14">
-                Sort:
-              </InputLabel>
               <Select
+                label="Asd"
                 size="small"
                 variant="standard"
                 onChange={(e) =>
                   changeHandler({ sort: e.target.value as string })
                 }
-                className="w-full"
+                fullWidth
                 defaultValue={"oldest"}
               >
                 <MenuItem value={"oldest"}>Oldest</MenuItem>

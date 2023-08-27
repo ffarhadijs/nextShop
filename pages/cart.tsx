@@ -119,13 +119,13 @@ const Cart = () => {
                         </TableCell>
                         <TableCell
                           colSpan={4}
-                          className="text-left text-[16px]"
+                          style={{ textAlign: "left", fontSize: "16px" }}
                         >
                           {item.name}
                         </TableCell>
                         <TableCell
                           colSpan={2}
-                          className="text-left text-[16px]"
+                          style={{ textAlign: "left", fontSize: "16px" }}
                         >
                           $ {item.price}
                         </TableCell>
@@ -147,7 +147,7 @@ const Cart = () => {
                         </TableCell>
                         <TableCell
                           colSpan={2}
-                          className="text-left text-[16px]"
+                          style={{ textAlign: "left", fontSize: "16px" }}
                         >
                           $ {item.price * item.quantity}
                         </TableCell>
@@ -188,9 +188,7 @@ const Cart = () => {
         </Grid>
       ) : (
         <Box className="flex flex-col w-full h-auto text-center my-40">
-          <p className="text-2xl font-bold">
-            Add some products to your cart
-          </p>
+          <p className="text-2xl font-bold">Add some products to your cart</p>
           <MdOutlineAddShoppingCart className="mx-auto my-8 text-[50px]" />
         </Box>
       )}
