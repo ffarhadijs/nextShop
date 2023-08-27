@@ -62,53 +62,6 @@ export const useUpdateProfile = (
   });
 };
 
-// export const useGetUser = (options?: UseQueryOptions) => {
-//   return useQuery<any, any>({
-//     queryKey: [QueryKey.GetUser],
-//     queryFn: () => axios.get("/api/auth/getUser"),
-//     onError: (error: any) => {
-//       notifications.show({
-//         color: "red",
-//         title: "Error",
-//         message: error?.response?.data?.message,
-//       });
-//     },
-//     refetchOnMount: "always",
-//     ...options,
-//   });
-// };
-
-// export const useChangePassword = (
-//   oldPassword: string,
-//   newPassword: string,
-//   confirmPassword: string,
-//   options?: UseMutationOptions<unknown, unknown, void, unknown>
-// ) => {
-//   return useMutation({
-//     mutationFn: () =>
-//       axios.patch("/api/auth/change-password", {
-//         oldPassword,
-//         newPassword,
-//         confirmPassword,
-//       }),
-//     onSuccess: () => {
-//       notifications.show({
-//         color: "green",
-//         title: "Change Password",
-//         message: "Password has been changed successfully",
-//       });
-//     },
-//     onError(error: any) {
-//       notifications.show({
-//         color: "red",
-//         title: "Error",
-//         message: error?.response?.data?.message,
-//       });
-//     },
-//     ...options,
-//   });
-// };
-
 export const useSignout = (options?: UseQueryOptions) => {
   return useQuery({
     queryKey: [QueryKey.LogOut],
