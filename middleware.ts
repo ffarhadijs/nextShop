@@ -11,9 +11,9 @@ export default function middleware(req: NextRequest) {
       url!.includes("shipping") ||
       url!.includes("orders"))
   ) {
-    return NextResponse.redirect("http://localhost:3000/login");
+    return NextResponse.redirect("/login");
   }
   if (token && (url!.includes("login") || url!.includes("signup"))) {
-    return NextResponse.redirect("http://localhost:3000");
+    return NextResponse.redirect("/");
   }
 }
