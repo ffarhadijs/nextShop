@@ -29,6 +29,7 @@ import {
 import { IoBagHandleSharp } from "react-icons/io5";
 import { useGetUser } from "../../hooks/users/user.hooks";
 import toast from "react-hot-toast";
+import Cookies from "js-cookie";
 
 export default function Header({
   colorMode,
@@ -42,8 +43,10 @@ export default function Header({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { state } = useContext(Store);
-  const { isSuccess, data: user, refetch } = useGetUser();
-
+  const userToken=Cookies.get("token")
+  const { isSuccess, data: user, refetch } = useGetUser({
+    enabled:!!userToken
+  });
   const logoutHandler = async () => {
     const response = await fetch("/api/auth/logout");
     const data = await response.json();
@@ -79,11 +82,10 @@ export default function Header({
   return (
     <AppBar
       position="static"
-      className={` ${
-        theme.palette.mode === "dark"
-          ? "bg-[#212121] text-[#eeeeee]"
-          : "bg-[#e0e0e0] text-[#212121]"
-      }`}
+      sx={{
+        backgroundColor: theme.palette.mode === "dark" ? "#212121" : "#e0e0e0",
+        color: theme.palette.mode === "dark" ? "#eeeeee" : "#212121",
+      }}
     >
       <Container maxWidth="lg">
         <Toolbar className="!px-0">
