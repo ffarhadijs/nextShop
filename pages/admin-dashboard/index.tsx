@@ -128,9 +128,9 @@ const AdminDashboard = ({ children }: { children: ReactNode }) => {
               <Grid item xs={6} sm={3}>
                 <Paper elevation={2} className="text-center py-8">
                   <HiMiniCurrencyDollar className="text-[50px] mb-3 mx-auto" />
-                  <Typography className="text-[18px] sm:text-[20px] font-bold mb-2">
+                  <p  className="text-[18px] sm:text-[20px] font-bold mb-2">
                     Sales
-                  </Typography>
+                  </p>
                   <Typography className="text-[#2196f3] font-semibold text-[16px]">
                     {ordersLoading ? (
                       <CircularProgress size={26} />
@@ -148,9 +148,9 @@ const AdminDashboard = ({ children }: { children: ReactNode }) => {
               <Grid item xs={6} sm={3}>
                 <Paper className="text-center py-8">
                   <FaUsers className="text-[50px] mb-3 mx-auto" />
-                  <Typography className="text-[18px] sm:text-[20px] font-bold mb-2">
+                  <p className="text-[18px] sm:text-[20px] font-bold mb-2">
                     Users
-                  </Typography>
+                  </p>
                   <Typography className="text-[#2196f3] font-semibold text-[16px]">
                     {usersLoading ? (
                       <CircularProgress size={26} />
@@ -163,9 +163,9 @@ const AdminDashboard = ({ children }: { children: ReactNode }) => {
               <Grid item xs={6} sm={3}>
                 <Paper className="text-center py-8">
                   <RiShoppingBag3Fill className="text-[50px] mb-3 mx-auto" />
-                  <Typography className="text-[18px] sm:text-[20px] font-bold mb-2">
+                  <p className="text-[18px] sm:text-[20px] font-bold mb-2">
                     Orders
-                  </Typography>
+                  </p>
                   <Typography className="text-[#2196f3] font-semibold text-[16px]">
                     {ordersLoading ? (
                       <CircularProgress size={26} />
@@ -178,9 +178,9 @@ const AdminDashboard = ({ children }: { children: ReactNode }) => {
               <Grid item xs={6} sm={3}>
                 <Paper className="text-center py-8">
                   <GiClothes className="text-[50px] mb-3 mx-auto" />
-                  <Typography className="text-[18px] sm:text-[20px] font-bold mb-2">
+                  <p className="text-[18px] sm:text-[20px] font-bold mb-2">
                     Products
-                  </Typography>
+                  </p>
                   <Typography className="text-[#2196f3] font-semibold text-[16px]">
                     {productsLoading ? (
                       <CircularProgress size={26} />
