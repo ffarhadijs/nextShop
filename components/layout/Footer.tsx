@@ -1,6 +1,5 @@
 import {
   Container,
-  Typography,
   Button,
   Grid,
   TextField,
@@ -44,13 +43,12 @@ export default function Footer() {
             sm={6}
             md={3}
             style={{ display: "flex", flexDirection: "column" }}
-            spacing={"10px"}
           >
             <p className="font-[600] text-[20px] mb-4">About The Store</p>
-            <p className="text-[14px] ">
+            <p className="text-[14px] mb-2 ">
               One of the most popular on the web is shopping.
             </p>
-            <p className="text-[14px] w-fit flex flex-row items-start">
+            <p className="text-[14px] w-fit flex flex-row items-start mb-2">
               <IoLocationOutline className="text-[18px] mr-2" />
               <Link
                 href={"#"}
@@ -59,7 +57,7 @@ export default function Footer() {
                 Wonder Street, USA, New York
               </Link>
             </p>
-            <p className="text-[14px] flex flex-row items-start">
+            <p className="text-[14px] flex flex-row items-start mb-2">
               <BiSolidPhoneCall className="text-[18px] mr-2" />
               <Link
                 href={"tel:+01 321 654 214"}
@@ -68,7 +66,7 @@ export default function Footer() {
                 +01 321 654 214
               </Link>
             </p>
-            <p className="text-[14px] flex flex-row items-start">
+            <p className="text-[14px] flex flex-row items-start mb-2">
               <AiOutlineMail className="text-[18px] mr-2" />
               <Link
                 href={"mailto:rb0214192@gmail.com"}
@@ -90,7 +88,7 @@ export default function Footer() {
               <Link
                 key={index + item.link}
                 href={"#"}
-                className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit "
+                className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit mb-2"
               >
                 {item.link}
               </Link>
@@ -108,7 +106,7 @@ export default function Footer() {
               <Link
                 key={index + item.link}
                 href={"#"}
-                className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit"
+                className="text-[14px] hover:text-[#2196f3] transition-colors duration-500 w-fit mb-2"
               >
                 {item.link}
               </Link>
@@ -122,14 +120,14 @@ export default function Footer() {
             spacing={"10px"}
           >
             <p className="font-[600] text-[20px] mb-4">Newsletter</p>
-            <p className="text-[14px]">
+            <p className="text-[14px] mb-2">
               To get the latest news and latest updates from us.
             </p>
             <TextField label="Email Address" variant="outlined" size="small" />
             <Button
               variant="contained"
               color="primary"
-              className="bg-[#2196f3] "
+              className="bg-[#2196f3] mt-2"
             >
               Subscribe
             </Button>
