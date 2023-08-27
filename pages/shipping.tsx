@@ -55,7 +55,14 @@ const Shipping = () => {
   const shippingPrice = itemsPrice >= 200 ? 0 : 15;
   const taxPrice = Math.round(itemsPrice * 0.15);
   const totalPrice = itemsPrice + taxPrice + shippingPrice;
-  const shippingAddress = { name, lastName, address, city, country, postalCode };
+  const shippingAddress = {
+    name,
+    lastName,
+    address,
+    city,
+    country,
+    postalCode,
+  };
 
   const changeHandler = (value: number, item: ProductType) => {
     dispatch({ type: "CART_ADD_ITEM", payload: { ...item, quantity: value } });
@@ -146,37 +153,40 @@ const Shipping = () => {
           </Card>
           <Card component={Paper} sx={{ padding: 2, marginY: 4 }}>
             <TableContainer>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <Table sx={{ minWidth: 650 }}>
                 <TableHead>
                   <TableRow>
-                    <TableCell colSpan={2} className="font-bold text-[16px]">
+                    <TableCell
+                      colSpan={2}
+                      style={{ fontWeight: 700, fontSize: "16px" }}
+                    >
                       Product
                     </TableCell>
                     <TableCell
                       align="left"
                       colSpan={4}
-                      className="font-bold text-[16px]"
+                      style={{ fontWeight: 700, fontSize: "16px" }}
                     >
                       Name
                     </TableCell>
                     <TableCell
                       align="left"
                       colSpan={2}
-                      className="font-bold text-[16px]"
+                      style={{ fontWeight: 700, fontSize: "16px" }}
                     >
                       Unit Price
                     </TableCell>
                     <TableCell
                       align="left"
                       colSpan={2}
-                      className="font-bold text-[16px]"
+                      style={{ fontWeight: 700, fontSize: "16px" }}
                     >
                       Quantity
                     </TableCell>
                     <TableCell
                       align="left"
                       colSpan={2}
-                      className="font-bold text-[16px]"
+                      style={{ fontWeight: 700, fontSize: "16px" }}
                     >
                       Total
                     </TableCell>
@@ -198,10 +208,16 @@ const Shipping = () => {
                           className="w-20 h-auto"
                         />
                       </TableCell>
-                      <TableCell colSpan={4} className="text-left text-[16px]">
+                      <TableCell
+                        colSpan={4}
+                        style={{ textAlign: "left", fontSize: "16px" }}
+                      >
                         {item.name}
                       </TableCell>
-                      <TableCell colSpan={2} className="text-left text-[16px]">
+                      <TableCell
+                        colSpan={2}
+                        style={{ textAlign: "left", fontSize: "16px" }}
+                      >
                         $ {item.price}
                       </TableCell>
                       <TableCell align="left" colSpan={2}>
@@ -220,7 +236,10 @@ const Shipping = () => {
                           ))}
                         </Select>{" "}
                       </TableCell>
-                      <TableCell colSpan={2} className="text-left text-[16px]">
+                      <TableCell
+                        colSpan={2}
+                        style={{ textAlign: "left", fontSize: "16px" }}
+                      >
                         $ {item.price * item.quantity}
                       </TableCell>
                       <TableCell align="right" colSpan={1}>
