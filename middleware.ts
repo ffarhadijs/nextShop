@@ -1,7 +1,8 @@
+import { NextApiRequest } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
-export default function middleware(req: NextRequest) {
-  let token = req.cookies.get("token")?.value;
+export default function middleware(req: NextApiRequest & NextRequest) {
+  let token = req.cookies?.get("token")?.value;
   let url = req.url;
 
   if (
@@ -11,9 +12,12 @@ export default function middleware(req: NextRequest) {
       url!.includes("shipping") ||
       url!.includes("orders"))
   ) {
-    return NextResponse.redirect("/login");
+    return NextResponse.redirect(new URL('/login', req.url));
+    // return NextResponse.redirect("/login");
   }
   if (token && (url!.includes("login") || url!.includes("signup"))) {
-    return NextResponse.redirect("/");
+    // return NextResponse.redirect("/");
+    return NextResponse.redirect(new URL('/', req.url));
+
   }
 }
