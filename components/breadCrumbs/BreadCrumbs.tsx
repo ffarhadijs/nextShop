@@ -13,8 +13,7 @@ import { FaHome } from "react-icons/fa";
 export default function BreadCrumbs() {
   const theme = useTheme();
   const router = useRouter();
-  const path = router.asPath.split("/");
-
+  const path = router.route.split("/");
   const breadCrumbs = path.map((bc, i) => {
     return { label: bc, link: `${path.slice(0, i + 1).join("/")}` };
   });
