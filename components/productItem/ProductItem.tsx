@@ -140,13 +140,15 @@ export default function ProductItem({
           >
             ADD TO CART
           </button>
-          <Rating
-            value={product?.rating!}
-            precision={0.1}
-            readOnly
-            size="small"
-            className="group-hover/card:opacity-0 opacity-100 absolute right-2 bottom-2 group-hover/card:-right-10 transition-all duration-500"
-          />
+          <span>
+            <Rating
+              value={product?.rating!}
+              precision={0.1}
+              readOnly
+              size="small"
+              className="group-hover/card:opacity-0 opacity-100 absolute right-2 bottom-2 group-hover/card:-right-10 transition-all duration-500"
+            />
+          </span>
         </Box>
       </Card>
     </Box>
