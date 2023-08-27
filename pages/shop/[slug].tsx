@@ -141,7 +141,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
   ];
   return (
     <>
-    <BreadCrumbs/>
+      <BreadCrumbs />
       <Head>
         <title>{product.name}</title>
         <meta name="description" content={product.description} />
@@ -160,14 +160,9 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
             />
           </Grid>
           <Grid item xs={12} md={7}>
-            <Typography
-              fontWeight={700}
-              component={"h1"}
-              mb={3}
-              className="text-[24px] sm:text-[30px] "
-            >
+            <h1 className="text-[24px]  font-[700] mb-3 sm:text-[30px] ">
               {product?.name!}
-            </Typography>
+            </h1>
             <Typography
               fontWeight={700}
               fontSize={"16px"}
@@ -225,13 +220,14 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 Ask About This Product
               </ButtonBase>
             </Box>
-            <Box className="flex flex-row space-x-8 w-full mt-8">
+            <Box className="flex flex-row space-x-8 w-full mt-8 mb-6">
               <Button
                 fullWidth
                 variant="contained"
                 color="primary"
                 onClick={addToCartHandler}
-                className="bg-[#2196f3] w-max"
+                style={{ width: "max-content" }}
+                className="bg-[#2196f3]"
               >
                 Add To Cart
               </Button>
@@ -240,7 +236,8 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
                 variant="contained"
                 color="primary"
                 onClick={() => wishListHandler(product)}
-                className="bg-[#2196f3] w-max"
+                style={{ width: "max-content" }}
+                className="bg-[#2196f3]"
               >
                 Add To Wishlist
               </Button>
@@ -250,7 +247,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
               variant="contained"
               color="primary"
               onClick={buyItNowHandler}
-              className="bg-[#2196f3] mt-6"
+              className="bg-[#2196f3]"
             >
               Buy It Now
             </Button>

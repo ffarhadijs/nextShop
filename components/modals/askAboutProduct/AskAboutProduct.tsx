@@ -80,7 +80,7 @@ export default function AskAboutProduct({
             helperText={errors.email?.message?.toString()}
           />
         </Stack>
-        <Stack direction={"column"}>
+        <Stack direction={"column"} mb={"20px"}>
           <FormLabel>Message:</FormLabel>
           <TextField
             {...register("message")}
@@ -94,7 +94,7 @@ export default function AskAboutProduct({
           type="submit"
           variant="contained"
           color="primary"
-          className="bg-[#2196f3] mt-[20px]"
+          className="bg-[#2196f3]"
         >
           Send Message
         </Button>
