@@ -140,7 +140,7 @@ export default function ProductItem({
           >
             ADD TO CART
           </button>
-          <span className="flex justify-center items-center group-hover/card:opacity-0 opacity-100 absolute right-[11px] bottom-2 group-hover/card:-right-10 transition-all duration-500">
+          <span className="flex justify-center items-center group-hover/card:opacity-0 opacity-100 absolute right-2 bottom-[11px] group-hover/card:-right-10 transition-all duration-500">
             <Rating
               value={product?.rating!}
               precision={0.1}
