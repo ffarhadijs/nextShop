@@ -95,7 +95,7 @@ export default function ProductItem({
                   className="text-gray-500 bg-white rounded-full w-max h-auto flex items-center justify-center hover:bg-[#2196f3] hover:text-white p-[2px] transition-colors duration-500"
                   onClick={(e) => wishListHandler(e, product)}
                 >
-                  {state.wishList.withListItems.findIndex(
+                  {state?.wishList.withListItems.findIndex(
                     (item) => item._id === product._id
                   ) === -1 ? (
                     <MdFavoriteBorder size={22} />
