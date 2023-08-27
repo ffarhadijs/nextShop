@@ -1,8 +1,15 @@
-import { Container, Typography, Button, Grid, TextField, useTheme } from "@mui/material";
+import {
+  Container,
+  Typography,
+  Button,
+  Grid,
+  TextField,
+  useTheme,
+} from "@mui/material";
 import Link from "next/link";
-import {IoLocationOutline} from "react-icons/io5"
-import {BiSolidPhoneCall} from "react-icons/bi"
-import {AiOutlineMail} from "react-icons/ai"
+import { IoLocationOutline } from "react-icons/io5";
+import { BiSolidPhoneCall } from "react-icons/bi";
+import { AiOutlineMail } from "react-icons/ai";
 
 const quickLinks = [
   { link: "About Us" },
@@ -23,24 +30,27 @@ const customerSupport = [
 ];
 
 export default function Footer() {
-  const theme = useTheme()
+  const theme = useTheme();
   return (
-    <footer className={`py-14 ${
-      theme.palette.mode === "dark" ? "bg-[#212121]" : "bg-[#e0e0e0]"
-    }`}>
-      <Container
-        maxWidth="lg"
-        
-      >
+    <footer
+      className={`py-14 ${
+        theme.palette.mode === "dark" ? "bg-[#212121]" : "bg-[#e0e0e0]"
+      }`}
+    >
+      <Container maxWidth="lg">
         <Grid container spacing={"20px"}>
-          <Grid item sm={6} md={3} className="flex flex-col space-y-3">
-            <Typography className="font-[600] text-[20px] mb-4">
-              About The Store
-            </Typography>
-            <Typography className="text-[14px] ">
+          <Grid
+            item
+            sm={6}
+            md={3}
+            style={{ display: "flex", flexDirection: "column" }}
+            rowSpacing={"10px"}
+          >
+            <p className="font-[600] text-[20px] mb-4">About The Store</p>
+            <p className="text-[14px] ">
               One of the most popular on the web is shopping.
-            </Typography>
-            <Typography className="text-[14px] w-fit flex flex-row items-start">
+            </p>
+            <p className="text-[14px] w-fit flex flex-row items-start">
               <IoLocationOutline className="text-[18px] mr-2" />
               <Link
                 href={"#"}
@@ -48,8 +58,8 @@ export default function Footer() {
               >
                 Wonder Street, USA, New York
               </Link>
-            </Typography>
-            <Typography className="text-[14px] flex flex-row items-start">
+            </p>
+            <p className="text-[14px] flex flex-row items-start">
               <BiSolidPhoneCall className="text-[18px] mr-2" />
               <Link
                 href={"tel:+01 321 654 214"}
@@ -57,8 +67,8 @@ export default function Footer() {
               >
                 +01 321 654 214
               </Link>
-            </Typography>
-            <Typography className="text-[14px] flex flex-row items-start">
+            </p>
+            <p className="text-[14px] flex flex-row items-start">
               <AiOutlineMail className="text-[18px] mr-2" />
               <Link
                 href={"mailto:rb0214192@gmail.com"}
@@ -66,12 +76,16 @@ export default function Footer() {
               >
                 rb0214192@gmail.com
               </Link>
-            </Typography>
+            </p>
           </Grid>
-          <Grid item sm={6} md={3} className="flex flex-col space-y-3">
-            <Typography className="font-[600] text-[20px] mb-4">
-              Quick Links
-            </Typography>
+          <Grid
+            item
+            sm={6}
+            md={3}
+            style={{ display: "flex", flexDirection: "column" }}
+            rowSpacing={"10px"}
+          >
+            <p className="font-[600] text-[20px] mb-4">Quick Links</p>
             {quickLinks.map((item: { link: string }, index: number) => (
               <Link
                 key={index + item.link}
@@ -82,10 +96,14 @@ export default function Footer() {
               </Link>
             ))}
           </Grid>
-          <Grid item sm={6} md={3} className="flex flex-col space-y-3">
-            <Typography className="font-[600] text-[20px] mb-4">
-              Customer Support
-            </Typography>
+          <Grid
+            item
+            sm={6}
+            md={3}
+            style={{ display: "flex", flexDirection: "column" }}
+            rowSpacing={"10px"}
+          >
+            <p className="font-[600] text-[20px] mb-4">Customer Support</p>
             {customerSupport.map((item: { link: string }, index: number) => (
               <Link
                 key={index + item.link}
@@ -96,13 +114,17 @@ export default function Footer() {
               </Link>
             ))}
           </Grid>
-          <Grid item sm={6} md={3} className="flex flex-col space-y-3">
-            <Typography className="font-[600] text-[20px] mb-4">
-              Newsletter
-            </Typography>
-            <Typography className="text-[14px]">
+          <Grid
+            item
+            sm={6}
+            md={3}
+            style={{ display: "flex", flexDirection: "column" }}
+            rowSpacing={"10px"}
+          >
+            <p className="font-[600] text-[20px] mb-4">Newsletter</p>
+            <p className="text-[14px]">
               To get the latest news and latest updates from us.
-            </Typography>
+            </p>
             <TextField label="Email Address" variant="outlined" size="small" />
             <Button
               variant="contained"
