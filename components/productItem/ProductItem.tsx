@@ -123,40 +123,23 @@ export default function ProductItem({
             </Box>
           </Box>
         </CardActionArea>
-        <CardContent className="p-2 pt-4">
-          <Typography
-            component={Link}
+        <Box className="p-2 pt-4">
+          <Link
             href={`shop/${product.slug}`}
-            className="text-[15px] font-bold"
-            sx={{
-              transition: "all 0.2s",
-              ":hover": {
-                color: "primary.main",
-              },
-            }}
+            className="text-[15px] font-bold hover:text-[#2196f3] transition-colors duration-200"
           >
             {product.name}
-          </Typography>
-        </CardContent>
+          </Link>
+        </Box>
 
-        <CardActions className="flex flex-row justify-between relative">
+        <Box className="flex flex-row p-2 justify-between items-center relative">
           <Typography>$ {product.price} </Typography>
-          <Button
+          <button
             onClick={(e) => addToCartHandler(product, e)}
-            size="small"
-            color="primary"
-            style={{
-              position: "absolute",
-              right: "-40px",
-              bottom: "8px",
-              transitionProperty: "all",
-              transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
-              transitionDuration: "500ms",
-            }}
-            className="group-hover/card:opacity-100 opacity-0 group-hover/card:right-2"
+            className="group-hover/card:opacity-100 text-[#2196f3] px-[6px] py-[2px] rounded-sm hover:bg-[#2195f331] opacity-0 absolute -right-10 bottom-2 group-hover/card:right-2 transition-all duration-500"
           >
-            Add To Cart
-          </Button>
+            ADD TO CART
+          </button>
           <Rating
             value={product?.rating!}
             precision={0.1}
@@ -164,7 +147,7 @@ export default function ProductItem({
             size="small"
             className="group-hover/card:opacity-0 opacity-100 absolute right-2 bottom-3 group-hover/card:-right-10 transition-all duration-500"
           />
-        </CardActions>
+        </Box>
       </Card>
     </Box>
   );
