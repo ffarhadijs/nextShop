@@ -136,7 +136,7 @@ export default function ProductItem({
           <Typography>$ {product.price} </Typography>
           <button
             onClick={(e) => addToCartHandler(product, e)}
-            className="group-hover/card:opacity-100 text-[#2196f3] px-[6px] py-[2px] rounded-sm hover:bg-[#2195f331] opacity-0 absolute -right-10 bottom-2 group-hover/card:right-2 transition-all duration-500"
+            className="group-hover/card:opacity-100 text-[#2196f3] text-[14px] px-[6px] py-[2px] rounded-sm hover:bg-[#2195f331] opacity-0 absolute -right-10 bottom-2 group-hover/card:right-2 transition-all duration-500"
           >
             ADD TO CART
           </button>
@@ -145,7 +145,7 @@ export default function ProductItem({
             precision={0.1}
             readOnly
             size="small"
-            className="group-hover/card:opacity-0 opacity-100 absolute right-2 bottom-3 group-hover/card:-right-10 transition-all duration-500"
+            className="group-hover/card:opacity-0 opacity-100 absolute right-2 bottom-2 group-hover/card:-right-10 transition-all duration-500"
           />
         </Box>
       </Card>
