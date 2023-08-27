@@ -61,16 +61,16 @@ export function FilterPanel({
     <>
       <Box>
         {" "}
-        <Typography className="text-[18px] font-[600]">
+        <Typography fontWeight={600} fontSize={18}>
           Filter Panel
         </Typography>{" "}
       </Box>
       <Box>
-        <Box>
-          <Typography className="mt-10 text-[16px] font-[600]">
+        <Box mt={"40px"}>
+          <Typography fontWeight={600} fontSize={16}>
             Product Name:
           </Typography>
-          <Divider className="mb-5" />
+          <Divider style={{ marginBottom: "20px" }} />
           <TextField
             onChange={(e) => {
               query.searchQuery = e.target.value;
@@ -82,11 +82,11 @@ export function FilterPanel({
             fullWidth
           />
         </Box>
-        <Box>
-          <Typography className=" mt-10 text-[16px] font-[600]">
+        <Box mt={"40px"}>
+          <Typography fontWeight={600} fontSize={16}>
             Category:
           </Typography>
-          <Divider className="mb-5" />
+          <Divider style={{ marginBottom: "20px" }} />
           <RadioGroup defaultValue="All" value={filterValue.category}>
             {["All", ...categoriesList].map((item: string, index: number) => (
               <FormControlLabel
@@ -105,11 +105,11 @@ export function FilterPanel({
             ))}
           </RadioGroup>
         </Box>
-        <Box>
-          <Typography className="mt-10 text-[16px] font-[600]">
+        <Box mt={"40px"}>
+          <Typography fontWeight={600} fontSize={16}>
             Price:
           </Typography>
-          <Divider className="mb-5" />
+          <Divider style={{ marginBottom: "20px" }} />
           <Slider
             defaultValue={[minPrice, maxPrice]}
             value={filterValue.price}

@@ -114,7 +114,13 @@ export default function Shop({
               minPrice={minPrice}
             />
           </Grid>
-          <Grid container item sm={9} xs={12} className="my-5 items-start">
+          <Grid
+            container
+            item
+            sm={9}
+            xs={12}
+            style={{ margin: "20px 0", alignItems: "flex-start" }}
+          >
             <Grid
               container
               item
@@ -126,14 +132,23 @@ export default function Shop({
               }}
               className="items-center pl-2"
             >
-              <Typography className="text-[16px] font-[600]">View:</Typography>
+              <Typography fontSize={"16px"} fontWeight={600}>
+                View:
+              </Typography>
               {views.map((item) => (
                 <IconButton
                   key={item.columns}
                   onClick={() => viewHandler(item.columns)}
-                  className={`p-[1px] text-[20px] ${
+                  style={{
+                    padding: "1px",
+                    fontSize: "20px",
+                    transitionProperty: "color",
+                    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+                    transitionDuration: "500ms",
+                  }}
+                  className={`${
                     columns === item.columns && "text-[#2196f3]"
-                  } transition-colors duration-500 hover:text-[#2196f3]`}
+                  } hover:text-[#2196f3]`}
                 >
                   {item.icon}
                 </IconButton>
@@ -168,10 +183,10 @@ export default function Shop({
               mx={"auto"}
               textAlign={"center"}
             >
-              <Typography className="text-[16px] font-[600] inline">
+              <Typography fontSize={"16px"} fontWeight={600} display={"inline"}>
                 Showing:
               </Typography>
-              <Typography className="text-[14px] font-[500] inline">
+              <Typography fontSize={"14px"} fontWeight={500} display={"inline"}>
                 {countProducts === 0
                   ? "No Product"
                   : countProducts === 1
