@@ -191,9 +191,9 @@ export default function Home({ products }: { products: ProductsType }) {
           <Typography color={"primary"} className="font-bold pb-4">
             See Our Collection
           </Typography>
-          <Typography className="font-[500] text-[24px] sm:text-[30px]">
+          <p className="font-[500] text-[24px] sm:text-[30px]">
             Recent Products
-          </Typography>
+          </p>
         </Stack>
         <Grid container spacing={3} mb={"60px"}>
           {products.map((product, index) => (
