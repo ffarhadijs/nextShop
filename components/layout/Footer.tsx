@@ -44,7 +44,7 @@ export default function Footer() {
             sm={6}
             md={3}
             style={{ display: "flex", flexDirection: "column" }}
-            rowSpacing={"10px"}
+            spacing={"10px"}
           >
             <p className="font-[600] text-[20px] mb-4">About The Store</p>
             <p className="text-[14px] ">
@@ -83,7 +83,7 @@ export default function Footer() {
             sm={6}
             md={3}
             style={{ display: "flex", flexDirection: "column" }}
-            rowSpacing={"10px"}
+            spacing={"10px"}
           >
             <p className="font-[600] text-[20px] mb-4">Quick Links</p>
             {quickLinks.map((item: { link: string }, index: number) => (
@@ -101,7 +101,7 @@ export default function Footer() {
             sm={6}
             md={3}
             style={{ display: "flex", flexDirection: "column" }}
-            rowSpacing={"10px"}
+            spacing={"10px"}
           >
             <p className="font-[600] text-[20px] mb-4">Customer Support</p>
             {customerSupport.map((item: { link: string }, index: number) => (
@@ -119,7 +119,7 @@ export default function Footer() {
             sm={6}
             md={3}
             style={{ display: "flex", flexDirection: "column" }}
-            rowSpacing={"10px"}
+            spacing={"10px"}
           >
             <p className="font-[600] text-[20px] mb-4">Newsletter</p>
             <p className="text-[14px]">
