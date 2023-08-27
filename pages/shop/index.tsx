@@ -91,7 +91,7 @@ export default function Shop({
           />
           <IconButton
             onClick={() => setOpenDrawer(false)}
-            className="absolute top-4 right-4"
+            style={{ position: "absolute", top: "1rem", right: "1rem" }}
           >
             <AiOutlineClose />
           </IconButton>
@@ -106,7 +106,7 @@ export default function Shop({
                 display: "none",
               },
             }}
-            className="my-5 pr-5"
+            style={{ marginTop: "20px", paddingRight: "20px" }}
           >
             <FilterPanel
               categoriesList={categoriesList}
@@ -242,7 +242,14 @@ export default function Shop({
                 <Grid
                   item
                   xs={12}
-                  className="flex flex-row justify-center mx-auto mt-8"
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: "32px",
+                  }}
                 >
                   <Pagination
                     className="mx-auto"
@@ -261,9 +268,9 @@ export default function Shop({
         </Grid>
       </Container>
       <Box>
-        <Typography className="text-center mb-[35px] mt-[80px] text-[24px] sm:text-[30px]">
+        <p className="text-center mb-[35px] mt-[80px] text-[24px] sm:text-[30px]">
           FOLLOW US ON INSTAGRAM
-        </Typography>
+        </p>
 
         <SwiperSlider
           {...{ slidesPerView: 6 }}
