@@ -58,39 +58,42 @@ const Cart = () => {
       {state?.cart.cartItems.length ? (
         <Grid container spacing={3} alignItems={"start"}>
           <Grid item xs={12} md={9}>
-            <Card component={Paper} sx={{ padding: 2, marginY: 4 }}>
+            <Card component={Paper} sx={{ padding: 2, marginY: 0 }}>
               <TableContainer>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <Table sx={{ minWidth: 650 }}>
                   <TableHead>
                     <TableRow>
-                      <TableCell colSpan={2} className="font-bold text-[16px]">
+                      <TableCell
+                        colSpan={2}
+                        style={{ fontWeight: 700, fontSize: "16px" }}
+                      >
                         Product
                       </TableCell>
                       <TableCell
                         align="left"
                         colSpan={4}
-                        className="font-bold text-[16px]"
+                        style={{ fontWeight: 700, fontSize: "16px" }}
                       >
                         Name
                       </TableCell>
                       <TableCell
                         align="left"
                         colSpan={2}
-                        className="font-bold text-[16px]"
+                        style={{ fontWeight: 700, fontSize: "16px" }}
                       >
                         Unit Price
                       </TableCell>
                       <TableCell
                         align="left"
                         colSpan={2}
-                        className="font-bold text-[16px]"
+                        style={{ fontWeight: 700, fontSize: "16px" }}
                       >
                         Quantity
                       </TableCell>
                       <TableCell
                         align="left"
                         colSpan={2}
-                        className="font-bold text-[16px]"
+                        style={{ fontWeight: 700, fontSize: "16px" }}
                       >
                         Total
                       </TableCell>
@@ -107,11 +110,11 @@ const Cart = () => {
                       >
                         <TableCell component="th" scope="row" colSpan={2}>
                           <Image
-                            width={100}
-                            height={100}
+                            width={200}
+                            height={200}
                             src={item.image}
                             alt={item.name}
-                            className="w-20 h-auto"
+                            className="w-20 h-auto max-h-20"
                           />
                         </TableCell>
                         <TableCell
@@ -185,9 +188,9 @@ const Cart = () => {
         </Grid>
       ) : (
         <Box className="flex flex-col w-full h-auto text-center my-40">
-          <Typography className="text-2xl font-bold">
+          <p className="text-2xl font-bold">
             Add some products to your cart
-          </Typography>
+          </p>
           <MdOutlineAddShoppingCart className="mx-auto my-8 text-[50px]" />
         </Box>
       )}

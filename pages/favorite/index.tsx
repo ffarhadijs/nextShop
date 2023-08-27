@@ -17,7 +17,7 @@ import React, { useContext } from "react";
 import { Store } from "../../utils/Store";
 import { ProductType } from "../../types/product.type";
 import Image from "next/image";
-import {MdDeleteOutline,MdFavoriteBorder} from "react-icons/md";
+import { MdDeleteOutline, MdFavoriteBorder } from "react-icons/md";
 
 const FavoriteList = () => {
   const { state, dispatch } = useContext(Store);
@@ -31,25 +31,28 @@ const FavoriteList = () => {
       {state?.wishList.withListItems.length ? (
         <Grid container spacing={3} alignItems={"start"}>
           <Grid item xs={12}>
-            <Card component={Paper} sx={{ padding: 2, marginY: 4 }}>
+            <Card component={Paper} sx={{ padding: 2, marginY: 4, width:"fit-content", marginLeft:"auto", marginRight:"auto" }}>
               <TableContainer>
-                <Table sx={{minWidth:"800px"}}>
-                  <TableHead >
+                <Table sx={{ minWidth: "800px", width:"1000px" }}>
+                  <TableHead>
                     <TableRow>
-                      <TableCell colSpan={2} className="font-bold text-[16px]">
+                      <TableCell
+                        colSpan={1}
+                        style={{ fontWeight: 700, fontSize: "16px" }}
+                      >
                         Product
                       </TableCell>
                       <TableCell
                         align="left"
                         colSpan={4}
-                        className="font-bold text-[16px]"
+                        style={{ fontWeight: 700, fontSize: "16px" }}
                       >
                         Name
                       </TableCell>
                       <TableCell
                         align="left"
                         colSpan={2}
-                        className="font-bold text-[16px]"
+                        style={{ fontWeight: 700, fontSize: "16px" }}
                       >
                         Price
                       </TableCell>
@@ -57,14 +60,14 @@ const FavoriteList = () => {
                       <TableCell
                         align="left"
                         colSpan={2}
-                        className="font-bold text-[16px]"
+                        style={{ fontWeight: 700, fontSize: "16px" }}
                       >
                         Brand
                       </TableCell>
                       <TableCell
                         align="left"
                         colSpan={2}
-                        className="font-bold text-[16px]"
+                        style={{ fontWeight: 700, fontSize: "16px" }}
                       >
                         Category
                       </TableCell>
@@ -86,7 +89,7 @@ const FavoriteList = () => {
                           "&:last-child td, &:last-child th": { border: 0 },
                         }}
                       >
-                        <TableCell component="th" scope="row" colSpan={2}>
+                        <TableCell component="th" scope="row" colSpan={1}>
                           <Image
                             width={100}
                             height={100}
@@ -140,9 +143,9 @@ const FavoriteList = () => {
         </Grid>
       ) : (
         <Box className="flex flex-col w-full h-auto text-center my-40">
-          <Typography className="text-2xl font-bold">
+          <p className="text-2xl font-bold">
             Add some products to your wish list
-          </Typography>
+          </p>
           <MdFavoriteBorder className="mx-auto my-8 text-[50px]" />
         </Box>
       )}
