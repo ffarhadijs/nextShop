@@ -145,7 +145,15 @@ export default function ProductItem({
             onClick={(e) => addToCartHandler(product, e)}
             size="small"
             color="primary"
-            className="group-hover/card:opacity-100 opacity-0 absolute -right-10 bottom-2 group-hover/card:right-2 transition-all duration-500"
+            style={{
+              position: "absolute",
+              right: "-40px",
+              bottom: "8px",
+              transitionProperty: "all",
+              transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+              transitionDuration: "500ms",
+            }}
+            className="group-hover/card:opacity-100 opacity-0 group-hover/card:right-2"
           >
             Add To Cart
           </Button>

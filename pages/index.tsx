@@ -104,13 +104,9 @@ export default function Home({ products }: { products: ProductsType }) {
             <Typography fontSize={17} fontWeight={700} color={"black"}>
               Limited Time Offer
             </Typography>
-            <Typography
-              fontWeight={700}
-              color={"black"}
-              className="text-[30px] sm:text-[40px] md:text-[50px]"
-            >
+            <p className="text-[30px] text-black font-[700] sm:text-[40px] md:text-[50px]">
               Winter-Spring!
-            </Typography>
+            </p>
             <Typography fontSize={16} fontWeight={400} color={"black"}>
               Take 20% Off
             </Typography>
@@ -134,13 +130,9 @@ export default function Home({ products }: { products: ProductsType }) {
             <Typography fontSize={18} fontWeight={700} color={"black"}>
               Buy Now From This Shop
             </Typography>
-            <Typography
-              className="text-[30px] sm:text-[40px] md:text-[50px]"
-              fontWeight={700}
-              color={"black"}
-            >
+            <p className="text-[30px] font-[700] text-black sm:text-[40px] md:text-[50px]">
               New Season Canvas
-            </Typography>
+            </p>
             <Typography fontSize={16} fontWeight={400} color={"black"}>
               Take 20% Off
             </Typography>
@@ -164,13 +156,9 @@ export default function Home({ products }: { products: ProductsType }) {
             <Typography fontSize={18} fontWeight={700} color={"black"}>
               Exclusive Offer
             </Typography>
-            <Typography
-              className="text-[30px] sm:text-[40px] md:text-[50px]"
-              fontWeight={700}
-              color={"black"}
-            >
+            <p className="text-[30px] text-black font-[700] sm:text-[40px] md:text-[50px]">
               Spring-Show!
-            </Typography>
+            </p>
             <Typography fontSize={16} fontWeight={400} color={"black"}>
               Take 20% Off
             </Typography>
@@ -188,7 +176,7 @@ export default function Home({ products }: { products: ProductsType }) {
 
       <Container sx={{ minHeight: "85vh", paddingY: "20px" }} maxWidth="lg">
         <Stack className="flex flex-col justify-center items-center mt-16 mb-10">
-          <Typography color={"primary"} className="font-bold pb-4">
+          <Typography color={"primary"} fontWeight={700} pb={"16px"}>
             See Our Collection
           </Typography>
           <p className="font-[500] text-[24px] sm:text-[30px]">
@@ -217,19 +205,14 @@ export default function Home({ products }: { products: ProductsType }) {
             <Typography fontSize={"16px"} fontWeight={600} color="primary.main">
               Limited Time Offer!
             </Typography>
-            <Typography
-              fontWeight={600}
-              className="text-[32px] md:text-[42px]"
-            >
-              -40% OFF{" "}
-            </Typography>
+            <p className="text-[32px] md:text-[42px] font-[600]">-40% OFF </p>
             <Typography fontSize={"14px"} fontWeight={500}>
               Get The Best Deals Now
             </Typography>
             <Button
               variant="contained"
               color={"primary"}
-              className="mt-4 bg-[#2196f3]"
+              style={{ marginTop: "16px" }}
               LinkComponent={Link}
               href="/shop"
             >
@@ -239,9 +222,9 @@ export default function Home({ products }: { products: ProductsType }) {
         </Box>
       </Box>
       <Container maxWidth="lg">
-        <Typography className="text-[24px] sm:text-[30px] mb-[35px] mt-[80px] text-center">
+        <p className="text-[24px] sm:text-[30px] mb-[35px] mt-[80px] text-center">
           Our Services
-        </Typography>
+        </p>
         <SwiperSlider
           {...{
             spaceBetween: 30,
@@ -274,9 +257,9 @@ export default function Home({ products }: { products: ProductsType }) {
           ))}
         />
 
-        <Typography className="text-[24px] sm:text-[30px] mt-[80px] mb-[35px] text-center">
+        <p className="text-[24px] sm:text-[30px] mt-[80px] mb-[35px] text-center">
           FOLLOW US ON INSTAGRAM
-        </Typography>
+        </p>
       </Container>
 
       <SwiperSlider
