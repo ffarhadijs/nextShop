@@ -196,7 +196,7 @@ const AddOrEditProduct = ({
             <Stack direction="column">
               <Button variant="contained" component="label">
                 Upload Image
-                <TextField
+                <input
                   type="file"
                   onChange={(e) => handleFileChange(e)}
                   hidden
