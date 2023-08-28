@@ -63,6 +63,7 @@ export default function Header({
   });
   const logoutHandler = async () => {
     setLogOut(true);
+    Cookies.remove("token");
     setAnchorEl(null);
   };
 
