@@ -16,6 +16,7 @@ export default async function handler(
       serialize("token", "", {
         maxAge: 0,
         path: "/",
+        httpOnly: false,
       })
     )
     .json({ status: "success", message: "Logged out!" });
