@@ -30,6 +30,9 @@ import { IoBagHandleSharp } from "react-icons/io5";
 import { useGetUser } from "../../hooks/users/user.hooks";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
+import { useSignout } from "../../hooks/auth/auth.hooks";
+import { useQueryClient } from "react-query";
+import { QueryKey } from "../../enums/queryKey";
 
 export default function Header({
   colorMode,
@@ -40,23 +43,42 @@ export default function Header({
 }) {
   const theme = useTheme();
   const { push } = useRouter();
+  const [logOut, setLogOut] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { state } = useContext(Store);
-  const userToken=Cookies.get("token")
-  const { isSuccess, data: user, refetch } = useGetUser({
-    enabled:!!userToken
+  const userToken = Cookies.get("token");
+  const queryClient = useQueryClient();
+  const {
+    isSuccess,
+    data: user,
+    refetch,
+  } = useGetUser({
+    enabled: !!userToken,
   });
-  const logoutHandler = async () => {
-    const response = await fetch("/api/auth/logout");
-    const data = await response.json();
-    if (response.ok) {
+  const signOut = useSignout({
+    enabled: logOut,
+    onSuccess: () => {
+      setLogOut(false);
       toast.success("User signed out successfully");
       push("/login");
-      refetch();
-    } else {
-      toast.error(data.message);
-    }
+      // queryClient.invalidateQueries(QueryKey.getUser);
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
+    },
+  });
+  const logoutHandler = async () => {
+    setLogOut(true);
+    // const response = await fetch("/api/auth/logout");
+    // const data = await response.json();
+    // if (response.ok) {
+    //   toast.success("User signed out successfully");
+    //   push("/login");
+    //   refetch();
+    // } else {
+    //   toast.error(data.message);
+    // }
     setAnchorEl(null);
   };
 
@@ -130,7 +152,7 @@ export default function Header({
                 </Badge>
               </Link>
 
-              {isSuccess ? (
+              {isSuccess && userToken ? (
                 <>
                   <Button
                     onClick={handleClick}
