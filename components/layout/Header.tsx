@@ -32,7 +32,6 @@ import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import { useSignout } from "../../hooks/auth/auth.hooks";
 import { useQueryClient } from "react-query";
-import { QueryKey } from "../../enums/queryKey";
 
 export default function Header({
   colorMode,
@@ -48,12 +47,7 @@ export default function Header({
   const open = Boolean(anchorEl);
   const { state } = useContext(Store);
   const userToken = Cookies.get("token");
-  const queryClient = useQueryClient();
-  const {
-    isSuccess,
-    data: user,
-    refetch,
-  } = useGetUser({
+  const { isSuccess, data: user } = useGetUser({
     enabled: !!userToken,
   });
   const signOut = useSignout({
@@ -62,7 +56,6 @@ export default function Header({
       setLogOut(false);
       toast.success("User signed out successfully");
       push("/login");
-      // queryClient.invalidateQueries(QueryKey.getUser);
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message);
@@ -70,15 +63,6 @@ export default function Header({
   });
   const logoutHandler = async () => {
     setLogOut(true);
-    // const response = await fetch("/api/auth/logout");
-    // const data = await response.json();
-    // if (response.ok) {
-    //   toast.success("User signed out successfully");
-    //   push("/login");
-    //   refetch();
-    // } else {
-    //   toast.error(data.message);
-    // }
     setAnchorEl(null);
   };
 

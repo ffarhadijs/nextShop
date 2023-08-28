@@ -1,5 +1,6 @@
 import { serialize } from "cookie";
 import { NextApiResponse, NextApiRequest } from "next";
+import connectDB from "../../../utils/connectDB";
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,7 +9,7 @@ export default async function handler(
   if (req.method !== "GET") {
     return;
   }
-
+  connectDB()
   res
     .status(200)
     .setHeader(
