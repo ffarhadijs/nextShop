@@ -438,13 +438,16 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
         {...{ slidesPerView: 6 }}
         items={Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11).map((item, index) => (
           <SwiperSlide key={item + index}>
-            <Box
-              className={`bg-[url('/images/instagram/img${item}.jpg')] bg-cover bg-no-repeat h-[200px] group`}
+            <div
+            style={{
+              backgroundImage: `url(/images/instagram/img${item}.jpg)`,
+            }}
+              className={`bg-cover bg-no-repeat h-[200px] group`}
             >
               <Box className="w-full h-full bg-black/0 group-hover:bg-black/50 relative flex flex-col justify-center items-center transition-all duration-500">
                 <BsInstagram className="opacity-0 group-hover:opacity-100 absolute transition-all duration-500 text-[36px]" />
               </Box>
-            </Box>
+            </div>
           </SwiperSlide>
         ))}
       />
