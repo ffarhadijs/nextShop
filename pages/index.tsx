@@ -235,11 +235,8 @@ export default function Home({ products }: { products: ProductsType }) {
               768: {
                 slidesPerView: 3,
               },
-              641: {
-                slidesPerView: 2,
-              },
               640: {
-                slidesPerView: 1,
+                slidesPerView: 2,
               },
             },
           }}
@@ -263,7 +260,23 @@ export default function Home({ products }: { products: ProductsType }) {
       </Container>
 
       <SwiperSlider
-        {...{ slidesPerView: 6 }}
+        {...{
+          spaceBetween: 0,
+          breakpoints: {
+            1024: {
+              slidesPerView: 8,
+            },
+            768: {
+              slidesPerView: 6,
+            },
+            640: {
+              slidesPerView: 4,
+            },
+            400: {
+              slidesPerView: 2,
+            },
+          },
+        }}
         items={Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11).map((item, index) => (
           <SwiperSlide key={item + index}>
             <div

@@ -398,9 +398,9 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
           )}
         </div>
 
-        <Typography className="text-[24px] sm:text-[30px] my-[35px]  text-center">
+        <p className="text-[24px] sm:text-[30px] my-[35px]  text-center">
           Our Services
-        </Typography>
+        </p>
         <SwiperSlider
           {...{
             breakpoints: {
@@ -410,11 +410,8 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
               768: {
                 slidesPerView: 3,
               },
-              641: {
-                slidesPerView: 2,
-              },
               640: {
-                slidesPerView: 1,
+                slidesPerView: 2,
               },
             },
             spaceBetween: 30,
@@ -431,17 +428,33 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
           ))}
         />
       </Container>
-      <Typography className="text-[24px] sm:text-[30px] mt-[80px] mb-[35px] text-center">
+      <p className="text-[24px] sm:text-[30px] mt-[80px] mb-[35px] text-center">
         FOLLOW US ON INSTAGRAM
-      </Typography>
+      </p>
       <SwiperSlider
-        {...{ slidesPerView: 6 }}
+        {...{
+          spaceBetween: 0,
+          breakpoints: {
+            1024: {
+              slidesPerView: 8,
+            },
+            768: {
+              slidesPerView: 6,
+            },
+            640: {
+              slidesPerView: 4,
+            },
+            400: {
+              slidesPerView: 2,
+            },
+          },
+        }}
         items={Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11).map((item, index) => (
           <SwiperSlide key={item + index}>
             <div
-            style={{
-              backgroundImage: `url(/images/instagram/img${item}.jpg)`,
-            }}
+              style={{
+                backgroundImage: `url(/images/instagram/img${item}.jpg)`,
+              }}
               className={`bg-cover bg-no-repeat h-[200px] group`}
             >
               <Box className="w-full h-full bg-black/0 group-hover:bg-black/50 relative flex flex-col justify-center items-center transition-all duration-500">
