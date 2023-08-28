@@ -3,11 +3,13 @@ import User from "../../../models/User";
 import { sign } from "jsonwebtoken";
 import { serialize } from "cookie";
 import { NextApiRequest, NextApiResponse } from "next";
+import connectDB from "../../../utils/connectDB";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return;
   }
+  connectDB()
   const secretKey = process.env.SECRET_KEY;
   const { email, password } = req.body;
   const existuser = await User.findOne({ email });
