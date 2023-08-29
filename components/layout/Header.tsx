@@ -31,7 +31,6 @@ import { useGetUser } from "../../hooks/users/user.hooks";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import { useSignout } from "../../hooks/auth/auth.hooks";
-import { useQueryClient } from "react-query";
 
 export default function Header({
   colorMode,
@@ -55,7 +54,6 @@ export default function Header({
     onSuccess: () => {
       setLogOut(false);
       toast.success("User signed out successfully");
-      push("/login");
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message);
