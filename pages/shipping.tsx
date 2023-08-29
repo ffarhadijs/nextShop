@@ -228,6 +228,9 @@ const Shipping = () => {
                           onChange={(e: SelectChangeEvent<number>) =>
                             changeHandler(e?.target.value as number, item)
                           }
+                          MenuProps={{
+                            PaperProps: { sx: { maxHeight: 150 } },
+                          }}
                         >
                           {[...Array(item.countInStock).keys()].map((x) => (
                             <MenuItem key={x + 1} value={x + 1}>
