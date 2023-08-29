@@ -4,13 +4,11 @@ import { useForm } from "react-hook-form";
 import { LoginFormType } from "../types/login.type";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { verifyToken } from "../utils/verifyToken";
 import { useSignin } from "../hooks/auth/auth.hooks";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useRouter } from "next/router";
 import { useQueryClient } from "react-query";
 import toast from "react-hot-toast";
-import { GetServerSidePropsContext } from "next";
 
 const schema = yup
   .object({
@@ -41,16 +39,20 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  const { mutate, isLoading } = useSignin(watch("email"), watch("password"), {
-    onSuccess: () => {
-      toast.success("User signed in successfully!");
-      queryClient.invalidateQueries();
-      push("/");
-    },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message);
-    },
-  });
+  const { mutate, isLoading } = useSignin(
+    watch("email").toLowerCase(),
+    watch("password"),
+    {
+      onSuccess: () => {
+        toast.success("User signed in successfully!");
+        queryClient.invalidateQueries();
+        push("/");
+      },
+      onError: (error: any) => {
+        toast.error(error?.response?.data?.message);
+      },
+    }
+  );
 
   const onSubmit = async () => {
     mutate();
