@@ -41,6 +41,7 @@ import { services } from "..";
 import { tabsClasses } from "@mui/material/Tabs";
 import Head from "next/head";
 import BreadCrumbs from "../../components/breadCrumbs/BreadCrumbs";
+import Cookies from "js-cookie";
 
 const description = [
   "Fabric 1: 100% Polyester",
@@ -80,7 +81,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
   const theme = useTheme();
   const { push } = useRouter();
   const { dispatch, state } = useContext(Store);
-
+  const user = Cookies.get("token");
   const addToCartHandler = () => {
     try {
       const existProduct = state.cart.cartItems.find(
@@ -114,7 +115,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
             type: "CART_ADD_ITEM",
             payload: { ...product, quantity },
           });
-      push("/shipping");
+      user ? push("/shipping") : push("/login");
     } catch (error) {
       console.log(error);
     }
