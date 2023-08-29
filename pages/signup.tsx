@@ -54,7 +54,7 @@ const Signup = () => {
   });
   const { mutate, isLoading } = useSignup(
     watch("name"),
-    watch("email"),
+    watch("email")?.toLowerCase(),
     watch("password"),
     watch("confirmPassword"),
     watch("isAdmin"),

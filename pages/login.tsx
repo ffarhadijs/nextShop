@@ -40,7 +40,7 @@ const Login = () => {
   });
 
   const { mutate, isLoading } = useSignin(
-    watch("email").toLowerCase(),
+    watch("email")?.toLowerCase(),
     watch("password"),
     {
       onSuccess: () => {
