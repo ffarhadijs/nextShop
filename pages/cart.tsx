@@ -134,6 +134,9 @@ const Cart = () => {
                           <Select
                             value={item.quantity}
                             size="small"
+                            MenuProps={{
+                              PaperProps: { sx: { maxHeight: 150 } },
+                            }}
                             onChange={(e: SelectChangeEvent<number>) =>
                               changeHandler(e?.target.value as number, item)
                             }
