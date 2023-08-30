@@ -54,6 +54,7 @@ export default function Header({
     onSuccess: () => {
       setLogOut(false);
       toast.success("User signed out successfully");
+      push("/");
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message);
