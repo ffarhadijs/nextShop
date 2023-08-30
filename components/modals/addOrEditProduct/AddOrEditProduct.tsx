@@ -153,7 +153,7 @@ const AddOrEditProduct = ({
           left: "50%",
           transform: "translate(-50%, -50%)",
           maxWidth: 400,
-          minWidth: 300,
+          minWidth: 360,
           maxHeight: 600,
           bgcolor: "background.paper",
           border: "2px solid #000",

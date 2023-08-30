@@ -5,7 +5,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
   Grid,
   Card,
   Paper,
@@ -36,13 +35,13 @@ const FavoriteList = () => {
               sx={{
                 padding: 2,
                 marginY: 4,
-                width: "fit-content",
+                maxWidth: "fit-content",
                 marginLeft: "auto",
                 marginRight: "auto",
               }}
             >
               <TableContainer>
-                <Table sx={{ minWidth: "800px", width: "1000px" }}>
+                <Table sx={{ minWidth: "800px" }}>
                   <TableHead>
                     <TableRow>
                       <TableCell

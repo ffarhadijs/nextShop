@@ -40,6 +40,7 @@ export default function Footer() {
         <Grid container spacing={"20px"}>
           <Grid
             item
+            xs={12}
             sm={6}
             md={3}
             style={{ display: "flex", flexDirection: "column" }}
@@ -78,6 +79,7 @@ export default function Footer() {
           </Grid>
           <Grid
             item
+            xs={6}
             sm={6}
             md={3}
             style={{ display: "flex", flexDirection: "column" }}
@@ -96,6 +98,7 @@ export default function Footer() {
           </Grid>
           <Grid
             item
+            xs={6}
             sm={6}
             md={3}
             style={{ display: "flex", flexDirection: "column" }}
@@ -113,6 +116,7 @@ export default function Footer() {
           </Grid>
           <Grid
             item
+            xs={12}
             sm={6}
             md={3}
             style={{ display: "flex", flexDirection: "column" }}
@@ -125,7 +129,8 @@ export default function Footer() {
             <Button
               variant="contained"
               color="primary"
-              className="bg-[#2196f3] mt-2"
+              sx={{marginTop:"8px"}}
+              className="bg-[#2196f3]"
             >
               Subscribe
             </Button>
