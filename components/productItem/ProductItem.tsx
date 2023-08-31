@@ -25,6 +25,7 @@ import { Store } from "../../utils/Store";
 export default function ProductItem({
   product,
   setQuickModal,
+  columns,
 }: {
   product: ProductType;
   setQuickModal?: Dispatch<
@@ -33,6 +34,7 @@ export default function ProductItem({
       product: ProductType | null;
     }>
   >;
+  columns: number;
 }) {
   const { dispatch, state } = useContext(Store);
 
@@ -60,6 +62,7 @@ export default function ProductItem({
             type: "CART_ADD_ITEM",
             payload: { ...product, quantity },
           });
+      toast.success("Product has been added to cart successfully");
     } catch (error) {
       console.log(error);
     }
@@ -79,18 +82,40 @@ export default function ProductItem({
   return (
     <Box>
       <Card className="group/card">
-        <CardActionArea className=" h-40 sm:h-48 md:h-56">
+        <CardActionArea
+          className={`${
+            columns === 4
+              ? "h-40 sm:h-48 md:h-56"
+              : columns === 6
+              ? "h-60 sm:h-64 md:h-80"
+              : columns === 12 && "h-72 sm:h-80 md:h-96"
+          } `}
+        >
           <Box className="group/cardAction overflow-hidden relative ">
             <Link href={`shop/${product.slug}`}>
               <CardMedia
-                className="duration-200 group-hover/cardAction:scale-110 h-40 sm:h-48 md:h-56"
+                className={`duration-200 group-hover/cardAction:scale-110 ${
+                  columns === 4
+                    ? "h-40 sm:h-48 md:h-56"
+                    : columns === 6
+                    ? "h-60 sm:h-64 md:h-80"
+                    : columns === 12 && "h-72 sm:h-80 md:h-96"
+                }`}
                 component="img"
                 image={product.image}
                 alt={product.name}
               />
             </Link>
             <Box className="flex flex-col w-auto h-auto space-y-2 absolute top-2 right-0 opacity-0 group-hover/cardAction:right-4 group-hover/cardAction:opacity-100 transition-all duration-300">
-              <Tooltip title="Add to Wishlist">
+              <Tooltip
+                title={`${
+                  state?.wishList.withListItems.findIndex(
+                    (item) => item._id === product._id
+                  ) === -1
+                    ? "Add to"
+                    : "Remove from"
+                } Wishlist`}
+              >
                 <Box
                   className="text-gray-500 bg-white rounded-full w-max h-auto flex items-center justify-center hover:bg-[#2196f3] hover:text-white p-[2px] transition-colors duration-500"
                   onClick={(e) => wishListHandler(e, product)}

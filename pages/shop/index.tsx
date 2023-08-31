@@ -240,7 +240,7 @@ export default function Shop({
                   key={product.slug + index}
                   className="px-2 py-2"
                 >
-                  <ProductItem product={product} />
+                  <ProductItem product={product} columns={columns} />
                 </Grid>
               ))}
               {products.length !== 0 && (
