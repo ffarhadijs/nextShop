@@ -98,6 +98,7 @@ export default function Header({
           <Stack
             direction={"row"}
             justifyContent={"space-between"}
+            alignItems={"center"}
             sx={{ width: "100%" }}
           >
             <Link href="/">
