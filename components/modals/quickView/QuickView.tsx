@@ -46,6 +46,8 @@ export default function QuickView({
             type: "CART_ADD_ITEM",
             payload: { ...product, quantity },
           });
+      toast.success("Product has been added to cart successfully");
+
     } catch (error) {
       console.log(error);
     }

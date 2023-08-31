@@ -94,6 +94,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
             type: "CART_ADD_ITEM",
             payload: { ...product, quantity },
           });
+      toast.success("Product has been added to cart successfully");
     } catch (error) {
       console.log(error);
     }
@@ -116,6 +117,7 @@ const ProductDateils = ({ product }: { product: ProductType }) => {
             payload: { ...product, quantity },
           });
       user ? push("/shipping") : push("/login");
+      !user && toast.success("You should login at first");
     } catch (error) {
       console.log(error);
     }
