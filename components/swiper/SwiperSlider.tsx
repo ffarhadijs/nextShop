@@ -14,7 +14,7 @@ export default function SwiperSlider({
 }) {
   return (
     <SwiperComponent
-      loop={true}
+      loop={false}
       effect="slide"
       className="mySwiper"
       navigation={true}
