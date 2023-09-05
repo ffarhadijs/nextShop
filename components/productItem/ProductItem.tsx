@@ -34,7 +34,7 @@ export default function ProductItem({
       product: ProductType | null;
     }>
   >;
-  columns: number;
+  columns?: number;
 }) {
   const { dispatch, state } = useContext(Store);
 
@@ -84,22 +84,22 @@ export default function ProductItem({
       <Card className="group/card">
         <CardActionArea
           className={`${
-            columns === 4
-              ? "h-40 sm:h-48 md:h-56"
-              : columns === 6
+            columns === 6
               ? "h-60 sm:h-64 md:h-80"
-              : columns === 12 && "h-72 sm:h-80 md:h-96"
+              : columns === 12
+              ? "h-72 sm:h-80 md:h-96"
+              : "h-40 sm:h-48 md:h-56"
           } `}
         >
           <Box className="group/cardAction overflow-hidden relative ">
             <Link href={`shop/${product.slug}`}>
               <CardMedia
                 className={`duration-200 group-hover/cardAction:scale-110 ${
-                  columns === 4
-                    ? "h-40 sm:h-48 md:h-56"
-                    : columns === 6
+                  columns === 6
                     ? "h-60 sm:h-64 md:h-80"
-                    : columns === 12 && "h-72 sm:h-80 md:h-96"
+                    : columns === 12
+                    ? "h-72 sm:h-80 md:h-96"
+                    : "h-40 sm:h-48 md:h-56"
                 }`}
                 component="img"
                 image={product.image}
